@@ -85,7 +85,8 @@ Phase B unlocked 2026-11-27. Rows B0, B1, B1a to B1f are DONE and moved to `docs
 | B6 | CCIS | B5 | Validator rules for `entryForm`: every key exists, each field placed once, known section names; test. (`contexts` rules moved to B6a.) | DONE | 2026-11-28 | 1 module, 1 test | ccis-validator-entryform.js (V5-036 to 043, 85 lines) wired at layer 5; test (8 cases); 63 tests in 7 files pass; 3 breakage checks seen; index.html rebuilt. ED-34 used. Next: B6a. |
 | B6a | CCIS | B6 | Validator rules for `contexts`: unknown element, duplicate context id, unknown context tag, agreement with element field tags (design section 4); test. | DONE | 2026-11-28 | 1 module, 1 test | New ccis-validator-contexts.js (V5-044 to 047, 49 lines) + test (8 cases); 63 tests in 7 files pass; 2 breakage checks seen; index.html rebuilt. ED-35 used. Next: B7. |
 | B7 | CCIS | B4 | `ccis-compose.js` part 1: pure shared-concept matching and conflict report (shared concepts, candidate owners, unit conflicts). | DONE | 2026-11-28 | 1 module, 1 test | New ccis-compose.js (71 lines) + test (8 cases); 24 tests in 3 files pass; 3 breakage checks seen. ED-36 used (label hint adds an entry). Next: B8. |
-| B8 | CCIS | B7, B6, B6a | `ccis-compose.js` part 2: build a composed group and pathway from owner choices; deterministic bytes; test. | TODO | | 1 module edit, 1 test | |
+| B8 | CCIS | B7, B6, B6a | `ccis-compose-group.js`: build a composed element group from owner choices (blockers, revisions list); deterministic bytes; test. Pathway build split to B8a. | DONE | 2026-11-28 | 1 module, 1 test | New ccis-compose-group.js (79 lines) + test (8 cases); 24 tests in 3 files pass; 3 breakage checks seen. ED-37 used. Next: B8a. |
+| B8a | CCIS | B8 | Composed pathway from the group and source pathways: elements deduped, references, `entryForm` merge (shared field once at the owner), `contexts` union, stages; deterministic bytes; test. | TODO | | 1 new module, 1 test | Chunk file first. |
 | B9 | CCIS | B0 | Executor operators `first last min max coalesce` (finding F-9) with an operator-set bump; three-valued; test. | TODO | | 1 module edit, 1 test | |
 | B10 | CCIS | B1 | Rule-pack schema part 1: manifest, scope, class (`data-quality` or `clinical-prompt`), inputs, parameters; validators; test. | TODO | | 1 schema, 1 test | |
 | B11 | CCIS | B10, B9 | Rule-pack schema part 2: rules as expression trees from the whitelist, plain-text message templates, provenance, tests member; validators; test. | TODO | | 1 schema edit, 1 test | |
@@ -118,7 +119,7 @@ Phase B unlocked 2026-11-27. Rows B0, B1, B1a to B1f are DONE and moved to `docs
 | C11 | CCIS | C5, C6 | Pathway package `basic-emr`: core elements, `section` items, `entryForm`. | LOCKED | | 1 JSON, 1 test | |
 | C12 | CCIS | C7, C11 | Pathway package `dm`. | LOCKED | | 1 JSON, 1 test | |
 | C13 | CCIS | C8, C11 | Pathway package `ckd`. | LOCKED | | 1 JSON, 1 test | |
-| C14 | CCIS | C12, C13, B8 | Composed pathway `dm-ckd` built with `ccis-compose.js`; conflict report fixture with hand-calculated expected result. | LOCKED | | 1 JSON, 1 fixture, 1 test | |
+| C14 | CCIS | C12, C13, B8, B8a | Composed pathway `dm-ckd` built with `ccis-compose.js`; conflict report fixture with hand-calculated expected result. | LOCKED | | 1 JSON, 1 fixture, 1 test | |
 | C15 | CCIS | C14, B15 | `market-build` includes the ecosystem content; `--check` passes; `market/` regenerated. | LOCKED | | 1 script edit, generated folder | |
 | C16 | Marketplace | C15, C2 | Import the built `market/` folder; CI green. | LOCKED | | generated folder | |
 
@@ -197,7 +198,7 @@ Screens follow the CCIS pattern: pure model, then view (jsdom test, not wired), 
 | F14 | Studio | F13 | Pathway composer model: pick elements and `section` items, order, set contexts, build the pathway through the SDK. | LOCKED | | 1 module, 1 test | |
 | F15 | Studio | F14 | Pathway composer view; jsdom test, not wired. | LOCKED | | 1 module, 1 test | |
 | F16 | Studio | F15 | Wire the composer; rebuild. | LOCKED | | small edits, 1 test | |
-| F17 | Studio | F16, B8 | Composition model: conflict report, owner choice per shared concept, composed result through `ccis-compose.js`. | LOCKED | | 1 module, 1 test | |
+| F17 | Studio | F16, B8, B8a | Composition model: conflict report, owner choice per shared concept, composed result through `ccis-compose.js`. | LOCKED | | 1 module, 1 test | |
 | F18 | Studio | F17 | Composition view; jsdom test, not wired. | LOCKED | | 1 module, 1 test | |
 | F19 | Studio | F18 | Wire composition; rebuild. | LOCKED | | small edits, 1 test | |
 | F20 | Studio | F16, E1 | Analytics attach model: static compatibility of a chosen analytics package with the pathway; required or optional. | LOCKED | | 1 module, 1 test | |
