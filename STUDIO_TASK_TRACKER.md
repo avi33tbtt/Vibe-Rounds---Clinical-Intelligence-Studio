@@ -1,7 +1,7 @@
 # Studio: Agent Protocol and Master Task Tracker (EMR + CCIS + Marketplace + Studio)
 
 Repo: https://github.com/avi33tbtt/Vibe-Rounds---Clinical-Intelligence-Studio
-Other repos this tracker drives: CCIS https://github.com/avi33tbtt/Vibe-Rounds---CCIS , EMR https://github.com/avi33tbtt/Vibe-Rounds---EMR-Enhancer-App , Marketplace https://github.com/avi33tbtt/Vibe-Rounds---Marketplace (created; only a LICENSE so far; Pages is still yours to enable in row C0).
+Other repos this tracker drives: CCIS https://github.com/avi33tbtt/Vibe-Rounds---CCIS , EMR https://github.com/avi33tbtt/Vibe-Rounds---EMR-Enhancer-App , Marketplace https://github.com/avi33tbtt/Vibe-Rounds---Marketplace (created; only a LICENSE so far; Pages is still yours to enable in row C0). Later phases (J, K): CIP https://github.com/avi33tbtt/Vibe-Rounds-Contextual-Interaction-Platform (architecture scaffold, contracts and docs, no code yet) and PHR https://github.com/avi33tbtt/Vibe-Rounds---PHR (empty, LICENSE only).
 Plan: `docs/ECOSYSTEM-PLAN.html`. Conventions: `plan-chunks/01-core.md`. Decisions: `DECISIONS.md`.
 Prototype. Synthetic data only. Not for clinical use.
 
@@ -11,16 +11,16 @@ Prototype. Synthetic data only. Not for clinical use.
 
 Trigger phrase: **"do next"**. Keep the session small: this protocol is written for a free-tier limit.
 
-1. **Refresh first**: `git clone --depth 1` the Studio repo and the ONE other repo named in the next row's Repo column (CCIS, EMR or Marketplace; URLs are in the line above). If a clone fails, stop. Do not pick a task or write anything before both succeed.
-2. **Read only these**: this file, `plan-chunks/01-core.md`, the chunk file of the row (if any), and from the target repo only its own conventions file (CCIS: `plan-chunks/01-core.md`; EMR: `emr-plan-chunks/01-core.md`). Do not read the other repo's tracker or `DECISIONS.md` unless the chunk names a range. For source files over 5 KB use `grep -n` and `sed -n` on the ranges the chunk names.
+1. **Refresh first**: `git clone --depth 1` the Studio repo and the ONE other repo named in the next row's Repo column (CCIS, EMR, Marketplace, CIP or PHR; URLs are in the line above). If a clone fails, stop. Do not pick a task or write anything before both succeed.
+2. **Read only these**: this file, `plan-chunks/01-core.md`, the chunk file of the row (if any), and from the target repo only its own conventions file (CCIS: `plan-chunks/01-core.md`; EMR: `emr-plan-chunks/01-core.md`; CIP: `docs/05-development-roadmap.md` and `contracts/README.md`; PHR: the conventions file row K3 writes). Do not read the other repo's tracker or `DECISIONS.md` unless the chunk names a range. For source files over 5 KB use `grep -n` and `sed -n` on the ranges the chunk names.
 3. **Pick the next row**: the first row in table order with status `TODO` or `IN PROGRESS` whose **Needs** are all `DONE`. ONE row per "do next".
 4. **Locks and owner rows**: phases B to H are `LOCKED` until you say **"start phase B"** (and so on). Never start a `LOCKED` row. Rows marked **(YOU)** are yours: Claude never marks them `DONE`; you say "done <id>".
 5. **Chunk file first**: a docs-only row is done inline. Any other row without a chunk file: the task is to write `plan-chunks/chunk-<id>-<slug>.md` (docs only, under 5 KB: what to build, files to read with line ranges, files to change, tests, size guard, safety notes, context impact) from the row, the plan page, `DECISIONS.md` and what earlier rows learned. Then stop and ask you to approve it. The next "do next" builds it. Never edit a chunk file after its row has started: add a new row instead.
 6. **Size check**: if the row cannot finish within its size guard or the target repo's budget rule, STOP, say which part to split off, add it as a new row (`B7a`). Do not half-build. Do not implement later rows.
 7. **The target repo's conventions win**: its `01-core.md`, migration, route and test rules (EMR: next free migration number, permission matrix and audit tests, no DELETE or TRUNCATE grants, targeted tests; CCIS: pure modules, canonical JSON, CHANGELOG amendments with your approval, at most 3 `DECISIONS.md` rows). This file only decides which row runs and how the result is delivered. If the plan is ambiguous, take the most reasonable option, add at most 3 rows to `DECISIONS.md` (prefix `ED-`) and say so in the summary.
 8. **Verify lightly**: run only the new or edited test files plus the safety files the target repo names. EMR needs PostgreSQL (`TEST_DATABASE_URL`, a scratch database). CCIS needs Node 22 or newer. At most 3 deliberate-breakage checks (undo a fix, see the new test fail, restore). If tests could not run, write that in the notes. Never claim a pass that was not seen.
-9. **Deliver as one zip** named `eco-<id>-<date>.zip` (for example `eco-B1-2026-11-28.zip`). Top-level folders are `repo-studio/`, `repo-ccis/`, `repo-emr/`, `repo-marketplace/`; inside each, the repo-relative paths of new or changed files only. Always include `repo-studio/STUDIO_TASK_TRACKER.md` updated (status `DONE`, date, files, ONE line of notes, 200 characters max) and `repo-studio/DECISIONS.md` if changed. List the zip (`unzip -l`) and present it. Summary: 2 to 4 sentences: what was built, what needs your attention, the next row, and one line: "Extract each folder at its repo root, commit, push."
-10. **Mirror rule**: when a row changes CCIS or EMR, also add ONE `DONE` row to that repo's own tracker: ID `ECO-<id>`, plan file `(Studio tracker)`, one-line task and notes. That keeps its tracker truthful. Never edit existing chunk files in any repo.
+9. **Deliver as one zip** named `eco-<id>-<date>.zip` (for example `eco-B1-2026-11-28.zip`). Top-level folders are `repo-studio/`, `repo-ccis/`, `repo-emr/`, `repo-marketplace/`, `repo-cip/`, `repo-phr/`; inside each, the repo-relative paths of new or changed files only. Always include `repo-studio/STUDIO_TASK_TRACKER.md` updated (status `DONE`, date, files, ONE line of notes, 200 characters max) and `repo-studio/DECISIONS.md` if changed. List the zip (`unzip -l`) and present it. Summary: 2 to 4 sentences: what was built, what needs your attention, the next row, and one line: "Extract each folder at its repo root, commit, push."
+10. **Mirror rule**: when a row changes CCIS or EMR, also add ONE `DONE` row to that repo's own tracker: ID `ECO-<id>`, plan file `(Studio tracker)`, one-line task and notes. That keeps its tracker truthful. Never edit existing chunk files in any repo. CIP and PHR have no tracker yet: add one line under `Unreleased` in their `CHANGELOG.md` instead (K3 creates the PHR one).
 11. **One change in flight per repo**: commit and push a zip before starting another row on the same repo. The CCIS and EMR chats may keep running their own rows between ecosystem rows; pull first.
 12. **Never mark `DONE`** unless implemented and verified. **Never invent clinical content**: all clinical wording is synthetic demo content until a named clinician owner reviews it (ED-2).
 13. **Free-tier budget**: read at most 5 files per task besides this tracker; a chunk file stays under 5 KB; a row creates at most 3 new modules, or 1 module plus 1 test plus small assets; a test file has at most 8 cases; no row adds more than one dependency, and a new dependency needs your OK first. Completed rows move to `docs/TRACKER-ARCHIVE.md` when this file passes 40 KB: do not read the archive.
@@ -37,7 +37,7 @@ If a chat ends midway, nothing is `DONE` until verified: open a new chat, attach
 
 ## BUILD ORDER (critical path)
 
-`A` decide and define -> `B` CCIS contract (standard 0.2.0) -> `C` content and Marketplace -> then `D` EMR, `E` CCIS analytics and `F` Studio can run in any order -> `G` integration and hardening; `H` external FHIR export comes last and is not needed for 0.1.0.
+`A` decide and define -> `B` CCIS contract (standard 0.2.0) -> `C` content and Marketplace -> then `D` EMR, `E` CCIS analytics and `F` Studio can run in any order -> `G` integration and hardening; `H` external FHIR export comes last and is not needed for 0.1.0. After `G1`, three later phases may run in any order and none is needed for 0.1.0: `I` external terminology maps (SNOMED CT, LOINC) on top of the local codes, `J` the Contextual Interaction Platform (CIP), `K` the patient health record (PHR). Phase A row `A10` (terminology design) comes before `B1`.
 Why this order: the Studio, the EMR import and the analytics all depend on the contract. Do not scaffold the Studio before B is DONE: it would hard-code a contract that changes.
 Known gaps this plan closes: two meanings of "pathway", two element models, no concept key on EMR observations, hard-coded condition contexts (`context-map.js`), no element-group or rule-pack artefact in CCIS, and executor operators `first last min max coalesce` missing (CCIS finding F-9).
 
@@ -59,36 +59,29 @@ Known gaps this plan closes: two meanings of "pathway", two element models, no c
 | ED-12 | Concept ownership | Each concept has exactly one owner element; any other element that uses it references the owner, and a second owner is refused at publish | A3d, B2a, B15, D5, F11a |
 | ED-20 | How do the apps exchange data? "EMR and CCIS talk with FHIR" must not mean FHIR-based exchange. | ANSWERED 2026-11-27 (your instruction): native and direct inside the ecosystem (envelope, run record, CCIS artefacts). FHIR only as an external export, built late (phase H). | H0 to H6, G1, G3 |
 | ED-21 | The EMR already has FHIR inbound paths (R6e Questionnaire import, R6f Bundle import, `sdc.js`) and CCIS has LOCKED FHIR Mode rows (6.1 to 6.4). Keep them? | OPEN: keep them as they are, as optional external-edge tools. No ecosystem row depends on them and nothing new is built on them. Decide in H0. | H0 |
+| ED-22 | How do local codes grow into SNOMED CT, LOINC and other terminologies later? | ANSWERED 2026-11-27 (your instruction): local keys are the identity and never change; external codes arrive later as separate `terminology-map` artefacts; local-only stays valid. Systems and licences are chosen in I0. | A10, B1, B1b, C4, I0 to I9, H3 |
+| ED-23 | What is CIP's role and place in the ecosystem? | OPEN: the collection layer (asks, collects, hands over as proposals); the EMR decides what enters the record; native contracts only (ED-20). Fifth app. | J0 to J7, K7 |
+| ED-24 | What is the PHR: who uses it, where the data lives, who holds consent? | OPEN: a patient-owned app on the same elements, pathways and concept keys; shares with a clinic only through CIP and EMR review; patient entries are never verified. | K0 to K9 |
 
 ---
 
 ## PHASE A: Decide and define (Studio repo, docs only)
 
+Rows A0 to A8 are DONE (2026-11-27) and moved to `docs/TRACKER-ARCHIVE.md`. Do not read the archive.
+
 | ID | Repo | Needs | Task | Status | Date | Size | Notes |
 |----|------|-------|------|--------|------|------|-------|
-| A0 | Studio (YOU) | | Upload this tracker, `plan-chunks/01-core.md` and the plan page as `docs/ECOSYSTEM-PLAN.html` to the Studio repo and commit. Then say "done A0". | DONE | 2026-11-27 | none | Uploads confirmed in repo; you said done A0. |
-| A1 | Studio | A0 | Write `DECISIONS.md` with ED-1 to ED-12 as OPEN rows (question, recommendation, what it blocks). Stop and ask you to answer. | DONE | 2026-11-27 | docs | DECISIONS.md written: ED-1 to ED-12 all OPEN, awaiting your answers (A1a). |
-| A1a | Studio (YOU) | A1 | Answer ED-1 to ED-12 in chat ("accept all" is allowed). Claude records them at the start of the next row. | DONE | 2026-11-27 | none | You said "accept all"; recorded in DECISIONS.md. ED-2 names no clinician: content stays demo. |
-| A2 | Studio | A1a | `docs/VOCABULARY.md`: element, element group, pathway, pathway package, trajectory, concept key, context, rule pack, analytics package, marketplace; plus a table mapping EMR terms (element set, pathway version, case_applied_sets) to CCIS terms. | DONE | 2026-11-27 | docs | docs/VOCABULARY.md written. EMR mapping inferred from the plan page; verify in A4. case_applied_sets not described in the plan. |
-| A3a | Studio | A2 | `docs/ELEMENT-LIST-V0.md` part 1: tier 1 elements `core.presentation`, `core.vitals`, `core.examination`, `core.assessment-plan`, `core.event-times`, `core.fluid-balance`: fields, types, units, repeat, time meaning, allowed epistemic states, source EMR set. Synthetic, unreviewed. | DONE | 2026-11-27 | docs | docs/ELEMENT-LIST-V0.md part 1. Fields are proposals from the plan page, not read from EMR sets.js. A4 must reconcile. |
-| A3b | Studio | A3a | Part 2: `section` items (problems, allergies, medications, investigations, care episode): what each stores, the matching envelope section and EMR tab. They are placeholders in a form, not elements. | DONE | 2026-11-27 | docs | Part 2 appended to ELEMENT-LIST-V0.md. Envelope section and EMR tab names are marked to confirm in A4; not read from repos. |
-| A3c | Studio | A3a | Part 3: `dm.core`, `dm.glycaemic-monitoring`, `htn.core`, optional `dm.foot` and `dm.dka`, from the EMR sets and `longitudinal-demo-content.js`. No numbers or bands in definitions. | DONE | 2026-11-27 | docs | Part 3 appended. Fields are proposals from plan page captions; EMR sets and demo file not read. htn.core references core.vitals for BP (ED-12). |
-| A3d | Studio | A3c | Part 4: `ckd.core`, `ckd.kidney-function` (split from set `ckd_ctx`) and the concept key table for the `local` vocabulary: creatinine, eGFR, albumin-creatinine ratio, systolic and diastolic pressure, HbA1c, glucose, weight and every other concept shared by two or more elements. Name ONE owner element per concept (the element that defines it); other elements reference it. | DONE | 2026-11-27 | docs | Part 4: CKD elements and 15 concept keys, one owner each. Fluid-volume and event-time may mix series; open for A4/A5. Units unconfirmed. |
-| A4 | Studio | A3d | `docs/FIELD-MAP.md`: EMR field model (id, label, type, unit, options, repeat, derived, flag, bindings) to CCIS field model: conversion per property, what is lost, what must be added (cardinality, time meaning, epistemic states). Read EMR `sets.js` and CCIS `element.schema.json` by line range. | DONE | 2026-11-27 | docs | FIELD-MAP.md written. Real EMR sets differ from ELEMENT-LIST-V0 in many fields. ED-13 to ED-15 added (OPEN). Row A4a added to correct the list. |
-| A4a | Studio | A4, ED-13 to ED-15 | Correct `docs/ELEMENT-LIST-V0.md` parts 1 to 4 using `docs/FIELD-MAP.md` section 7: CCIS keys and types, remove invented fields, rebuild from real EMR fields, fix the concept table. Record your answers to ED-13 to ED-15 first. | DONE | 2026-11-27 | docs | ELEMENT-LIST-V0.md rewritten from FIELD-MAP: CCIS keys, real EMR fields, 16 concepts. ED-13 to ED-15 recorded. Section columns still to confirm in A5. |
-| A5 | Studio | A4a | `docs/PACKAGE-DESIGN.md`: package members, `entryForm` item kinds (`element`, `section`), `contexts`, composition rules (by reference, match by concept, one owner element per concept and per shared field, conflict report format), materialisation into EMR sets and pathway versions, import and review path. | DONE | 2026-11-27 | docs | PACKAGE-DESIGN.md written. Adds rows B1a, B1b. DM+CKD has no shared concept: A7 to reconsider C14. EMR local-binding check open. ED-16, ED-17 added (OPEN). |
-| A6 | Studio | A5 | `docs/RULE-PACK-DESIGN.md`: rule classes, inputs, parameters disabled by default, allowed operators, plain-text message format, provenance, review and independence, logging in the EMR, what is prohibited. | DONE | 2026-11-27 | docs | RULE-PACK-DESIGN.md written. CCIS executor and validator not read: operator and layer names open for B10 to B13. ED-18, ED-19 added (OPEN). |
-| A7 | Studio (YOU) | A6 | Review A2 to A6 and say "approve phase A". Changes go in as new rows. | DONE | 2026-11-27 | none | You said "approve phase A". ED-16 to ED-19 recorded as accepted. Phase B stays LOCKED until you say "start phase B"; B0 is yours. |
-| A8 | Studio | A7 | Record the integration rule: ED-20 and ED-21 in `DECISIONS.md`, protocol rule 14, new phase H (external FHIR export, last), native-path guards in G1 and G3. | DONE | 2026-11-27 | docs | You said FHIR is for external export only, a late feature. Repos read: no FHIR in Studio; EMR R6a-d exporters have no route yet. ED-21 OPEN. |
+| A9 | Studio | A8 | Audit the terminology plan and the two new repos; record ED-22 to ED-24; add A10 and phases I, J, K; edit B1, B1b, H3, G9. | DONE | 2026-11-27 | docs | Local codes were half planned; no SNOMED CT or LOINC path. Added A10 and phase I. CIP and PHR added as phases J, K. ED-22 answered; ED-23, ED-24 OPEN. |
+| A10 | Studio | A9 | `docs/TERMINOLOGY-DESIGN.md`: local code rules (stable keys, a key never changes meaning or is reused, deprecate with `replacedBy`, display text, versioned value sets, who may add a key); how the B1b `local` package and EMR `local-terms.js` fit; the extension path (external codes only in separate `terminology-map` artefacts keyed by concept key, mapping status, licence and attribution notes for SNOMED CT and LOINC; codes copied only from an official release file, never typed from memory); local-only always stays valid; how the one binding slot holds a concept and a value set. Read CCIS `terminology-binding.schema.json` and EMR `local-terms.js` by line range. | TODO | | docs | |
 
 ## PHASE B: The contract (CCIS repo, standard 0.2.0)
 
 | ID | Repo | Needs | Task | Status | Date | Size | Notes |
 |----|------|-------|------|--------|------|------|-------|
 | B0 | CCIS (YOU) | A7 | Confirm `git tag v0.1.0` is pushed, run the full `npm test` once, and tell Claude the base commit. | LOCKED | | none | |
-| B1 | CCIS | B0 | Element field: optional `concept` (a binding in the `local` system) and `contexts` tags; schema, regenerated validators, test. | LOCKED | | 1 schema edit, 1 test | |
+| B1 | CCIS | B0, A10 | Element field: optional `concept` (a binding in the `local` system) and `contexts` tags; schema, regenerated validators, test. | LOCKED | | 1 schema edit, 1 test | |
 | B1a | CCIS | B1 | Element field `ownedBy` (owner element id and field key) for a field that uses a concept it does not own; type and unit must equal the owner's (ED-16); schema, validator, test. | LOCKED | | 1 schema edit, 1 test | |
-| B1b | CCIS | B1 | Local terminology package (artefact type `terminology-package`): code system `local`, concept keys, value sets with display text; check how the validator resolves `valueSet`; schema, test. | LOCKED | | 1 schema, 1 test | |
+| B1b | CCIS | B1, A10 | Local terminology package (artefact type `terminology-package`): code system `local`, concept keys, value sets with display text; check how the validator resolves `valueSet`; no external code (SNOMED CT, LOINC) lives here, see I1; schema, test. | LOCKED | | 1 schema, 1 test | |
 | B2 | CCIS | B1 | Validator rules for `concept` and `contexts` (concept required on repeating numeric fields, unit consistent per concept, known context tags); test. | LOCKED | | 1 module edit, 1 test | |
 | B2a | CCIS | B2, B1a | Concept ownership check: pure `conceptOwners(artefacts)` lists each concept with its owner element and its users; a concept with no owner or a second owner is an error at publish and a warning in `validate`; the same concept under different keys across elements is reported. | LOCKED | | 1 module, 1 test | |
 | B3 | CCIS | B1 | Element-group schema (CCIS-REQ-023): members, mandatory or optional, owner per shared concept, version constraints; validators; test. | LOCKED | | 1 schema, 1 test | |
@@ -241,7 +234,7 @@ Screens follow the CCIS pattern: pure model, then view (jsdom test, not wired), 
 | G6 | Studio | G1 | Security review checklist for Marketplace content: text injection in displayed fields, checksum and pin checks, replay of old versions. Review is yours. | LOCKED | | docs | |
 | G7 | EMR | D25 | Unlock R7c, R7d, R8a to R8d in the EMR tracker with the import and rule paths added to each. | LOCKED | | per EMR rows | |
 | G8 | Studio (YOU) | G6 | Clinician review of all demo content; name the clinical owner (ED-2); decide whether clinical prompts may start (ED-6). | LOCKED | | none | |
-| G9 | Studio | G8, ED-8 | Release coordination: version table, tags in all four repos, CHANGELOG entries, final name decision. | LOCKED | | docs | |
+| G9 | Studio | G8, ED-8 | Release coordination: version table, tags in every repo built (EMR, CCIS, Studio, Marketplace; CIP and PHR when phases J and K ran), CHANGELOG entries, final name decision. | LOCKED | | docs | |
 
 ## PHASE H: External FHIR export (LATE, optional for 0.1.0)
 
@@ -252,10 +245,59 @@ FHIR is only the outward format for people and systems outside the ecosystem (ED
 | H0 | Studio (YOU) | G3 | Say "start phase H". Decide who the external consumer is and which resources are wanted, and answer ED-21 (keep or retire the FHIR inbound paths). | LOCKED | | none | |
 | H1 | Studio | H0 | `docs/FHIR-EXPORT-BOUNDARY.md`: what leaves (native rows through R6a to R6d), export only, how a concept key becomes an external code at export time through the binding slot (a `local` code is never a Coding, as the EMR already rules), what is never exported, loss report, no clinical claim. | LOCKED | | docs | |
 | H2 | EMR | H1 | Export routes over the existing exporters: one case or patient to a FHIR Bundle; new permission, audit on every export, matrix and audit tests; reads only. Chunk file first; split if over the guard. | LOCKED | | 1 routes file, permissions, tests | |
-| H3 | EMR | H2 | Concept mapping at export: apply verified non-local bindings if you have a licensed terminology (reopens ED-7); otherwise codes stay text. Nothing invented. Skip if you stay on text. | LOCKED | | 1 module edit, 1 test | |
+| H3 | EMR | H2, I4 | Concept mapping at export: use the verified `terminology-map` content imported in phase I (I4), only for systems you licensed in I0; otherwise codes stay text. Nothing invented. Skip if phase I is not built. | LOCKED | | 1 module edit, 1 test | |
 | H4 | EMR (YOU) | H2 | Run the public HL7 validator on the fixtures and one real H2 export (EMR row R6g-2 covers the fixtures; do not duplicate it). Say "done H4" with the result. | LOCKED | | none | |
 | H5 | CCIS | H0 | Optional: external export of CCIS results (run record or analytics output). Resource choice is open. CCIS rows 6.1 to 6.4 (FHIR Mode) stay in the CCIS tracker. Unlock only if you say so. | LOCKED | | per CCIS split | |
 | H6 | Studio | H4 | Docs: external export step in `docs/E2E-RUNBOOK.md`; `docs/LIMITATIONS.md` lines (not clinically validated, export only, text codes unless H3). | LOCKED | | docs | |
+
+## PHASE I: External terminology maps (LATE, optional for 0.1.0)
+
+Local concept keys stay the identity inside the ecosystem (ED-9, ED-22). SNOMED CT, LOINC or any other system is added later as a separate, versioned `terminology-map` artefact (concept key to external code, status, reviewer, licence note). No element, observation or pathway is rewritten, and local-only always stays valid. Codes are copied from an official release file you supply, never typed from memory. Starts only when you say "start phase I". Native artefacts only (ED-20).
+
+| ID | Repo | Needs | Task | Status | Date | Size | Notes |
+|----|------|-------|------|--------|------|------|-------|
+| I0 | Studio (YOU) | G1, A10 | Say "start phase I". Choose the systems (SNOMED CT, LOINC, others), edition, licence or affiliate status and who holds it, and which concepts go first. This reopens ED-7 for those systems only. | LOCKED | | none | |
+| I1 | CCIS | I0, B21 | `terminology-map` artefact schema: local concept key, external system id, version, code, display, mapping status, reviewer, licence note. Additive, so 0.2.0 artefacts still validate. Chunk file first. | LOCKED | | 1 schema, 1 test | |
+| I2 | CCIS | I1 | Validator rules: concept key exists in the `local` package, system listed and version pinned, one active map per concept and system, no change to a local key; test. | LOCKED | | 1 module edit, 1 test | |
+| I3 | CCIS | I2 | Release-file check: read a code list you supply (for example a SNOMED CT subset or the LOINC table), confirm each map code and display against it. No network, nothing redistributed; test with a tiny synthetic stand-in. | LOCKED | | 1 script, 1 test | |
+| I4 | EMR | I2, D3 | Import maps (append-only, migration, matrix tests); the element bindings list gains the external code beside `local`; observations stay keyed by concept; an unmapped concept stays valid. Chunk file first. | LOCKED | | 1 migration, 1 routes file, tests | |
+| I5 | Studio | I2, F11a | Map editor, model and view together: pick a concept, choose a code from the imported release file, set status; jsdom test, not wired. | LOCKED | | 1 module, 1 test | |
+| I6 | Studio | I5 | Wire the map editor; rebuild. | LOCKED | | small edits, 1 test | |
+| I7 | Marketplace | I2, C2 | CI accepts `terminology-map` artefacts and refuses any file that redistributes licensed code lists. | LOCKED | | 1 script edit, 1 test | |
+| I8 | Studio (YOU) | I6, I7 | Licence check and terminologist review of every map. Say "done I8". | LOCKED | | none | |
+| I9 | Studio | I8 | Docs: README and `docs/LIMITATIONS.md` lines (local codes by default, maps optional, not clinically verified, licence terms). | LOCKED | | docs | |
+
+## PHASE J: Contextual Interaction Platform, CIP (LATE, optional for 0.1.0)
+
+Repo: https://github.com/avi33tbtt/Vibe-Rounds-Contextual-Interaction-Platform . Scaffold only: README, `docs/00` to `06`, `contracts/` (collection specification, task, response envelope), a synthetic hypertension example, `src/` and `tests/` are placeholders. CIP asks for and collects information (patient forms, AI agents, messaging) and hands it over as proposals. The EMR decides what enters the record. Starts only when you say "start phase J".
+
+| ID | Repo | Needs | Task | Status | Date | Size | Notes |
+|----|------|-------|------|--------|------|------|-------|
+| J0 | Studio (YOU) | G1 | Say "start phase J". Confirm CIP's role and its place as the fifth app; answer ED-23. | LOCKED | | none | |
+| J1 | Studio | J0 | `docs/CIP-INTEGRATION.md`: what CIP reads (published pathway and element artefacts, by concept key, checksummed), what it returns (response envelope as a proposed observation with provenance, never a direct write), how a CIP collection specification relates to an element (wording is CIP's, meaning is the element's), how CIP's ADR-0001 ("the EMR owns definitions") fits ED-5, native path only (ED-20), no silent promotion. Read CIP `docs/03-integration-contracts.md`, `contracts/` and the ADR by line range. | LOCKED | | docs | |
+| J2 | CIP | J1, B21 | Pin CCIS contract copies into `contracts/` with a commit pin and staleness test (ED-11); add concept key to the response envelope schema. Chunk file first. | LOCKED | | files, 1 schema edit, 1 test | |
+| J3 | CIP | J2 | Pure pathway-requirement reader: pathway package and elements to a requirement list by concept key; missing or stale check against an envelope fixture; test. | LOCKED | | 1 module, 1 test | |
+| J4 | CIP | J3 | Collection specification generator: element to question item (type, unit, options from the local value set); patient wording is a separate reviewed field; synthetic only; test. | LOCKED | | 1 module, 1 test | |
+| J5 | EMR | J4, D8 | Review queue for proposals from CIP: append-only staging, accept or reject through the existing review rules, provenance kept, audit, matrix tests. Chunk file first; split if over the guard. | LOCKED | | 1 migration, 1 routes file, tests | |
+| J6 | CIP | J4, J5 | Vertical slice from the CIP README with a mock EMR: requirement, task, form, response, proposal, acknowledgement; synthetic data; test. | LOCKED | | 1 module, 1 test | |
+| J7 | Studio | J6 | Docs: CIP section in `docs/E2E-RUNBOOK.md` and `docs/LIMITATIONS.md` line; CIP `CHANGELOG.md` line. | LOCKED | | docs | |
+
+## PHASE K: Patient health record, PHR (LATE, optional for 0.1.0)
+
+Repo: https://github.com/avi33tbtt/Vibe-Rounds---PHR (empty, LICENSE only). Works on the same elements, pathways and concept keys, and helps patients see and record their own information. Shares with a clinic only through CIP and EMR review. Starts only when you say "start phase K".
+
+| ID | Repo | Needs | Task | Status | Date | Size | Notes |
+|----|------|-------|------|--------|------|------|-------|
+| K0 | Studio (YOU) | J1 | Say "start phase K". Answer ED-24: who the patients are, languages, where the data lives, who holds consent, relation to the EMR. | LOCKED | | none | |
+| K1 | Studio | K0 | `docs/PHR-DESIGN.md`: which elements a patient may see or enter, patient wording and plain-language help kept apart from clinician labels, trajectory by concept key from the patient's own data (ED-1), sharing through CIP, consent and revocation, privacy, what the PHR never does (diagnose, advise, change a clinician's pathway), patient entries are `patient-reported` and never verified. | LOCKED | | docs | |
+| K2 | CCIS | K1, B21 | Optional patient-facing facets on element and pathway (audience, patient label, plain-language help, patient may enter). Additive; unlock only if K1 shows it is needed. Chunk file first. | LOCKED | | 1 schema edit, 1 test | |
+| K3 | PHR | K1 | Scaffold: README with banners, conventions file, `CHANGELOG.md`, `.gitattributes`, CI, vendored CCIS pin with staleness test (ED-11). Synthetic data only. Chunk file first. | LOCKED | | small files, 1 test | |
+| K4 | PHR | K3 | Pure patient record model: values by concept key, epistemic states, missing never zero; save and load as one file, no browser storage; test. | LOCKED | | 1 module, 1 test | |
+| K5 | PHR | K4, K2 | Patient pathway view: published pathway to a patient form model; jsdom test, not wired. | LOCKED | | 1 module, 1 test | |
+| K6 | PHR | K5 | Wire the form; trajectory view by concept key; hostile-string test; rebuild. | LOCKED | | small edits, 1 test | |
+| K7 | PHR | K6, J5 | Share with a clinic: build a CIP response envelope from entered values with a consent record; the EMR review queue (J5) receives it. | LOCKED | | 1 module, 1 test | |
+| K8 | Studio (YOU) | K7 | Privacy, security and clinician review of PHR content, wording and consent text. Say "done K8". | LOCKED | | none | |
+| K9 | Studio | K8 | Docs: `docs/LIMITATIONS.md` and release table entries for CIP and PHR. | LOCKED | | docs | |
 
 ---
 
@@ -266,8 +308,10 @@ FHIR is only the outward format for people and systems outside the ecosystem (ED
 - **B0 and B21:** tag and test CCIS yourself (the full suite is too long for a free session).
 - **C0:** the Marketplace repo exists (https://github.com/avi33tbtt/Vibe-Rounds---Marketplace); confirm it is public, enable Pages, say "done C0".
 - **H0, H4 and ED-21 (late):** FHIR export is yours to start. Answer ED-21, run the public validator, and decide whether any licensed terminology is wanted (reopens ED-7).
+- **I0, I8 (late):** choose terminology systems, hold the licence, review the maps.
+- **J0, K0, K8 (late):** confirm CIP's role, define the PHR (users, data custody, consent), review PHR privacy and wording.
 - **Dependencies:** approve `esbuild` (F3) and `puppeteer-core` (F32) pins; run `npm ci` after pulling.
-- **Before any real use:** clinician review, privacy and security review, licence checks, EMR go-live gate (R8e). Nothing here is cleared for clinical use.
+- **Before any real use:** clinician review, privacy and security review, licence checks (including any SNOMED CT or LOINC use), EMR go-live gate (R8e). Nothing here is cleared for clinical use.
 
 ## OPEN QUESTIONS
 See `DECISIONS.md` (ED rows) and `docs/ECOSYSTEM-PLAN.html`.
