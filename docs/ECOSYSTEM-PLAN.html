@@ -1,0 +1,286 @@
+<title>Pathway Ecosystem Plan</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: single reading column with a sticky section rail on wide screens; tables and the diagram scroll inside their own boxes. */
+:root{
+  --bg:#f3f7f8; --surface:#ffffff; --fg:#10252b; --muted:#4b6168; --line:#d3e0e3;
+  --accent:#0a7d8c; --accent-soft:#dff1f3; --warn:#9a5b00; --warn-soft:#fbefd9; --ok:#1d6b45; --ok-soft:#ddf2e6; --bad:#a23a2a; --bad-soft:#f8e1dc;
+  --display:'Fraunces',Georgia,serif; --body:'Inter',system-ui,sans-serif; --mono:'IBM Plex Mono',ui-monospace,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0c1a1e; --surface:#13262b; --fg:#e4f0f2; --muted:#9bb3b9; --line:#25414a;
+  --accent:#4cc3d3; --accent-soft:#12363d; --warn:#f0b866; --warn-soft:#3a2d12; --ok:#6fd09b; --ok-soft:#14362392; --bad:#f19a8b; --bad-soft:#3d1c17; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0c1a1e; --surface:#13262b; --fg:#e4f0f2; --muted:#9bb3b9; --line:#25414a;
+  --accent:#4cc3d3; --accent-soft:#12363d; --warn:#f0b866; --warn-soft:#3a2d12; --ok:#6fd09b; --ok-soft:#14362392; --bad:#f19a8b; --bad-soft:#3d1c17; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:16px;line-height:1.6;padding-block:0 4rem;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.wrap{max-width:62rem;margin:0 auto}
+header.top{padding:2.5rem 0 1.5rem;border-bottom:1px solid var(--line)}
+.eyebrow{font-family:var(--mono);font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+h1{font-family:var(--display);font-weight:600;font-size:clamp(1.9rem,5vw,2.9rem);line-height:1.1;margin:.4rem 0 .8rem;text-wrap:balance}
+h2{font-family:var(--display);font-weight:600;font-size:1.65rem;line-height:1.2;margin:0 0 .8rem;text-wrap:balance}
+h3{font-size:1.02rem;margin:1.4rem 0 .4rem}
+p{margin:.5rem 0;max-width:68ch}
+.lede{font-size:1.1rem;color:var(--muted);max-width:62ch}
+section{padding:2.4rem 0;border-bottom:1px solid var(--line)}
+section:last-of-type{border-bottom:0}
+code,.mono{font-family:var(--mono);font-size:.86em}
+code{background:var(--accent-soft);padding:.05em .35em;border-radius:3px}
+nav.toc{display:flex;flex-wrap:wrap;gap:.4rem .5rem;margin-top:1.2rem}
+nav.toc a{font-size:.82rem;color:var(--accent);text-decoration:none;border:1px solid var(--line);padding:.2rem .6rem;border-radius:99px;background:var(--surface)}
+nav.toc a:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(15rem,1fr));gap:1rem;margin-top:1rem}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:1rem 1.1rem;min-width:0}
+.card h3{margin-top:0}
+.card p{font-size:.93rem}
+.tblbox{overflow-x:auto;margin:1rem 0;border:1px solid var(--line);border-radius:6px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;min-width:40rem;font-size:.88rem}
+th,td{text-align:left;vertical-align:top;padding:.55rem .75rem;border-bottom:1px solid var(--line)}
+th{font-family:var(--mono);font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);background:var(--accent-soft)}
+tr:last-child td{border-bottom:0}
+.pill{display:inline-block;font-family:var(--mono);font-size:.7rem;padding:.1rem .5rem;border-radius:99px;white-space:nowrap}
+.p-ok{background:var(--ok-soft);color:var(--ok)} .p-warn{background:var(--warn-soft);color:var(--warn)} .p-bad{background:var(--bad-soft);color:var(--bad)} .p-info{background:var(--accent-soft);color:var(--accent)}
+.note{border-left:3px solid var(--warn);background:var(--warn-soft);padding:.7rem 1rem;border-radius:0 6px 6px 0;margin:1rem 0;max-width:68ch;font-size:.93rem}
+.note.info{border-color:var(--accent);background:var(--accent-soft)}
+.diagram{overflow-x:auto;background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:.5rem;margin:1rem 0}
+.diagram svg{display:block;min-width:620px;width:100%;height:auto}
+svg text{font-family:var(--body);fill:var(--fg)}
+svg .sub{font-size:11px;fill:var(--muted)}
+svg .t{font-size:14px;font-weight:600}
+svg .lbl{font-size:11px;font-family:var(--mono);fill:var(--muted)}
+.phase{display:grid;grid-template-columns:5.5rem 1fr;gap:1rem;padding:1rem 0;border-top:1px dashed var(--line)}
+.phase:first-of-type{border-top:0}
+.phase .tag{font-family:var(--mono);font-size:.8rem;color:var(--accent);font-weight:500}
+.phase ul{margin:.3rem 0;padding-left:1.1rem}
+.phase li{margin:.25rem 0;max-width:68ch}
+.phase h3{margin:0 0 .2rem}
+@media(max-width:560px){.phase{grid-template-columns:1fr;gap:.2rem}}
+ol.dec{padding-left:1.2rem;max-width:70ch} ol.dec li{margin:.7rem 0}
+.src{font-size:.82rem;color:var(--muted)}
+@media(prefers-reduced-motion:no-preference){nav.toc a{transition:background .15s}nav.toc a:hover{background:var(--accent-soft)}}
+</style>
+
+<div class="wrap">
+<header class="top">
+  <div class="eyebrow">Vibe Rounds · plan of 27 Nov 2026</div>
+  <h1>One pathway, four apps: EMR, CCIS, Studio, Marketplace</h1>
+  <p class="lede">The EMR and CCIS already hold most of the parts. What is missing is a shared contract that lets a pathway travel: authored in the Studio, published to a marketplace, filled in as a form in the EMR, and analysed in CCIS. This plan names the contract, the build order and the decisions that need you.</p>
+  <nav class="toc" aria-label="Sections">
+    <a href="#idea">The idea</a><a href="#state">Where the repos stand</a><a href="#arch">Architecture</a><a href="#elements">Element list</a><a href="#package">Pathway package</a><a href="#apps">Each app</a><a href="#rules">Rule intelligence</a><a href="#phases">Phases</a><a href="#decide">Decisions</a><a href="#risks">Risks</a>
+  </nav>
+</header>
+
+<section id="idea">
+  <h2>The idea, as I read it</h2>
+  <div class="grid">
+    <div class="card"><h3>Contextual element</h3><p>A small, versioned, reusable definition of something recorded about a patient (vitals, eGFR, HbA1c, onset time). It declares type, unit, time meaning and which states count as "unknown" or "not collected".</p></div>
+    <div class="card"><h3>Pathway</h3><p>A designed set of elements, with an order. The EMR entry form <em>is</em> a pathway: basic EMR today, then DM, CKD and DM+CKD. This is the unit that gets designed, published and reviewed.</p></div>
+    <div class="card"><h3>Trajectory</h3><p>What actually accumulates for one patient when elements and pathways are applied in whatever order real care takes. It is the unit of analysis. It is keyed by concept (for example creatinine), not by which form it was typed into.</p></div>
+    <div class="card"><h3>Analytics and rules</h3><p>Analytics bind to elements, so they work on any pathway that contains those elements. Rules are published with a pathway and run inside the EMR form.</p></div>
+  </div>
+  <div class="note info"><b>Check my reading of "trajectory".</b> You wrote that elements make pathways as a set, and used randomly they make a trajectory. I took that to mean design time versus use time: the pathway is designed, the trajectory emerges. If you meant something else, section "Pathway package" is the part that changes.</div>
+</section>
+
+<section id="state">
+  <h2>Where the repos stand today</h2>
+  <p>I cloned all three and read the READMEs, both task trackers, the clinical context model, the pathway migration and route code, the CCIS spec headings and examples, and the marketplace index. I did not run the test suites.</p>
+  <div class="tblbox"><table>
+    <tr><th>Repo</th><th>What exists</th><th>Next in its own tracker</th></tr>
+    <tr><td><b>EMR Enhancer</b><br><span class="src">Node + PostgreSQL, 33 migrations</span></td>
+      <td>Element sets with immutable versions and a review workflow. Pathways (migration 013): a version is an ordered list of exact element set versions; applying one pins each set to the case. Append-only observations, notes, problems, allergies, orders, results, administrations, discharge. Context envelope export (0.3.0) and import of CCIS run records. Longitudinal explorer with diabetes, CKD and hypertension demo content. 143 tracker rows done.</td>
+      <td>R7c, R7d, R8a to R8e are locked or open; R9j locked; D8b blocked on CCIS 6.4.</td></tr>
+    <tr><td><b>CCIS</b><br><span class="src">static browser app + Node CLI, v0.1.0</span></td>
+      <td>Standard, JSON schemas, eight-layer validator, compiler with checksums, compatibility resolver (six checks, five outcomes), executor with 18 whitelisted operators, run records, local marketplace format (<code>ccis-market/1</code>), remote market loader, code SDK, governed AI-draft gate. Only the snake-bite example artefacts exist.</td>
+      <td>4.3b (draft page model). Phases 5 (templates, decision graphs, cohorts) and 6 locked.</td></tr>
+    <tr><td><b>Clinical Intelligence Studio</b></td>
+      <td>Empty. One commit containing only the LICENSE file.</td><td>Not started.</td></tr>
+    <tr><td><b>Marketplace</b></td>
+      <td>No repo. The CCIS docs use <code>clinical-intelligence-marketplace</code> as an example address. The folder format is already defined and built locally under <code>market/</code>.</td><td>Host not decided (open question 4 in the CCIS plan).</td></tr>
+  </table></div>
+  <h3>Gaps that block your design</h3>
+  <ul>
+    <li><b>Two meanings of "pathway".</b> In the EMR a pathway is a list of element sets. In CCIS a pathway has stages, decision nodes and analytics references. Neither describes the entry form layout, composition, or rules.</li>
+    <li><b>Two element models.</b> EMR fields have id, label, type, unit, options, repeat. CCIS fields add cardinality, time semantics, epistemic states, source classes and a terminology binding. Nothing converts between them.</li>
+    <li><b>No concept key on observations.</b> The EMR keys values by (element set, field key). Two sets that both hold creatinine give two unrelated series, which breaks trajectories and DM+CKD.</li>
+    <li><b>Condition contexts are hard-coded.</b> <code>context-map.js</code> lists diabetes, CKD and hypertension set slugs by hand. A published pathway should declare this instead.</li>
+    <li><b>CCIS has no element-group or rule artefact.</b> The spec requires element groups (CCIS-REQ-023, 024) but no schema exists. Rules are not in the standard at all.</li>
+    <li><b>Guardrails point against rules.</b> EMR set definitions may not hold numbers or bands, CCIS parameters with a threshold default to disabled, and a pathway may not automate a high-impact action (CCIS-REQ-027). Rule intelligence needs its own governed path (section "Rule intelligence").</li>
+  </ul>
+</section>
+
+<section id="arch">
+  <h2>Architecture</h2>
+  <p>Everything that travels is a checksummed artefact in the marketplace. Patient data never goes there; it moves only between the EMR and CCIS as a context envelope and a run record, as it does now.</p>
+  <div class="diagram">
+  <svg viewBox="0 0 760 400" role="img" aria-label="Studio publishes to the Marketplace. The EMR pulls pathway packages and rule packs. CCIS pulls analytics. The EMR sends context envelopes to CCIS and receives run records.">
+    <defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--accent)"/></marker></defs>
+    <rect x="270" y="20" width="220" height="80" rx="6" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.5"/>
+    <text x="380" y="52" text-anchor="middle" class="t">Clinical Intelligence Studio</text>
+    <text x="380" y="72" text-anchor="middle" class="sub">compose · rule builder · validate</text>
+    <text x="380" y="87" text-anchor="middle" class="sub">compile · publish</text>
+
+    <rect x="270" y="165" width="220" height="80" rx="6" fill="var(--surface)" stroke="var(--fg)" stroke-width="1.5"/>
+    <text x="380" y="197" text-anchor="middle" class="t">Marketplace</text>
+    <text x="380" y="217" text-anchor="middle" class="sub">index.json + artefacts/&lt;id&gt;/&lt;version&gt;.json</text>
+    <text x="380" y="232" text-anchor="middle" class="sub">immutable, checksummed</text>
+
+    <rect x="20" y="300" width="230" height="80" rx="6" fill="var(--surface)" stroke="var(--accent)" stroke-width="1.5"/>
+    <text x="135" y="332" text-anchor="middle" class="t">EMR Enhancer</text>
+    <text x="135" y="352" text-anchor="middle" class="sub">pathway = entry form · rules</text>
+    <text x="135" y="367" text-anchor="middle" class="sub">trajectory view</text>
+
+    <rect x="510" y="300" width="230" height="80" rx="6" fill="var(--surface)" stroke="var(--accent)" stroke-width="1.5"/>
+    <text x="625" y="332" text-anchor="middle" class="t">CCIS</text>
+    <text x="625" y="352" text-anchor="middle" class="sub">analytics by pathway</text>
+    <text x="625" y="367" text-anchor="middle" class="sub">compatibility · run records</text>
+
+    <line x1="380" y1="100" x2="380" y2="163" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#ar)"/>
+    <text x="392" y="138" class="lbl">publish</text>
+    <path d="M330 245 L200 298" fill="none" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#ar)"/>
+    <text x="196" y="262" class="lbl" text-anchor="end">pathway packages</text>
+    <text x="196" y="276" class="lbl" text-anchor="end">+ rule packs</text>
+    <path d="M430 245 L560 298" fill="none" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#ar)"/>
+    <text x="564" y="262" class="lbl">analytics packages</text>
+    <text x="564" y="276" class="lbl">+ element refs</text>
+    <path d="M250 330 L508 330" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#ar)"/>
+    <text x="379" y="323" class="lbl" text-anchor="middle">context envelope →</text>
+    <path d="M508 352 L252 352" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#ar)"/>
+    <text x="379" y="371" class="lbl" text-anchor="middle">← run record</text>
+  </svg></div>
+  <h3>Design rules that hold the four apps together</h3>
+  <ul>
+    <li><b>Compose by reference, never by copy.</b> A DM+CKD pathway points at the DM and CKD elements by exact version. Because analytics bind to elements, an analytic written for the CKD elements runs on CKD and on DM+CKD without being rewritten.</li>
+    <li><b>The CCIS artefact is the source of truth.</b> The EMR builds its element sets and pathway versions from the published artefact and stores the source id, version and checksum.</li>
+    <li><b>Marketplace content is local-review content.</b> Pathways pulled into the EMR arrive as submitted drafts and go through the EMR's existing review rules, the same way imported questionnaires and bundles already do.</li>
+    <li><b>No server for the Studio.</b> Build it as a static app like CCIS (single hashed script, strict CSP) that reuses CCIS's validator, compiler and market code. Publishing produces a market folder change for a pull request.</li>
+  </ul>
+</section>
+
+<section id="elements">
+  <h2>Standard list of contextual elements (version 0 proposal)</h2>
+  <p>Built from what the EMR already stores and the CCIS snake example. Ids are proposals using a <code>group.name</code> shape. Terminology stays on the local vocabulary, because the EMR owner decision of 25 Nov 2026 excludes licensed code systems for now; the binding slot is kept so mapping can be added later.</p>
+  <div class="tblbox"><table>
+    <tr><th>Tier</th><th>Element id (proposed)</th><th>Captures</th><th>Source today</th><th>Status</th></tr>
+    <tr><td rowspan="9"><b>1 Core</b><br>in every pathway</td><td><code>core.presentation</code></td><td>Chief complaint, history of present illness, past history</td><td>set <code>basic_emr</code>, <code>opd_visit</code></td><td><span class="pill p-warn">convert</span></td></tr>
+    <tr><td><code>core.vitals</code></td><td>Repeating vital signs; blood pressure as two concepts</td><td>set <code>vitals</code></td><td><span class="pill p-warn">convert</span></td></tr>
+    <tr><td><code>core.examination</code>, <code>core.assessment-plan</code></td><td>Examination findings, assessment, plan</td><td>sets <code>basic_emr</code>, <code>opd_visit</code></td><td><span class="pill p-warn">convert</span></td></tr>
+    <tr><td><code>core.problems</code>, <code>core.allergies</code></td><td>Problem list, allergies</td><td>EMR server tables and envelope sections</td><td><span class="pill p-info">section</span></td></tr>
+    <tr><td><code>core.medications</code></td><td>History, orders, administrations</td><td>EMR tables, envelope 0.3.0</td><td><span class="pill p-info">section</span></td></tr>
+    <tr><td><code>core.investigations</code></td><td>Orders, specimens, results, acknowledgement</td><td>EMR tables, envelope 0.2.0</td><td><span class="pill p-info">section</span></td></tr>
+    <tr><td><code>core.care-episode</code></td><td>Admission, discharge, follow-up, referral, procedure</td><td>EMR tables; sets <code>ipd_*</code></td><td><span class="pill p-info">section</span></td></tr>
+    <tr><td><code>core.fluid-balance</code></td><td>Intake and output</td><td>set <code>urine_io</code></td><td><span class="pill p-warn">convert</span></td></tr>
+    <tr><td><code>core.event-times</code></td><td>Onset, arrival, event times with certainty</td><td>pattern in CCIS snake element</td><td><span class="pill p-bad">new</span></td></tr>
+    <tr><td rowspan="6"><b>2 Condition</b><br>a "context"</td><td><code>dm.core</code></td><td>Type, duration, regimen, complications, recent hypoglycaemia</td><td>set <code>dm_ctx</code></td><td><span class="pill p-warn">convert</span></td></tr>
+    <tr><td><code>dm.glycaemic-monitoring</code></td><td>HbA1c and point-of-care glucose, repeating</td><td>sets <code>hba1c_mon</code>, <code>glucose_ss</code></td><td><span class="pill p-warn">convert</span></td></tr>
+    <tr><td><code>ckd.core</code>, <code>ckd.kidney-function</code></td><td>Stage, cause; eGFR, creatinine, urine albumin-creatinine ratio, repeating</td><td>set <code>ckd_ctx</code></td><td><span class="pill p-warn">convert, split</span></td></tr>
+    <tr><td><code>htn.core</code></td><td>Type; systolic and diastolic readings</td><td>demo content in <code>longitudinal-demo-content.js</code></td><td><span class="pill p-warn">convert</span></td></tr>
+    <tr><td><code>dm.foot</code>, <code>dm.dka</code></td><td>Foot ulcer assessment; time-critical DKA fields</td><td>sets <code>foot_ulcer</code>, <code>dka_ctx</code></td><td><span class="pill p-warn">convert</span></td></tr>
+    <tr><td><code>snake.envenomation-timing</code></td><td>Bite, arrival, clotting test and antivenom timing</td><td>CCIS example, published in local market</td><td><span class="pill p-ok">exists</span></td></tr>
+    <tr><td><b>3 Field facets</b><br>declared per field</td><td colspan="2">Concept key, value type, unit, cardinality, repeat, time meaning (effective vs recorded), allowed epistemic states (absent, unknown, not collected, not applicable, explicitly negative, entered in error), source classes, binding.</td><td>CCIS element schema; EMR keeps effective and recorded time apart</td><td><span class="pill p-bad">add concept key</span></td></tr>
+  </table></div>
+  <p>The new field facet is the <b>concept key</b>. It is what lets eGFR typed in a CKD form and eGFR typed in a DM+CKD form land in one trajectory, and it is how CCIS recognises "the same data" across pathways.</p>
+</section>
+
+<section id="package">
+  <h2>The pathway package</h2>
+  <p>One publishable unit, built on the CCIS pathway artefact so the existing validator, compiler and marketplace keep working. It adds three members through a CCIS standard amendment (0.2.0).</p>
+  <div class="tblbox"><table>
+    <tr><th>Member</th><th>Content</th><th>New?</th></tr>
+    <tr><td><code>elements</code></td><td>Exact element versions, mandatory or optional, in form order</td><td>exists (version ranges today; pin at publish)</td></tr>
+    <tr><td><code>entryForm</code></td><td>Sections, order, repeating groups, which fields show by default. Layout only, no clinical logic.</td><td><span class="pill p-bad">new</span></td></tr>
+    <tr><td><code>contexts</code></td><td>Which condition context each element belongs to (diabetes, CKD). Replaces hard-coded <code>context-map.js</code>.</td><td><span class="pill p-bad">new</span></td></tr>
+    <tr><td><code>stages</code>, <code>nodes</code></td><td>Information stages and decision nodes with an outcome for every state, including indeterminate</td><td>exists</td></tr>
+    <tr><td><code>analytics</code></td><td>Required and optional analytics packages, exact versions</td><td>exists</td></tr>
+    <tr><td><code>rules</code></td><td>Reference to a rule pack (next sections)</td><td><span class="pill p-bad">new artefact</span></td></tr>
+  </table></div>
+  <h3>Composition: DM, CKD, DM+CKD</h3>
+  <ul>
+    <li><b>DM</b> and <b>CKD</b> are authored once each, from the tier 2 elements plus the tier 1 core.</li>
+    <li><b>DM+CKD</b> is a composed pathway: a new package that references both, with no copied fields. This is the "element group" the CCIS spec already requires. The Studio produces a conflict report: shared concepts (creatinine, eGFR, blood pressure, HbA1c) are matched by concept key, never by similar label (CCIS-REQ-024), and the author picks which element owns each shared field.</li>
+    <li>In the EMR, applying DM and then CKD to one case produces the same form as applying DM+CKD: shared fields appear once and one value series is kept.</li>
+    <li>An analytic that needs eGFR and HbA1c is compatible with DM+CKD but not with DM alone. Compatibility is therefore a catalogue-time check on elements, run before any patient data is involved.</li>
+  </ul>
+</section>
+
+<section id="apps">
+  <h2>What each app does and what changes</h2>
+  <div class="grid">
+    <div class="card"><h3>EMR Enhancer</h3>
+      <p>Pathway-driven entry form rendered from <code>entryForm</code>. Marketplace import into a staging table (pattern of migration 033), then the existing review workflow. Hard-coded <code>DEMO_PATHWAYS</code> replaced by imported packages. New migration: concept key on observations and source artefact id, version and checksum on element set versions. Trajectory view uses concept keys and package-declared contexts. Rule runner for approved rule packs.</p></div>
+    <div class="card"><h3>CCIS</h3>
+      <p>Static compatibility between an analytics package and a pathway: the existing checks without data readiness. Catalogue filtered by pathway. Pull analytics from the marketplace through the existing remote loader. First real analytics beyond snake for DM, CKD and DM+CKD, using the planned templates (trend, monitoring gap, follow-up due). Run on the trajectory, not only a single envelope, comes with Phase 5.</p></div>
+    <div class="card"><h3>Studio</h3>
+      <p>Same stack as CCIS. Screens: element catalogue, pathway composer with conflict report, analytics attach and compatibility view, rule builder, validate (eight layers) and test fixtures, publish bundle. Reuses the CCIS SDK builders and the governed AI-draft gate. New repo needs scaffold, CI and the CSP build.</p></div>
+    <div class="card"><h3>Marketplace</h3>
+      <p>A third repo with the existing folder format. CI runs the CCIS validator and checksum check on every pull request. Releases are immutable. Index gains a pathway-to-analytics lookup so apps can list compatible items without opening every file.</p></div>
+  </div>
+</section>
+
+<section id="rules">
+  <h2>Rule-based intelligence in the EMR</h2>
+  <div class="note"><b>This is the highest-risk part.</b> The repos currently forbid numbers in element sets, keep clinical thresholds disabled, and say a pathway must not authorise treatment. A rule pack must respect that, so it needs its own artefact type and its own review path.</div>
+  <ul>
+    <li><b>Rule pack artefact.</b> Rules written in the same three-valued whitelist expression language the CCIS executor already uses (18 operators, unknown never becomes false or zero). No code, no network, no clock.</li>
+    <li><b>Two classes.</b> <i>Data-quality rules</i> (missing, stale, conflicting, inconsistent entries, interval documentation) can ship first. <i>Clinical prompts</i> (anything with a clinical threshold) stay blocked until a named clinician owns them.</li>
+    <li><b>Thresholds are parameters, disabled by default</b>, enabled locally by a clinician, with the enabling recorded.</li>
+    <li><b>Output is a visible prompt</b> that shows its rule id, version and the records it read. Never an order, never a silent change of data.</li>
+    <li><b>Review independence.</b> The author of a rule pack is never its reviewer (the CCIS governance plan already states this rule). Each fire is logged in the EMR next to the audit log.</li>
+  </ul>
+</section>
+
+<section id="phases">
+  <h2>Phases and proposed tracker rows</h2>
+  <p>Each phase is sized for your one-task-per-session protocol. Row ids below are proposals; add them to the matching tracker as you unlock them.</p>
+  <div class="phase"><div class="tag">Phase A<br>docs only</div><div>
+    <h3>Decide and define</h3>
+    <ul><li>Answer the decisions below.</li><li>Freeze the vocabulary (element, pathway, trajectory, package, rule pack) in CCIS <code>SPEC.md</code>.</li><li>Write the element list v0 as a CCIS document. Output: one reviewed list, no code.</li></ul></div></div>
+  <div class="phase"><div class="tag">Phase B<br>CCIS repo</div><div>
+    <h3>The contract (standard 0.2.0)</h3>
+    <ul><li>Concept key, context tags on element fields.</li><li>Element-group schema and validator layers for REQ-023 and REQ-024.</li><li><code>entryForm</code> and <code>contexts</code> members on the pathway.</li><li>Rule-pack schema, validator rules, fixtures with hand-calculated expected results.</li><li>Market index additions. Changelog amendments with your approval, as the existing process requires.</li></ul></div></div>
+  <div class="phase"><div class="tag">Phase C<br>new repo</div><div>
+    <h3>Marketplace and first content</h3>
+    <ul><li>Create the repo, move the folder format, add CI.</li><li>Author the first packages in code with the SDK: basic EMR, DM, CKD, DM+CKD, seeded from the EMR's existing sets and R9d-1 demo content.</li></ul></div></div>
+  <div class="phase"><div class="tag">Phase D<br>EMR repo</div><div>
+    <h3>Pathways come from the marketplace</h3>
+    <ul><li>Concept-key migration and observation changes with tests.</li><li>Marketplace import to staging, then review, then publish.</li><li>Form renderer from <code>entryForm</code>; composition at apply time.</li><li>Trajectory view on concept keys; remove hard-coded context map.</li></ul></div></div>
+  <div class="phase"><div class="tag">Phase E<br>CCIS repo</div><div>
+    <h3>Analytics by pathway</h3>
+    <ul><li>Static pathway compatibility and catalogue filter.</li><li>Pull from marketplace.</li><li>Three starter analytics per pathway that need no clinical threshold. Threshold-bearing ones wait for a clinician owner.</li></ul></div></div>
+  <div class="phase"><div class="tag">Phase F<br>Studio repo</div><div>
+    <h3>Build the Studio</h3>
+    <ul><li>Scaffold, CI, CSP build, vendored CCIS modules.</li><li>Element browser, pathway composer, attach analytics, validate and publish bundle.</li><li>Rule builder last (needs phase B rule schema and a clinician owner).</li></ul></div></div>
+  <div class="phase"><div class="tag">Phase G<br>later</div><div>
+    <h3>Before any real use</h3>
+    <ul><li>Signing (CCIS row 6.2): a checksum proves identical bytes, not who published them.</li><li>Governance docs and the independence rule enforced in the release script.</li><li>EMR go-live gate (R8e), privacy and safety reviews.</li></ul></div></div>
+  <p><b>Order that avoids rework:</b> A, then B, then C. D, E and F can run in parallel after C. Start Studio scaffolding only after B, otherwise it hard-codes a contract that changes.</p>
+</section>
+
+<section id="decide">
+  <h2>Decisions that need you</h2>
+  <ol class="dec">
+    <li><b>Is my reading of "trajectory" right?</b> (section "The idea").</li>
+    <li><b>Clinician owner.</b> Still unnamed in the CCIS plan. Without one, DM and CKD analytics and any clinical rules stay as demonstrations of mechanics, with thresholds disabled.</li>
+    <li><b>Marketplace host.</b> A GitHub repo with static hosting fits the existing format. Confirm the repo name and who may merge.</li>
+    <li><b>Studio stack.</b> I recommend static and serverless like CCIS. This also keeps the open D-002 decision (no shared server) intact. Say if you need multi-user editing early, which would change it.</li>
+    <li><b>CCIS source of truth.</b> Confirm that published CCIS artefacts, not EMR sets, are authoritative for pathways.</li>
+    <li><b>Rule scope for the first release.</b> Data-quality rules only, or also clinical prompts under a named owner.</li>
+    <li><b>Terminology.</b> Stay on local codes for the standard element list, as decided on 25 Nov 2026.</li>
+    <li><b>Naming.</b> "CCIS" is a working name per its plan, to settle before any public release.</li>
+  </ol>
+</section>
+
+<section id="risks">
+  <h2>Risks and what limits this plan</h2>
+  <div class="tblbox"><table>
+    <tr><th>Risk</th><th>Handling</th></tr>
+    <tr><td>Standard amendment breaks the frozen 0.1.0 artefacts and fixtures</td><td>New minor version, old artefacts keep validating, versioning policy test (EMR R7b) extended to cover it.</td></tr>
+    <tr><td>Rules read as clinical advice</td><td>Two classes, disabled thresholds, visible provenance, independent reviewer, prototype banner.</td></tr>
+    <tr><td>Concept keys merge things that differ</td><td>Matched only by explicit key, conflict report in the Studio, author decides; never by label.</td></tr>
+    <tr><td>Marketplace content trusted without a publisher check</td><td>EMR import always lands as a draft for local review; signing before real use.</td></tr>
+    <tr><td>Scope outruns free-tier sessions</td><td>Rows follow the existing size guards; Phase B is split before it starts.</td></tr>
+  </table></div>
+  <div class="note info"><b>What I did not verify.</b> I read excerpts of the code, not every file, and I did not run any tests. The comparison of EMR and CCIS field models comes from the schema docs, the CCIS snake element and the EMR built-in sets. The EMR tracker's long completed list was only skimmed. Both repos say synthetic data only and not for clinical use; this plan keeps that boundary.</div>
+</section>
+</div>
