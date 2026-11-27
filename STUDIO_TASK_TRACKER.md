@@ -81,7 +81,8 @@ Phase B unlocked 2026-11-27 (you said "start phase B"). Row B0 is yours; B1 onwa
 | ID | Repo | Needs | Task | Status | Date | Size | Notes |
 |----|------|-------|------|--------|------|------|-------|
 | B0 | CCIS (YOU) | A7 | Confirm `git tag v0.1.0` is pushed, run the full `npm test` once, and tell Claude the base commit. | DONE | 2026-11-27 | none | Marked done on your instruction. Base commit 57d89cd. No v0.1.0 tag on remote when checked; npm test not run by Claude. |
-| B1 | CCIS | B0, A10 | Element field: optional `concept` (a binding in the `local` system) and `contexts` tags; schema, regenerated validators, test. | TODO | | 1 schema edit, 1 test | |
+| B1 | CCIS | B0, A10 | Element field: optional `concept` (a binding in the `local` system) and `contexts` tags; schema, regenerated validators, test. | IN PROGRESS | 2026-11-27 | 1 schema edit, 1 test | Chunk file written; waiting for your approval. Builds next "do next". |
+| B1c | CCIS | B1 | SDK field builder accepts `concept` and `contexts` (same rules); equivalence with JSON through `compareRoutes`; one test. Before C4. | TODO | | 1 module edit, 1 test | Split off from B1 (ccis-sdk-element.js whitelists field keys). |
 | B1a | CCIS | B1 | Element field `ownedBy` (owner element id and field key) for a field that uses a concept it does not own; type and unit must equal the owner's (ED-16); schema, validator, test. | TODO | | 1 schema edit, 1 test | |
 | B1b | CCIS | B1, A10 | Local terminology package (artefact type `terminology-package`): code system `local`, concept keys, value sets with display text; check how the validator resolves `valueSet`; no external code (SNOMED CT, LOINC) lives here, see I1; schema, test. | TODO | | 1 schema, 1 test | |
 | B2 | CCIS | B1 | Validator rules for `concept` and `contexts` (concept required on repeating numeric fields, unit consistent per concept, known context tags); test. | TODO | | 1 module edit, 1 test | |
@@ -114,7 +115,7 @@ Phase B unlocked 2026-11-27 (you said "start phase B"). Row B0 is yours; B1 onwa
 | C1 | Marketplace | C0 | Scaffold: README with banners, `.gitattributes` (`* -text`), `index.json` copied from CCIS `market/`, LICENSE, CONTRIBUTING stub. | LOCKED | | docs + small files | LICENSE already in the repo; do not recreate it. |
 | C2 | Marketplace | C1 | CI: check out CCIS at a pinned commit; validate every artefact (eight layers), recompute checksums, refuse any change to a released file. | LOCKED | | 1 workflow, 1 script | |
 | C3 | Marketplace | C2 | `docs/PUBLISHING.md`: how a Studio bundle becomes a pull request, naming and immutability rules. | LOCKED | | docs | |
-| C4 | CCIS | B21, A3d | Content: `local` concept bindings with one owner element per concept (SDK, ownership check passes) under `ccis/examples/ecosystem/`. | LOCKED | | 1 script, 1 test | |
+| C4 | CCIS | B21, A3d, B1c | Content: `local` concept bindings with one owner element per concept (SDK, ownership check passes) under `ccis/examples/ecosystem/`. | LOCKED | | 1 script, 1 test | |
 | C5 | CCIS | C4 | Content: `core.presentation`, `core.examination`, `core.assessment-plan`. | LOCKED | | 3 JSON, 1 test | |
 | C6 | CCIS | C4 | Content: `core.vitals`, `core.fluid-balance`, `core.event-times`. | LOCKED | | 3 JSON, 1 test | |
 | C7 | CCIS | C4 | Content: `dm.core`, `dm.glycaemic-monitoring`. Needs ED-2 wording review before any use. | LOCKED | | 2 JSON, 1 test | |

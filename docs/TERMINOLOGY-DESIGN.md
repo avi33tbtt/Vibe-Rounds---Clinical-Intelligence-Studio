@@ -49,6 +49,8 @@ The slot is one binding object with `codeSystem`, `code` and an optional `valueS
 - Because the schema requires `codeSystem` and `code` unless the binding is unmapped, a binding that has only a `valueSet` is not valid today. B1b must check how the validator resolves `valueSet` and decide between making `code` optional when `valueSet` is present or always requiring the concept key. This is an open point for B1b, not decided here.
 - External codes never go in this slot as the identity. If a future binding carries an external system, it is a map entry (section 5), not the field's concept.
 
+**Correction (B1 chunk, ED-25):** the element field already has a `binding` slot (required on `code` fields). The concept key goes in a new field `concept`, a binding in the `local` system. So a field has two slots: `concept` for identity and `binding` for a code field's code system or value set. The valueSet-only question above concerns `binding` and is unchanged.
+
 ## 5. Extension path: external terminologies as separate maps
 
 Local keys stay the identity (ED-22). SNOMED CT, LOINC or any other system arrives later as a `terminology-map` artefact (phase I), never by rewriting elements, observations or pathways.
