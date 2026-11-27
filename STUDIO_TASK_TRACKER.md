@@ -63,8 +63,8 @@ Known gaps this plan closes: two meanings of "pathway", two element models, no c
 
 | ID | Repo | Needs | Task | Status | Date | Size | Notes |
 |----|------|-------|------|--------|------|------|-------|
-| A0 | Studio (YOU) | | Upload this tracker, `plan-chunks/01-core.md` and the plan page as `docs/ECOSYSTEM-PLAN.html` to the Studio repo and commit. Then say "done A0". | TODO | | none | |
-| A1 | Studio | A0 | Write `DECISIONS.md` with ED-1 to ED-12 as OPEN rows (question, recommendation, what it blocks). Stop and ask you to answer. | TODO | | docs | |
+| A0 | Studio (YOU) | | Upload this tracker, `plan-chunks/01-core.md` and the plan page as `docs/ECOSYSTEM-PLAN.html` to the Studio repo and commit. Then say "done A0". | DONE | 2026-11-27 | none | Uploads confirmed in repo; you said done A0. |
+| A1 | Studio | A0 | Write `DECISIONS.md` with ED-1 to ED-12 as OPEN rows (question, recommendation, what it blocks). Stop and ask you to answer. | DONE | 2026-11-27 | docs | DECISIONS.md written: ED-1 to ED-12 all OPEN, awaiting your answers (A1a). |
 | A1a | Studio (YOU) | A1 | Answer ED-1 to ED-12 in chat ("accept all" is allowed). Claude records them at the start of the next row. | TODO | | none | |
 | A2 | Studio | A1a | `docs/VOCABULARY.md`: element, element group, pathway, pathway package, trajectory, concept key, context, rule pack, analytics package, marketplace; plus a table mapping EMR terms (element set, pathway version, case_applied_sets) to CCIS terms. | TODO | | docs | |
 | A3a | Studio | A2 | `docs/ELEMENT-LIST-V0.md` part 1: tier 1 elements `core.presentation`, `core.vitals`, `core.examination`, `core.assessment-plan`, `core.event-times`, `core.fluid-balance`: fields, types, units, repeat, time meaning, allowed epistemic states, source EMR set. Synthetic, unreviewed. | TODO | | docs | |
