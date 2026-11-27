@@ -8,7 +8,7 @@ Status: ED-1 to ED-12 ANSWERED on 2026-11-27 with "accept all": each recommendat
 |----|--------|----------|----------------|--------|
 | ED-1 | ANSWERED 2026-11-27: accept all | What does "trajectory" mean: design time (a pathway) or use time (what accumulates for one patient across pathways)? | Both words stay, with separate meanings. A pathway is designed. A trajectory is what accumulates for a patient and is keyed by concept. | A2, A5, D14 to D16 |
 | ED-2 | ANSWERED 2026-11-27: accept all | Who is the named clinician owner for DM and CKD content, analytics parameters and any clinical rule? | Name one person. Until then everything is demo content and every threshold or interval stays a disabled parameter. | C7 to C14, E5 to E11, F12, D23 |
-| ED-3 | ANSWERED 2026-11-27: accept all | Where is the Marketplace hosted, what is the repo called, and who can merge? | A public GitHub repo (`clinical-intelligence-marketplace`) with Pages. You merge. | C0 to C3 |
+| ED-3 | ANSWERED 2026-11-27: accept all; repo given 2026-11-27: https://github.com/avi33tbtt/Vibe-Rounds---Marketplace | Where is the Marketplace hosted, what is the repo called, and who can merge? | A public GitHub repo (`clinical-intelligence-marketplace`) with Pages. You merge. | C0 to C3 |
 | ED-4 | ANSWERED 2026-11-27: accept all | What is the Studio technology stack? | Static and serverless, same as CCIS: one hashed inline script and a strict CSP. | F1 to F3 |
 | ED-5 | ANSWERED 2026-11-27: accept all | What is the source of truth for pathways? | Published CCIS artefacts. The EMR materialises element sets and pathway versions from them. | A5, D4 to D8 |
 | ED-6 | ANSWERED 2026-11-27: accept all | What rule scope does version 1 allow? | Data-quality rules only. Clinical prompts wait for ED-2. | A6, B10 to B14, D19 to D23, F12 |
@@ -25,5 +25,6 @@ Status: ED-1 to ED-12 ANSWERED on 2026-11-27 with "accept all": each recommendat
 | ED-17 | OPEN | A package is imported as new EMR sets (slug from the element id, kind `custom`). The built-in sets are never changed. | Accept. | D5, D7, D18 |
 
 ## Notes
+- ED-3: the Marketplace repo is https://github.com/avi33tbtt/Vibe-Rounds---Marketplace. It replaces the proposed name `clinical-intelligence-marketplace` and follows the naming of the other repos. Pages and merge rights are still to be confirmed in C0.
 - A1 writes all twelve rows at once, as the tracker says. The "at most 3 new rows per task" limit in `plan-chunks/01-core.md` applies to later rows.
 - ED-2 and ED-3 matter most: they gate content (phase C) and the Marketplace repo (C0).

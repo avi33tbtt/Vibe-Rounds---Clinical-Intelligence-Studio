@@ -13,6 +13,12 @@ One pathway, four apps. The Clinical Intelligence Studio authors element definit
 - **Pathway package**: a CCIS pathway artefact with `entryForm`, `contexts`, analytics references and an optional rule pack.
 - **Rule pack**: governed rules that run in the EMR and produce visible prompts.
 
+## Repos
+- Studio (this repo): https://github.com/avi33tbtt/Vibe-Rounds---Clinical-Intelligence-Studio
+- CCIS: https://github.com/avi33tbtt/Vibe-Rounds---CCIS
+- EMR Enhancer: https://github.com/avi33tbtt/Vibe-Rounds---EMR-Enhancer-App
+- Marketplace: https://github.com/avi33tbtt/Vibe-Rounds---Marketplace
+
 ## Standing rules (never break)
 1. No patient data in any artefact or Marketplace file. Fixtures are synthetic and say so.
 2. No licensed terminology. Local vocabulary only (ED-7). Keep the binding slot.

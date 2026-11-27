@@ -1,7 +1,7 @@
 # Studio: Agent Protocol and Master Task Tracker (EMR + CCIS + Marketplace + Studio)
 
 Repo: https://github.com/avi33tbtt/Vibe-Rounds---Clinical-Intelligence-Studio
-Other repos this tracker drives: CCIS https://github.com/avi33tbtt/Vibe-Rounds---CCIS , EMR https://github.com/avi33tbtt/Vibe-Rounds---EMR-Enhancer-App , Marketplace (to be created by you in row C0, proposed name `clinical-intelligence-marketplace`).
+Other repos this tracker drives: CCIS https://github.com/avi33tbtt/Vibe-Rounds---CCIS , EMR https://github.com/avi33tbtt/Vibe-Rounds---EMR-Enhancer-App , Marketplace https://github.com/avi33tbtt/Vibe-Rounds---Marketplace (created; only a LICENSE so far; Pages is still yours to enable in row C0).
 Plan: `docs/ECOSYSTEM-PLAN.html`. Conventions: `plan-chunks/01-core.md`. Decisions: `DECISIONS.md`.
 Prototype. Synthetic data only. Not for clinical use.
 
@@ -11,7 +11,7 @@ Prototype. Synthetic data only. Not for clinical use.
 
 Trigger phrase: **"do next"**. Keep the session small: this protocol is written for a free-tier limit.
 
-1. **Refresh first**: `git clone --depth 1` the Studio repo and the ONE other repo named in the next row's Repo column (CCIS, EMR or Marketplace). If a clone fails, stop. Do not pick a task or write anything before both succeed.
+1. **Refresh first**: `git clone --depth 1` the Studio repo and the ONE other repo named in the next row's Repo column (CCIS, EMR or Marketplace; URLs are in the line above). If a clone fails, stop. Do not pick a task or write anything before both succeed.
 2. **Read only these**: this file, `plan-chunks/01-core.md`, the chunk file of the row (if any), and from the target repo only its own conventions file (CCIS: `plan-chunks/01-core.md`; EMR: `emr-plan-chunks/01-core.md`). Do not read the other repo's tracker or `DECISIONS.md` unless the chunk names a range. For source files over 5 KB use `grep -n` and `sed -n` on the ranges the chunk names.
 3. **Pick the next row**: the first row in table order with status `TODO` or `IN PROGRESS` whose **Needs** are all `DONE`. ONE row per "do next".
 4. **Locks and owner rows**: phases B to G are `LOCKED` until you say **"start phase B"** (and so on). Never start a `LOCKED` row. Rows marked **(YOU)** are yours: Claude never marks them `DONE`; you say "done <id>".
@@ -46,7 +46,7 @@ Known gaps this plan closes: two meanings of "pathway", two element models, no c
 |----|----------|----------------|--------|
 | ED-1 | What "trajectory" means: design time (pathway) vs use time (what accumulates for a patient across pathways) | Yes: pathway is designed, trajectory is keyed by concept | A2, A5, D14 to D16 |
 | ED-2 | Clinician owner for DM and CKD content, analytics parameters and any clinical rule | Name one; until then everything is demo and thresholds stay disabled | C7 to C14, E5 to E11, F12, D23 |
-| ED-3 | Marketplace host, repo name, who can merge | GitHub repo plus Pages; you merge | C0 to C3 |
+| ED-3 | Marketplace host, repo name, who can merge | GitHub repo plus Pages; you merge. Repo: https://github.com/avi33tbtt/Vibe-Rounds---Marketplace | C0 to C3 |
 | ED-4 | Studio stack | Static, serverless, same as CCIS (hashed script, strict CSP) | F1 to F3 |
 | ED-5 | Source of truth for pathways | Published CCIS artefacts; the EMR materialises sets and pathway versions from them | A5, D4 to D8 |
 | ED-6 | Rule scope in version 1 | Data-quality rules only; clinical prompts wait for ED-2 | A6, B10 to B14, D19 to D23, F12 |
@@ -111,8 +111,8 @@ Known gaps this plan closes: two meanings of "pathway", two element models, no c
 
 | ID | Repo | Needs | Task | Status | Date | Size | Notes |
 |----|------|-------|------|--------|------|------|-------|
-| C0 | Marketplace (YOU) | B21 | Create the repo (public), enable Pages, confirm ED-3. Say "done C0". | LOCKED | | none | |
-| C1 | Marketplace | C0 | Scaffold: README with banners, `.gitattributes` (`* -text`), `index.json` copied from CCIS `market/`, LICENSE, CONTRIBUTING stub. | LOCKED | | docs + small files | |
+| C0 | Marketplace (YOU) | B21 | Create the repo (public), enable Pages, confirm ED-3. Say "done C0". | LOCKED | | none | Repo already exists (LICENSE only). Still yours: make it public, enable Pages, say "done C0". |
+| C1 | Marketplace | C0 | Scaffold: README with banners, `.gitattributes` (`* -text`), `index.json` copied from CCIS `market/`, LICENSE, CONTRIBUTING stub. | LOCKED | | docs + small files | LICENSE already in the repo; do not recreate it. |
 | C2 | Marketplace | C1 | CI: check out CCIS at a pinned commit; validate every artefact (eight layers), recompute checksums, refuse any change to a released file. | LOCKED | | 1 workflow, 1 script | |
 | C3 | Marketplace | C2 | `docs/PUBLISHING.md`: how a Studio bundle becomes a pull request, naming and immutability rules. | LOCKED | | docs | |
 | C4 | CCIS | B21, A3d | Content: `local` concept bindings with one owner element per concept (SDK, ownership check passes) under `ccis/examples/ecosystem/`. | LOCKED | | 1 script, 1 test | |
@@ -246,7 +246,7 @@ Screens follow the CCIS pattern: pure model, then view (jsdom test, not wired), 
 - **A0:** upload the tracker, conventions file and plan page.
 - **A1a:** answer ED-1 to ED-12. ED-2 (clinician owner) and ED-3 (Marketplace host) matter most.
 - **B0 and B21:** tag and test CCIS yourself (the full suite is too long for a free session).
-- **C0:** create the Marketplace repo and enable Pages.
+- **C0:** the Marketplace repo exists (https://github.com/avi33tbtt/Vibe-Rounds---Marketplace); confirm it is public, enable Pages, say "done C0".
 - **Dependencies:** approve `esbuild` (F3) and `puppeteer-core` (F32) pins; run `npm ci` after pulling.
 - **Before any real use:** clinician review, privacy and security review, licence checks, EMR go-live gate (R8e). Nothing here is cleared for clinical use.
 

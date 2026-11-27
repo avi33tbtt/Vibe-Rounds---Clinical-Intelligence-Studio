@@ -23,7 +23,7 @@ This row read more than five files because a design needs both ends. Not read: t
 | Rule pack | none | not in the enum (B10) | Designed in A6. A package only references it. |
 | Analytics package | `analytics-package` | schema exists | Referenced by the pathway. |
 
-All are checksummed with `ccis-canonical-json/1` and immutable once published. A package never embeds another artefact: it references it (CCIS-REQ-014).
+They are published to the Marketplace repo, https://github.com/avi33tbtt/Vibe-Rounds---Marketplace, once it has its scaffold (C1 to C3). All are checksummed with `ccis-canonical-json/1` and immutable once published. A package never embeds another artefact: it references it (CCIS-REQ-014).
 
 ## 2. The pathway package
 
