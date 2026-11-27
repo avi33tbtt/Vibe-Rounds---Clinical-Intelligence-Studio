@@ -76,33 +76,35 @@ Rows A0 to A8 are DONE (2026-11-27) and moved to `docs/TRACKER-ARCHIVE.md`. Do n
 
 ## PHASE B: The contract (CCIS repo, standard 0.2.0)
 
+Phase B unlocked 2026-11-27 (you said "start phase B"). Row B0 is yours; B1 onward waits for "done B0".
+
 | ID | Repo | Needs | Task | Status | Date | Size | Notes |
 |----|------|-------|------|--------|------|------|-------|
-| B0 | CCIS (YOU) | A7 | Confirm `git tag v0.1.0` is pushed, run the full `npm test` once, and tell Claude the base commit. | LOCKED | | none | |
-| B1 | CCIS | B0, A10 | Element field: optional `concept` (a binding in the `local` system) and `contexts` tags; schema, regenerated validators, test. | LOCKED | | 1 schema edit, 1 test | |
-| B1a | CCIS | B1 | Element field `ownedBy` (owner element id and field key) for a field that uses a concept it does not own; type and unit must equal the owner's (ED-16); schema, validator, test. | LOCKED | | 1 schema edit, 1 test | |
-| B1b | CCIS | B1, A10 | Local terminology package (artefact type `terminology-package`): code system `local`, concept keys, value sets with display text; check how the validator resolves `valueSet`; no external code (SNOMED CT, LOINC) lives here, see I1; schema, test. | LOCKED | | 1 schema, 1 test | |
-| B2 | CCIS | B1 | Validator rules for `concept` and `contexts` (concept required on repeating numeric fields, unit consistent per concept, known context tags); test. | LOCKED | | 1 module edit, 1 test | |
-| B2a | CCIS | B2, B1a | Concept ownership check: pure `conceptOwners(artefacts)` lists each concept with its owner element and its users; a concept with no owner or a second owner is an error at publish and a warning in `validate`; the same concept under different keys across elements is reported. | LOCKED | | 1 module, 1 test | |
-| B3 | CCIS | B1 | Element-group schema (CCIS-REQ-023): members, mandatory or optional, owner per shared concept, version constraints; validators; test. | LOCKED | | 1 schema, 1 test | |
-| B4 | CCIS | B3 | Validator rules for element groups (REQ-024): match by concept never by label, unresolved shared concept is an error, no duplicate keys; test. | LOCKED | | 1 module edit, 1 test | |
-| B5 | CCIS | B3 | Pathway schema: optional `entryForm` (sections, ordered items of kind `element` or `section`, repeat grouping, default visibility) and `contexts`; validators; test. | LOCKED | | 1 schema edit, 1 test | |
-| B6 | CCIS | B5 | Validator rules for `entryForm` and `contexts`: every key exists, each field placed once, known section names; test. | LOCKED | | 1 module edit, 1 test | |
-| B7 | CCIS | B4 | `ccis-compose.js` part 1: pure shared-concept matching and conflict report (shared concepts, candidate owners, unit conflicts). | LOCKED | | 1 module, 1 test | |
-| B8 | CCIS | B7, B6 | `ccis-compose.js` part 2: build a composed group and pathway from owner choices; deterministic bytes; test. | LOCKED | | 1 module edit, 1 test | |
-| B9 | CCIS | B0 | Executor operators `first last min max coalesce` (finding F-9) with an operator-set bump; three-valued; test. | LOCKED | | 1 module edit, 1 test | |
-| B10 | CCIS | B1 | Rule-pack schema part 1: manifest, scope, class (`data-quality` or `clinical-prompt`), inputs, parameters; validators; test. | LOCKED | | 1 schema, 1 test | |
-| B11 | CCIS | B10, B9 | Rule-pack schema part 2: rules as expression trees from the whitelist, plain-text message templates, provenance, tests member; validators; test. | LOCKED | | 1 schema edit, 1 test | |
-| B12 | CCIS | B11 | Validator rules for rule packs, layers 3 to 5: references, operator types, parameters default disabled, messages plain text. | LOCKED | | 1 module edit, 1 test | |
-| B13 | CCIS | B12 | Validator rules for rule packs, layers 6 to 8: executable safety, test verification, governance (clinical-prompt class needs a named owner and cannot claim validated without a record). | LOCKED | | 1 module edit, 1 test | |
-| B14 | CCIS | B13 | `ccis-rules.js`: pure evaluator of a rule pack over a canonical context; returns fired prompts with rule id, version and record refs, never values; test. | LOCKED | | 1 module, 1 test | |
-| B15 | CCIS | B6, B13, B2a | Market: index types `element-group` and `rule-pack`, `requires` and `provides` lookups, `market-build` update; `publishArtefact` refuses a second owner of a concept (B2a); test. | LOCKED | | 1 module edit, 1 script edit, 1 test | |
-| B16 | CCIS | B8 | SDK builders for element group and `entryForm`; equivalence with JSON files through `compareRoutes`. | LOCKED | | 1 module edit, 1 test | |
-| B17 | CCIS | B14 | SDK builder for rule pack; equivalence test. | LOCKED | | 1 module edit, 1 test | |
-| B18 | CCIS | B16, B17 | Contract fixtures: two elements sharing a concept, a group, a pathway with `entryForm`, a data-quality rule pack, a second-owner refusal case; hand-calculated compose and rule outputs; test. | LOCKED | | fixtures, 1 test | |
-| B19 | CCIS | B18, B1b | Standard version 0.2.0 accepted by validator, compatibility and importer; all 0.1.0 artefacts and fixtures still validate; test. | LOCKED | | small edits, 1 test | |
-| B20 | CCIS | B19 | Docs: SPEC amendments with new CCIS-REQ ids, CHANGELOG amendments, TRACEABILITY, README section. Needs your approval of each amendment. | LOCKED | | docs | |
-| B21 | CCIS (YOU) | B20 | Run the full `npm test` and `npm run accept`, then `git tag v0.2.0` and push. Say "done B21". | LOCKED | | none | |
+| B0 | CCIS (YOU) | A7 | Confirm `git tag v0.1.0` is pushed, run the full `npm test` once, and tell Claude the base commit. | TODO | | none | |
+| B1 | CCIS | B0, A10 | Element field: optional `concept` (a binding in the `local` system) and `contexts` tags; schema, regenerated validators, test. | TODO | | 1 schema edit, 1 test | |
+| B1a | CCIS | B1 | Element field `ownedBy` (owner element id and field key) for a field that uses a concept it does not own; type and unit must equal the owner's (ED-16); schema, validator, test. | TODO | | 1 schema edit, 1 test | |
+| B1b | CCIS | B1, A10 | Local terminology package (artefact type `terminology-package`): code system `local`, concept keys, value sets with display text; check how the validator resolves `valueSet`; no external code (SNOMED CT, LOINC) lives here, see I1; schema, test. | TODO | | 1 schema, 1 test | |
+| B2 | CCIS | B1 | Validator rules for `concept` and `contexts` (concept required on repeating numeric fields, unit consistent per concept, known context tags); test. | TODO | | 1 module edit, 1 test | |
+| B2a | CCIS | B2, B1a | Concept ownership check: pure `conceptOwners(artefacts)` lists each concept with its owner element and its users; a concept with no owner or a second owner is an error at publish and a warning in `validate`; the same concept under different keys across elements is reported. | TODO | | 1 module, 1 test | |
+| B3 | CCIS | B1 | Element-group schema (CCIS-REQ-023): members, mandatory or optional, owner per shared concept, version constraints; validators; test. | TODO | | 1 schema, 1 test | |
+| B4 | CCIS | B3 | Validator rules for element groups (REQ-024): match by concept never by label, unresolved shared concept is an error, no duplicate keys; test. | TODO | | 1 module edit, 1 test | |
+| B5 | CCIS | B3 | Pathway schema: optional `entryForm` (sections, ordered items of kind `element` or `section`, repeat grouping, default visibility) and `contexts`; validators; test. | TODO | | 1 schema edit, 1 test | |
+| B6 | CCIS | B5 | Validator rules for `entryForm` and `contexts`: every key exists, each field placed once, known section names; test. | TODO | | 1 module edit, 1 test | |
+| B7 | CCIS | B4 | `ccis-compose.js` part 1: pure shared-concept matching and conflict report (shared concepts, candidate owners, unit conflicts). | TODO | | 1 module, 1 test | |
+| B8 | CCIS | B7, B6 | `ccis-compose.js` part 2: build a composed group and pathway from owner choices; deterministic bytes; test. | TODO | | 1 module edit, 1 test | |
+| B9 | CCIS | B0 | Executor operators `first last min max coalesce` (finding F-9) with an operator-set bump; three-valued; test. | TODO | | 1 module edit, 1 test | |
+| B10 | CCIS | B1 | Rule-pack schema part 1: manifest, scope, class (`data-quality` or `clinical-prompt`), inputs, parameters; validators; test. | TODO | | 1 schema, 1 test | |
+| B11 | CCIS | B10, B9 | Rule-pack schema part 2: rules as expression trees from the whitelist, plain-text message templates, provenance, tests member; validators; test. | TODO | | 1 schema edit, 1 test | |
+| B12 | CCIS | B11 | Validator rules for rule packs, layers 3 to 5: references, operator types, parameters default disabled, messages plain text. | TODO | | 1 module edit, 1 test | |
+| B13 | CCIS | B12 | Validator rules for rule packs, layers 6 to 8: executable safety, test verification, governance (clinical-prompt class needs a named owner and cannot claim validated without a record). | TODO | | 1 module edit, 1 test | |
+| B14 | CCIS | B13 | `ccis-rules.js`: pure evaluator of a rule pack over a canonical context; returns fired prompts with rule id, version and record refs, never values; test. | TODO | | 1 module, 1 test | |
+| B15 | CCIS | B6, B13, B2a | Market: index types `element-group` and `rule-pack`, `requires` and `provides` lookups, `market-build` update; `publishArtefact` refuses a second owner of a concept (B2a); test. | TODO | | 1 module edit, 1 script edit, 1 test | |
+| B16 | CCIS | B8 | SDK builders for element group and `entryForm`; equivalence with JSON files through `compareRoutes`. | TODO | | 1 module edit, 1 test | |
+| B17 | CCIS | B14 | SDK builder for rule pack; equivalence test. | TODO | | 1 module edit, 1 test | |
+| B18 | CCIS | B16, B17 | Contract fixtures: two elements sharing a concept, a group, a pathway with `entryForm`, a data-quality rule pack, a second-owner refusal case; hand-calculated compose and rule outputs; test. | TODO | | fixtures, 1 test | |
+| B19 | CCIS | B18, B1b | Standard version 0.2.0 accepted by validator, compatibility and importer; all 0.1.0 artefacts and fixtures still validate; test. | TODO | | small edits, 1 test | |
+| B20 | CCIS | B19 | Docs: SPEC amendments with new CCIS-REQ ids, CHANGELOG amendments, TRACEABILITY, README section. Needs your approval of each amendment. | TODO | | docs | |
+| B21 | CCIS (YOU) | B20 | Run the full `npm test` and `npm run accept`, then `git tag v0.2.0` and push. Say "done B21". | TODO | | none | |
 
 ## PHASE C: Content and Marketplace
 
