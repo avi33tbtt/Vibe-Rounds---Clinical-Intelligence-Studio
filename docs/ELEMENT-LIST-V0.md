@@ -2,7 +2,7 @@
 
 Prototype. Synthetic data only. Not for clinical use.
 
-Status: part 1 of 4 (tier 1 elements). Draft. Unreviewed by a clinician (ED-2 has no named owner).
+Status: parts 1 and 2 of 4 (tier 1 elements, then `section` items). Draft. Unreviewed by a clinician (ED-2 has no named owner).
 
 ## Source and limits
 
@@ -98,3 +98,49 @@ Notes: the source set name suggests urine output only, while the plan says intak
 1. Replace proposed fields, types, units and choice lists with the real EMR ones; list every difference.
 2. Confirm effective and recorded time handling in the EMR.
 3. Decide the `core.vitals` field list from the real `vitals` set.
+
+---
+
+# Part 2: section items
+
+Status: draft. Unreviewed by a clinician (ED-2 has no named owner).
+
+## What a section item is
+
+A `section` item is a placeholder in a pathway `entryForm`. It marks where an existing EMR area (problems, allergies and so on) appears in the form. It is not an element. It has no fields of its own in the contract, no concept keys, no version and no owner. The EMR keeps storing the data in its own tables and the context envelope keeps exporting it. A pathway only says where the area sits and whether it shows by default.
+
+Consequences:
+- A section item never goes through concept ownership (ED-12). Nothing in it can be matched or composed by concept.
+- Analytics cannot bind to a section item. If an analytic needs data from one of these areas, a later row must decide whether an element is needed. This part does not decide that.
+- A section item holds no numbers, bands or thresholds and no clinical logic (standing rules 3 and 4).
+- Text shown from a package for a section item (its label) is untrusted plain text (standing rule 9).
+
+## Properties of a section item (proposed)
+
+| Property | Meaning |
+|----------|---------|
+| id | `core.problems`, `core.allergies`, `core.medications`, `core.investigations`, `core.care-episode` |
+| label | Plain text title shown on the form |
+| position | Order within the `entryForm` |
+| default visibility | Shown or hidden by default; the user can still open it |
+
+These are for A5 (`docs/PACKAGE-DESIGN.md`) to confirm. Per-section field lists are deliberately absent.
+
+## The five items
+
+Sources are the plan page (`docs/ECOSYSTEM-PLAN.html`) and the EMR summary in it. Exact envelope section names and EMR tab names were not read from any repo. They are listed as `to confirm in A4` and must not be treated as known.
+
+| Item | What the area stores | Matching envelope section | Matching EMR tab | Source today |
+|------|----------------------|---------------------------|------------------|--------------|
+| core.problems | The problem list for a case | to confirm in A4 | to confirm in A4 | EMR server tables |
+| core.allergies | The allergy list for a case | to confirm in A4 | to confirm in A4 | EMR server tables |
+| core.medications | Medication history, orders and administrations | to confirm in A4 (the plan page ties medications to envelope 0.3.0) | to confirm in A4 | EMR tables, envelope 0.3.0 |
+| core.investigations | Orders, specimens, results and acknowledgement | to confirm in A4 (the plan page ties investigations to envelope 0.2.0) | to confirm in A4 | EMR tables, envelope 0.2.0 |
+| core.care-episode | Admission, discharge, follow-up, referral and procedure | to confirm in A4 | to confirm in A4 | EMR tables and the `ipd_*` sets |
+
+## Points for the next rows
+
+1. A4 reads the EMR and the CCIS envelope schema by line range, then fills the two "to confirm" columns.
+2. `core.care-episode` is partly stored in `ipd_*` sets today. A4 should say which parts are tables and which are sets, since a set could instead become an element.
+3. A5 decides how a pathway names a section in `entryForm` and whether a missing section is an error or a warning.
+4. Lab results in `core.investigations` are the likely place where analytics will want concept keys. Flag this at A3d, not here.
