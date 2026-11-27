@@ -80,7 +80,7 @@ Phase B unlocked 2026-11-27 (you said "start phase B"). Row B0 is yours; B1 onwa
 
 | ID | Repo | Needs | Task | Status | Date | Size | Notes |
 |----|------|-------|------|--------|------|------|-------|
-| B0 | CCIS (YOU) | A7 | Confirm `git tag v0.1.0` is pushed, run the full `npm test` once, and tell Claude the base commit. | TODO | | none | |
+| B0 | CCIS (YOU) | A7 | Confirm `git tag v0.1.0` is pushed, run the full `npm test` once, and tell Claude the base commit. | DONE | 2026-11-27 | none | Marked done on your instruction. Base commit 57d89cd. No v0.1.0 tag on remote when checked; npm test not run by Claude. |
 | B1 | CCIS | B0, A10 | Element field: optional `concept` (a binding in the `local` system) and `contexts` tags; schema, regenerated validators, test. | TODO | | 1 schema edit, 1 test | |
 | B1a | CCIS | B1 | Element field `ownedBy` (owner element id and field key) for a field that uses a concept it does not own; type and unit must equal the owner's (ED-16); schema, validator, test. | TODO | | 1 schema edit, 1 test | |
 | B1b | CCIS | B1, A10 | Local terminology package (artefact type `terminology-package`): code system `local`, concept keys, value sets with display text; check how the validator resolves `valueSet`; no external code (SNOMED CT, LOINC) lives here, see I1; schema, test. | TODO | | 1 schema, 1 test | |
