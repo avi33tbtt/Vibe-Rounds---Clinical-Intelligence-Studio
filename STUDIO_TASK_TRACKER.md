@@ -14,7 +14,7 @@ Trigger phrase: **"do next"**. Keep the session small: this protocol is written 
 1. **Refresh first**: `git clone --depth 1` the Studio repo and the ONE other repo named in the next row's Repo column (CCIS, EMR or Marketplace; URLs are in the line above). If a clone fails, stop. Do not pick a task or write anything before both succeed.
 2. **Read only these**: this file, `plan-chunks/01-core.md`, the chunk file of the row (if any), and from the target repo only its own conventions file (CCIS: `plan-chunks/01-core.md`; EMR: `emr-plan-chunks/01-core.md`). Do not read the other repo's tracker or `DECISIONS.md` unless the chunk names a range. For source files over 5 KB use `grep -n` and `sed -n` on the ranges the chunk names.
 3. **Pick the next row**: the first row in table order with status `TODO` or `IN PROGRESS` whose **Needs** are all `DONE`. ONE row per "do next".
-4. **Locks and owner rows**: phases B to G are `LOCKED` until you say **"start phase B"** (and so on). Never start a `LOCKED` row. Rows marked **(YOU)** are yours: Claude never marks them `DONE`; you say "done <id>".
+4. **Locks and owner rows**: phases B to H are `LOCKED` until you say **"start phase B"** (and so on). Never start a `LOCKED` row. Rows marked **(YOU)** are yours: Claude never marks them `DONE`; you say "done <id>".
 5. **Chunk file first**: a docs-only row is done inline. Any other row without a chunk file: the task is to write `plan-chunks/chunk-<id>-<slug>.md` (docs only, under 5 KB: what to build, files to read with line ranges, files to change, tests, size guard, safety notes, context impact) from the row, the plan page, `DECISIONS.md` and what earlier rows learned. Then stop and ask you to approve it. The next "do next" builds it. Never edit a chunk file after its row has started: add a new row instead.
 6. **Size check**: if the row cannot finish within its size guard or the target repo's budget rule, STOP, say which part to split off, add it as a new row (`B7a`). Do not half-build. Do not implement later rows.
 7. **The target repo's conventions win**: its `01-core.md`, migration, route and test rules (EMR: next free migration number, permission matrix and audit tests, no DELETE or TRUNCATE grants, targeted tests; CCIS: pure modules, canonical JSON, CHANGELOG amendments with your approval, at most 3 `DECISIONS.md` rows). This file only decides which row runs and how the result is delivered. If the plan is ambiguous, take the most reasonable option, add at most 3 rows to `DECISIONS.md` (prefix `ED-`) and say so in the summary.
@@ -24,6 +24,7 @@ Trigger phrase: **"do next"**. Keep the session small: this protocol is written 
 11. **One change in flight per repo**: commit and push a zip before starting another row on the same repo. The CCIS and EMR chats may keep running their own rows between ecosystem rows; pull first.
 12. **Never mark `DONE`** unless implemented and verified. **Never invent clinical content**: all clinical wording is synthetic demo content until a named clinician owner reviews it (ED-2).
 13. **Free-tier budget**: read at most 5 files per task besides this tracker; a chunk file stays under 5 KB; a row creates at most 3 new modules, or 1 module plus 1 test plus small assets; a test file has at most 8 cases; no row adds more than one dependency, and a new dependency needs your OK first. Completed rows move to `docs/TRACKER-ARCHIVE.md` when this file passes 40 KB: do not read the archive.
+14. **Integration rule (ED-20)**: the four apps exchange data natively and directly: the CCIS context envelope (EMR to CCIS), the run record (CCIS to EMR) and checksummed CCIS artefacts (Studio, Marketplace, EMR, CCIS). Never design or build a row in phases A to G that needs FHIR: no Questionnaire, Bundle or other FHIR resource as an internal format, a package format or the Studio file format. FHIR is an external export only and is built last, in phase H, which stays `LOCKED` until you say "start phase H". If a row seems to need FHIR, stop and ask.
 
 Other commands: `status` (summary only), `redo <id>`, `skip <id>`, `split <id>`, `start phase <X>`, `done <id>`.
 
@@ -36,7 +37,7 @@ If a chat ends midway, nothing is `DONE` until verified: open a new chat, attach
 
 ## BUILD ORDER (critical path)
 
-`A` decide and define -> `B` CCIS contract (standard 0.2.0) -> `C` content and Marketplace -> then `D` EMR, `E` CCIS analytics and `F` Studio can run in any order -> `G` integration and hardening.
+`A` decide and define -> `B` CCIS contract (standard 0.2.0) -> `C` content and Marketplace -> then `D` EMR, `E` CCIS analytics and `F` Studio can run in any order -> `G` integration and hardening; `H` external FHIR export comes last and is not needed for 0.1.0.
 Why this order: the Studio, the EMR import and the analytics all depend on the contract. Do not scaffold the Studio before B is DONE: it would hard-code a contract that changes.
 Known gaps this plan closes: two meanings of "pathway", two element models, no concept key on EMR observations, hard-coded condition contexts (`context-map.js`), no element-group or rule-pack artefact in CCIS, and executor operators `first last min max coalesce` missing (CCIS finding F-9).
 
@@ -56,6 +57,8 @@ Known gaps this plan closes: two meanings of "pathway", two element models, no c
 | ED-10 | Where first content is authored | In the CCIS repo under `ccis/examples/ecosystem/` with the SDK and `market-build`, then synced to the Marketplace; the Studio takes over later | C4 to C16 |
 | ED-11 | How apps share code | Copy with a pinned commit and a staleness test (as the EMR does for `contracts/`), no submodules | D1, D2, F2 |
 | ED-12 | Concept ownership | Each concept has exactly one owner element; any other element that uses it references the owner, and a second owner is refused at publish | A3d, B2a, B15, D5, F11a |
+| ED-20 | How do the apps exchange data? "EMR and CCIS talk with FHIR" must not mean FHIR-based exchange. | ANSWERED 2026-11-27 (your instruction): native and direct inside the ecosystem (envelope, run record, CCIS artefacts). FHIR only as an external export, built late (phase H). | H0 to H6, G1, G3 |
+| ED-21 | The EMR already has FHIR inbound paths (R6e Questionnaire import, R6f Bundle import, `sdc.js`) and CCIS has LOCKED FHIR Mode rows (6.1 to 6.4). Keep them? | OPEN: keep them as they are, as optional external-edge tools. No ecosystem row depends on them and nothing new is built on them. Decide in H0. | H0 |
 
 ---
 
@@ -76,6 +79,7 @@ Known gaps this plan closes: two meanings of "pathway", two element models, no c
 | A5 | Studio | A4a | `docs/PACKAGE-DESIGN.md`: package members, `entryForm` item kinds (`element`, `section`), `contexts`, composition rules (by reference, match by concept, one owner element per concept and per shared field, conflict report format), materialisation into EMR sets and pathway versions, import and review path. | DONE | 2026-11-27 | docs | PACKAGE-DESIGN.md written. Adds rows B1a, B1b. DM+CKD has no shared concept: A7 to reconsider C14. EMR local-binding check open. ED-16, ED-17 added (OPEN). |
 | A6 | Studio | A5 | `docs/RULE-PACK-DESIGN.md`: rule classes, inputs, parameters disabled by default, allowed operators, plain-text message format, provenance, review and independence, logging in the EMR, what is prohibited. | DONE | 2026-11-27 | docs | RULE-PACK-DESIGN.md written. CCIS executor and validator not read: operator and layer names open for B10 to B13. ED-18, ED-19 added (OPEN). |
 | A7 | Studio (YOU) | A6 | Review A2 to A6 and say "approve phase A". Changes go in as new rows. | DONE | 2026-11-27 | none | You said "approve phase A". ED-16 to ED-19 recorded as accepted. Phase B stays LOCKED until you say "start phase B"; B0 is yours. |
+| A8 | Studio | A7 | Record the integration rule: ED-20 and ED-21 in `DECISIONS.md`, protocol rule 14, new phase H (external FHIR export, last), native-path guards in G1 and G3. | DONE | 2026-11-27 | docs | You said FHIR is for external export only, a late feature. Repos read: no FHIR in Studio; EMR R6a-d exporters have no route yet. ED-21 OPEN. |
 
 ## PHASE B: The contract (CCIS repo, standard 0.2.0)
 
@@ -229,15 +233,29 @@ Screens follow the CCIS pattern: pure model, then view (jsdom test, not wired), 
 
 | ID | Repo | Needs | Task | Status | Date | Size | Notes |
 |----|------|-------|------|--------|------|------|-------|
-| G1 | Studio | F36, D24, E15 | `docs/E2E-RUNBOOK.md`: Studio bundle, Marketplace, EMR import, apply, envelope, CCIS run, run record back into the EMR. | LOCKED | | docs | |
+| G1 | Studio | F36, D24, E15 | `docs/E2E-RUNBOOK.md`: Studio bundle, Marketplace, EMR import, apply, envelope, CCIS run, run record back into the EMR. Native path only; no FHIR anywhere in it (ED-20). | LOCKED | | docs | |
 | G2 | Studio | G1 | Script that runs a Studio bundle through the CCIS command line with no EMR; checked against expected outputs. | LOCKED | | 1 script, 1 test | |
-| G3 | EMR | G1 | Script and test for the EMR half: import a Studio bundle from file, export an envelope, import a CCIS run record. | LOCKED | | 1 script, 1 test | |
+| G3 | EMR | G1 | Script and test for the EMR half: import a Studio bundle from file, export an envelope, import a CCIS run record. Test that no FHIR resource is read or written on this path (ED-20). | LOCKED | | 1 script, 1 test | |
 | G4 | CCIS | G1 | Unlock CCIS 6.2 (signing) for Marketplace artefacts; its own chunk file first. | LOCKED | | per CCIS split | |
 | G5 | Studio | G4 | Governance: `CONTRIBUTING.md` with the independence rule (an author is never the reviewer) and a release checklist; mirror in the Marketplace repo. | LOCKED | | docs | |
 | G6 | Studio | G1 | Security review checklist for Marketplace content: text injection in displayed fields, checksum and pin checks, replay of old versions. Review is yours. | LOCKED | | docs | |
 | G7 | EMR | D25 | Unlock R7c, R7d, R8a to R8d in the EMR tracker with the import and rule paths added to each. | LOCKED | | per EMR rows | |
 | G8 | Studio (YOU) | G6 | Clinician review of all demo content; name the clinical owner (ED-2); decide whether clinical prompts may start (ED-6). | LOCKED | | none | |
 | G9 | Studio | G8, ED-8 | Release coordination: version table, tags in all four repos, CHANGELOG entries, final name decision. | LOCKED | | docs | |
+
+## PHASE H: External FHIR export (LATE, optional for 0.1.0)
+
+FHIR is only the outward format for people and systems outside the ecosystem (ED-20). Export direction only: nothing here changes how the EMR, CCIS, Studio and Marketplace talk to each other, and internal rows stay the system of record. Starts only when you say "start phase H". Already built in the EMR: pure exporters R6a to R6d (Observation, Condition, AllergyIntolerance, MedicationRequest) and the offline conformance pack R6g-1; none has a route yet.
+
+| ID | Repo | Needs | Task | Status | Date | Size | Notes |
+|----|------|-------|------|--------|------|------|-------|
+| H0 | Studio (YOU) | G3 | Say "start phase H". Decide who the external consumer is and which resources are wanted, and answer ED-21 (keep or retire the FHIR inbound paths). | LOCKED | | none | |
+| H1 | Studio | H0 | `docs/FHIR-EXPORT-BOUNDARY.md`: what leaves (native rows through R6a to R6d), export only, how a concept key becomes an external code at export time through the binding slot (a `local` code is never a Coding, as the EMR already rules), what is never exported, loss report, no clinical claim. | LOCKED | | docs | |
+| H2 | EMR | H1 | Export routes over the existing exporters: one case or patient to a FHIR Bundle; new permission, audit on every export, matrix and audit tests; reads only. Chunk file first; split if over the guard. | LOCKED | | 1 routes file, permissions, tests | |
+| H3 | EMR | H2 | Concept mapping at export: apply verified non-local bindings if you have a licensed terminology (reopens ED-7); otherwise codes stay text. Nothing invented. Skip if you stay on text. | LOCKED | | 1 module edit, 1 test | |
+| H4 | EMR (YOU) | H2 | Run the public HL7 validator on the fixtures and one real H2 export (EMR row R6g-2 covers the fixtures; do not duplicate it). Say "done H4" with the result. | LOCKED | | none | |
+| H5 | CCIS | H0 | Optional: external export of CCIS results (run record or analytics output). Resource choice is open. CCIS rows 6.1 to 6.4 (FHIR Mode) stay in the CCIS tracker. Unlock only if you say so. | LOCKED | | per CCIS split | |
+| H6 | Studio | H4 | Docs: external export step in `docs/E2E-RUNBOOK.md`; `docs/LIMITATIONS.md` lines (not clinically validated, export only, text codes unless H3). | LOCKED | | docs | |
 
 ---
 
@@ -247,6 +265,7 @@ Screens follow the CCIS pattern: pure model, then view (jsdom test, not wired), 
 - **A1a:** answer ED-1 to ED-12. ED-2 (clinician owner) and ED-3 (Marketplace host) matter most.
 - **B0 and B21:** tag and test CCIS yourself (the full suite is too long for a free session).
 - **C0:** the Marketplace repo exists (https://github.com/avi33tbtt/Vibe-Rounds---Marketplace); confirm it is public, enable Pages, say "done C0".
+- **H0, H4 and ED-21 (late):** FHIR export is yours to start. Answer ED-21, run the public validator, and decide whether any licensed terminology is wanted (reopens ED-7).
 - **Dependencies:** approve `esbuild` (F3) and `puppeteer-core` (F32) pins; run `npm ci` after pulling.
 - **Before any real use:** clinician review, privacy and security review, licence checks, EMR go-live gate (R8e). Nothing here is cleared for clinical use.
 

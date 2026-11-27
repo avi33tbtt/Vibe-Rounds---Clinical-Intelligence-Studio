@@ -2,7 +2,7 @@
 
 Prototype. Synthetic data only. Not for clinical use.
 
-Status: ED-1 to ED-12 ANSWERED on 2026-11-27 with "accept all": each recommendation stands as written. ED-13 to ED-15 were added by A4 and answered "accept" on 2026-11-27. ED-16 and ED-17 (added by A5) and ED-18 and ED-19 (added by A6) were ANSWERED on 2026-11-27 when you said "approve phase A": each recommendation stands. Exception in effect: ED-2 names no clinician, so all content stays demo and every threshold or interval stays a disabled parameter.
+Status: ED-1 to ED-12 ANSWERED on 2026-11-27 with "accept all": each recommendation stands as written. ED-13 to ED-15 were added by A4 and answered "accept" on 2026-11-27. ED-16 and ED-17 (added by A5) and ED-18 and ED-19 (added by A6) were ANSWERED on 2026-11-27 when you said "approve phase A": each recommendation stands. ED-20 was ANSWERED on 2026-11-27 by your instruction: data exchange inside the ecosystem is native and direct; FHIR is an external export only, built last. ED-21 is OPEN. Exception in effect: ED-2 names no clinician, so all content stays demo and every threshold or interval stays a disabled parameter.
 
 | ID | Status | Question | Recommendation | Blocks |
 |----|--------|----------|----------------|--------|
@@ -25,6 +25,8 @@ Status: ED-1 to ED-12 ANSWERED on 2026-11-27 with "accept all": each recommendat
 | ED-17 | ANSWERED 2026-11-27: accepted with "approve phase A" | A package is imported as new EMR sets (slug from the element id, kind `custom`). The built-in sets are never changed. | Accept. | D5, D7, D18 |
 | ED-18 | ANSWERED 2026-11-27: accepted with "approve phase A" | Version 1 data-quality rules: may a rule test a single value against a plausibility bound? | No. Only presence, state, time against an interval parameter, and field-to-field comparison. A bound reads as a clinical cut-off. | B13, F23 |
 | ED-19 | ANSWERED 2026-11-27: accepted with "approve phase A" | (a) May a prompt message include dates or values? (b) With one maintainer, is author-not-reviewer a recorded name check only? | (a) No: fixed text plus concept name, parameter name and record count. (b) Yes, stated plainly in G5 until a second person exists. | B12, B13, F27, G5 |
+| ED-20 | ANSWERED 2026-11-27: your instruction in chat | How do the EMR, CCIS, Studio and Marketplace exchange data? "Talks with FHIR" must not mean FHIR-based exchange. | Native and direct. EMR to CCIS is the context envelope; CCIS to EMR is the run record; Studio, Marketplace, EMR and CCIS share checksummed CCIS artefacts. Internal rows stay the system of record. FHIR appears only at the external edge as an export, built late (phase H). No row in phases A to G may need a FHIR resource, Questionnaire or Bundle. | H0 to H6, G1, G3 |
+| ED-21 | OPEN | The EMR already has FHIR inbound paths (R6e Questionnaire import, R6f Bundle import, `sdc.js`) and CCIS has LOCKED FHIR Mode rows (6.1 to 6.4). Keep them? | Keep as they are, as optional external-edge tools. No ecosystem row depends on them and nothing new is built on them. | H0 |
 
 ## Notes
 - ED-3: the Marketplace repo is https://github.com/avi33tbtt/Vibe-Rounds---Marketplace. It replaces the proposed name `clinical-intelligence-marketplace` and follows the naming of the other repos. Pages and merge rights are still to be confirmed in C0.
