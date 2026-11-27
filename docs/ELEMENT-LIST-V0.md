@@ -1,300 +1,244 @@
-# Element list v0
+# Element list v0 (corrected)
 
 Prototype. Synthetic data only. Not for clinical use.
 
-Status: parts 1 to 4 of 4 (tier 1 elements, `section` items, diabetes and hypertension elements, then CKD elements and concept keys). Complete as a draft for review in A7. Draft. Unreviewed by a clinician (ED-2 has no named owner).
+Status: draft for review in A7. Rewritten in A4a from `docs/FIELD-MAP.md`. It replaces the A3a to A3d drafts, which used invented fields and invalid CCIS keys. Unreviewed by a clinician (ED-2 has no named owner). All wording is synthetic demo content.
 
-## Source and limits
+Decisions applied: ED-13 (dose, target, band, treatment and restriction fields stay out), ED-14 (`dm_duration` kept as entered), ED-15 (EMR units kept, written as UCUM), ED-9 and ED-12 (concept keys, one owner each).
 
-Element ids, captions and source EMR sets come from the plan page (`docs/ECOSYSTEM-PLAN.html`, "Standard list of contextual elements"). The fields below are proposals written for this list. They were not read from the EMR `sets.js`; row A4 compares them with the real EMR fields and records every difference. Units are shown only where a field has one. No element holds a number, band or threshold (standing rule 3). Concept keys are assigned in A3d, which names one owner element per concept (ED-12); the column here only marks fields that will need one.
+## Sources
 
-## Legend
+EMR built-in sets (`emr-enhancer.html`), the longitudinal sets (`longitudinal-demo-content.js`) for `hba1c_mon`, `ckd_ctx` and `htn_ctx`, and the CCIS snake element (for the certainty pattern). Where the two EMR shapes differ the longitudinal one is used.
 
-- **Repeat**: `single` is one value per element instance. `repeating` can be entered many times in one case.
-- **Time**: `effective` is when the fact is true or was measured. `recorded` is when it was entered. Every field keeps both apart. Only the effective meaning is listed per field, because recorded time is always stored.
-- **Epistemic states** (from the plan page): `absent`, `unknown`, `not-collected`, `not-applicable`, `negative` (explicitly negative), `entered-in-error`. Each is a state of the field, never a value. Unknown stays unknown (standing rule 6). A state set is listed per field. `value` means a normal value is also allowed.
-  - **S-FULL**: value, unknown, not-collected, not-applicable, entered-in-error.
-  - **S-NEG**: S-FULL plus negative (for fields where "none" is a real answer).
-  - **S-MEAS**: value, unknown, not-collected, entered-in-error.
-- **Concept**: `yes` means the field is expected to get a concept key in A3d. `no` means free text or layout only.
+## Rules used in every table
 
-## core.presentation
+- **Key** is the EMR field id converted mechanically: drop each `_` and capital the next letter (`bp_sys` becomes `bpSys`, `dm_type` becomes `dmType`). It satisfies the CCIS key rule. The EMR id is kept in `x-emrFieldId`. Labels are the EMR labels.
+- **Type** is a CCIS type: `string`, `integer`, `quantity`, `boolean`, `code`, `datetime`. An EMR `select` becomes `code` with a local value set that the table lists. An EMR `number` becomes `quantity`.
+- **Unit** is UCUM (see `FIELD-MAP.md` section 3). Unitless quantities carry the unit shown. `check` means the unit string must be validated before use.
+- **Card** is cardinality: `0..1` single, `0..*` repeating (EMR `repeat`). No EMR field is `required`.
+- **Time**: a `datetime` field has `timeSemantics` `event-time`. Observation time (`effective_at`, `recorded_at`) belongs to the observation and not to the field (FIELD-MAP section 5).
+- **Epistemic** sets (CCIS names). **E-A**: absent, unknown, not-collected, not-applicable, entered-in-error. **E-M**: absent, unknown, not-collected, entered-in-error. **E-N**: E-A plus explicitly-negative. The EMR does not store these per field today, so each is the author's declaration, and A5 says how each maps.
+- **Source classes**. **SC-C**: clinician-entered. **SC-M**: clinician-entered, device, imported. **SC-D**: derived.
+- **Concept**: the concept key, or `no`. `ref` means the field references the owner element and does not own the concept (ED-12).
+- No element holds a number, band, target or threshold except the field units listed.
 
-Source: sets `basic_emr`, `opd_visit`. Conversion: convert.
+## Tier 1 elements
 
-| Field | Type | Unit | Repeat | Time | States | Concept |
-|-------|------|------|--------|------|--------|---------|
-| chief-complaint | text | | repeating | effective (onset as told) | S-FULL | no |
-| history-of-present-illness | text | | single | effective | S-FULL | no |
-| past-history | text | | single | effective | S-NEG | no |
+### core.presentation
 
-## core.vitals
+Source: set `basic_emr`. All fields single.
 
-Source: set `vitals`. Conversion: convert. Repeating. Blood pressure is two concepts (systolic, diastolic), as the plan says.
+| Key | EMR id | Type | Unit | Card | States | Src | Concept |
+|-----|--------|------|------|------|--------|-----|---------|
+| cc | cc | string | | 0..1 | E-A | SC-C | no |
+| hpi | hpi | string | | 0..1 | E-A | SC-C | no |
+| pmh | pmh | string | | 0..1 | E-N | SC-C | no |
 
-| Field | Type | Unit | Repeat | Time | States | Concept |
-|-------|------|------|--------|------|--------|---------|
-| systolic-pressure | number | mmHg | repeating | effective (measurement) | S-MEAS | yes |
-| diastolic-pressure | number | mmHg | repeating | effective (measurement) | S-MEAS | yes |
-| pulse-rate | number | beats/min | repeating | effective (measurement) | S-MEAS | yes |
-| respiratory-rate | number | breaths/min | repeating | effective (measurement) | S-MEAS | yes |
-| temperature | number | degC | repeating | effective (measurement) | S-MEAS | yes |
-| oxygen-saturation | number | % | repeating | effective (measurement) | S-MEAS | yes |
-| weight | number | kg | repeating | effective (measurement) | S-MEAS | yes |
+### core.examination
 
-Notes: `weight` is shared by later elements and gets one owner in A3d. Whether the EMR set holds height or other fields is a question for A4.
+Source: set `basic_emr`.
 
-## core.examination
+| Key | EMR id | Type | Unit | Card | States | Src | Concept |
+|-----|--------|------|------|------|--------|-----|---------|
+| exam | exam | string | | 0..1 | E-N | SC-C | no |
 
-Source: sets `basic_emr`, `opd_visit`. Conversion: convert.
+### core.assessment-plan
 
-| Field | Type | Unit | Repeat | Time | States | Concept |
-|-------|------|------|--------|------|--------|---------|
-| general-examination | text | | single | effective | S-FULL | no |
-| system-examination | group: body-system (choice: cardiovascular, respiratory, abdominal, neurological, other) and finding (text) | | repeating | effective | S-NEG | no |
+Source: set `basic_emr`. `plan` records what a clinician wrote. The element never suggests, orders or automates anything.
 
-Note: the system list is a proposed layout choice, not clinical content. A4 replaces it with the EMR option list.
+| Key | EMR id | Type | Unit | Card | States | Src | Concept |
+|-----|--------|------|------|------|--------|-----|---------|
+| assessment | assessment | string | | 0..1 | E-A | SC-C | no |
+| plan | plan | string | | 0..1 | E-A | SC-C | no |
 
-## core.assessment-plan
+### core.vitals
 
-Source: sets `basic_emr`, `opd_visit`. Conversion: convert.
+Source: set `vitals`. All fields repeat.
 
-| Field | Type | Unit | Repeat | Time | States | Concept |
-|-------|------|------|--------|------|--------|---------|
-| assessment | text | | repeating | effective | S-FULL | no |
-| plan | text | | single | effective | S-FULL | no |
-| follow-up-note | text | | single | effective | S-NEG | no |
+| Key | EMR id | Type | Unit | Card | States | Src | Concept |
+|-----|--------|------|------|------|--------|-----|---------|
+| hr | hr | integer | /min | 0..* | E-M | SC-M | pulse-rate |
+| bpSys | bp_sys | integer | mm[Hg] | 0..* | E-M | SC-M | systolic-pressure |
+| bpDia | bp_dia | integer | mm[Hg] | 0..* | E-M | SC-M | diastolic-pressure |
+| rr | rr | integer | /min | 0..* | E-M | SC-M | respiratory-rate |
+| temp | temp | quantity | Cel | 0..* | E-M | SC-M | temperature |
+| spo2 | spo2 | integer | % | 0..* | E-M | SC-M | oxygen-saturation |
 
-Note: `plan` records what a clinician wrote. The element never suggests, orders or automates anything (standing rule 4).
+No weight field: the EMR set has none and A4 found no source.
 
-## core.event-times
+### core.fluid-balance
 
-Source: new, from the certainty pattern in the CCIS snake element. Conversion: new.
+Source: set `urine_io`. Totals over 24 hours, single. The 24-hour period is in the label, not in a field.
 
-| Field | Type | Unit | Repeat | Time | States | Concept |
-|-------|------|------|--------|------|--------|---------|
-| event-label | choice: onset, arrival, other-event | | repeating | not applicable | S-FULL | no |
-| event-time | date-time | | repeating | effective | S-FULL | yes |
-| event-time-certainty | choice: exact, approximate, unknown | | repeating | effective | S-FULL | no |
+| Key | EMR id | Type | Unit | Card | States | Src | Concept |
+|-----|--------|------|------|------|--------|-----|---------|
+| intake | intake | integer | mL | 0..1 | E-M | SC-C | fluid-intake-24h |
+| output | output | integer | mL | 0..1 | E-M | SC-C | urine-output-24h |
+| balance | balance | integer | mL | 0..1 | E-M | SC-D | no |
+| catheter | catheter | boolean | | 0..1 | E-A | SC-C | no |
+| ioNotes | io_notes | string | | 0..1 | E-A | SC-C | no |
 
-Notes: one repeating group of the three fields. An `unknown` time is never replaced by a default time. The label list is a proposal. The snake element stays a separate published artefact and is not changed here.
+`balance` is derived (relationship `derived-from` `intake` and `output`). No formula is stored. A missing intake or output never becomes zero.
 
-## core.fluid-balance
+### core.event-times
 
-Source: set `urine_io`. Conversion: convert.
+Source: new. Pattern from the CCIS snake element: a datetime field with a `code` certainty field linked by a `refines` relationship. This element does not change the snake element.
 
-| Field | Type | Unit | Repeat | Time | States | Concept |
-|-------|------|------|--------|------|--------|---------|
-| direction | choice: intake, output | | repeating | effective | S-FULL | no |
-| fluid-type | text | | repeating | effective | S-FULL | no |
-| volume | number | mL | repeating | effective (interval) | S-MEAS | yes |
-| interval-start | date-time | | repeating | effective | S-MEAS | no |
-| interval-end | date-time | | repeating | effective | S-MEAS | no |
+| Key | EMR id | Type | Unit | Card | States | Src | Concept |
+|-----|--------|------|------|------|--------|-----|---------|
+| onsetTime | none | datetime (event-time) | | 0..1 | E-A | clinician-entered, patient-reported, informant-reported | no |
+| onsetTimeCertainty | none | code | | 0..1 | E-A | same as `onsetTime` | no |
+| arrivalTime | none | datetime (event-time) | | 0..1 | E-A | clinician-entered, imported | no |
 
-Notes: the source set name suggests urine output only, while the plan says intake and output. A4 settles which fields the EMR really has. A missing volume is never zero.
+Value set for `onsetTimeCertainty` (local, proposed): exact, approximate, unknown. This must be compared with the snake element's certainty value set before use. An unknown time is never replaced by a default.
 
-## Open points for A4
+## Section items
 
-1. Replace proposed fields, types, units and choice lists with the real EMR ones; list every difference.
-2. Confirm effective and recorded time handling in the EMR.
-3. Decide the `core.vitals` field list from the real `vitals` set.
+A `section` item is a placeholder in a pathway `entryForm`. It marks where an existing EMR area (problems, allergies and so on) appears. It is not an element. It has no fields, no concept keys, no version and no owner. The data stays in the EMR tables and the envelope. A section item holds no numbers, bands or thresholds and no logic, and its label is untrusted plain text. Analytics cannot bind to it.
 
----
+| Item | Area | Envelope section | EMR tab |
+|------|------|------------------|---------|
+| core.problems | Problem list | to confirm (A5) | to confirm (A5) |
+| core.allergies | Allergy list | to confirm (A5) | to confirm (A5) |
+| core.medications | History, orders, administrations | to confirm (A5); plan page ties it to envelope 0.3.0 | to confirm (A5) |
+| core.investigations | Orders, specimens, results, acknowledgement | to confirm (A5); plan page ties it to envelope 0.2.0 | to confirm (A5) |
+| core.care-episode | Admission, discharge, follow-up, referral, procedure | to confirm (A5) | to confirm (A5) |
 
-# Part 2: section items
+A4 did not fill the two "to confirm" columns, and A4a did not read further. A5 reads the CCIS envelope schema and the EMR tabs. The `opd_visit` text fields for medicines, allergies, results, referral, disposition and follow-up stay in that EMR set and are not converted (see "Left out of v0").
 
-Status: draft. Unreviewed by a clinician (ED-2 has no named owner).
+## Condition elements
 
-## What a section item is
+### dm.core
 
-A `section` item is a placeholder in a pathway `entryForm`. It marks where an existing EMR area (problems, allergies and so on) appears in the form. It is not an element. It has no fields of its own in the contract, no concept keys, no version and no owner. The EMR keeps storing the data in its own tables and the context envelope keeps exporting it. A pathway only says where the area sits and whether it shows by default.
+Source: set `dm_ctx` (same in both shapes). Context: diabetes. All single.
 
-Consequences:
-- A section item never goes through concept ownership (ED-12). Nothing in it can be matched or composed by concept.
-- Analytics cannot bind to a section item. If an analytic needs data from one of these areas, a later row must decide whether an element is needed. This part does not decide that.
-- A section item holds no numbers, bands or thresholds and no clinical logic (standing rules 3 and 4).
-- Text shown from a package for a section item (its label) is untrusted plain text (standing rule 9).
+| Key | EMR id | Type | Unit | Card | States | Src | Concept |
+|-----|--------|------|------|------|--------|-----|---------|
+| dmType | dm_type | code | | 0..1 | E-A | SC-C | no |
+| dmDuration | dm_duration | quantity | a | 0..1 | E-M | SC-C | no |
+| dmMeds | dm_meds | string | | 0..1 | E-N | SC-C | no |
+| dmComp | dm_comp | string | | 0..1 | E-N | SC-C | no |
+| dmHypo | dm_hypo | boolean | | 0..1 | E-A | SC-C | no |
 
-## Properties of a section item (proposed)
+Value set for `dmType` (local, from the EMR options): T1DM, T2DM, Other. `dmDuration` is kept as entered (ED-14) and is the only quantity here without a concept key: it is not a repeating measurement. `dmMeds` records what is taken and never suggests a regimen. "Recent" in `dmHypo` is not defined here.
 
-| Property | Meaning |
-|----------|---------|
-| id | `core.problems`, `core.allergies`, `core.medications`, `core.investigations`, `core.care-episode` |
-| label | Plain text title shown on the form |
-| position | Order within the `entryForm` |
-| default visibility | Shown or hidden by default; the user can still open it |
+### dm.glycaemic-monitoring
 
-These are for A5 (`docs/PACKAGE-DESIGN.md`) to confirm. Per-section field lists are deliberately absent.
+Source: sets `glucose_ss` (field `glu`) and `hba1c_mon` (field `hba1c`, longitudinal shape). Context: diabetes. Owns the concepts glucose and hba1c.
 
-## The five items
+| Key | EMR id | Type | Unit | Card | States | Src | Concept |
+|-----|--------|------|------|------|--------|-----|---------|
+| glu | glu | quantity | mg/dL | 0..* | E-M | SC-M | glucose |
+| hba1c | hba1c | quantity | % | 0..* | E-M | SC-M | hba1c |
 
-Sources are the plan page (`docs/ECOSYSTEM-PLAN.html`) and the EMR summary in it. Exact envelope section names and EMR tab names were not read from any repo. They are listed as `to confirm in A4` and must not be treated as known.
+No target range is stored (ED-13). A missing or unknown reading is never zero.
 
-| Item | What the area stores | Matching envelope section | Matching EMR tab | Source today |
-|------|----------------------|---------------------------|------------------|--------------|
-| core.problems | The problem list for a case | to confirm in A4 | to confirm in A4 | EMR server tables |
-| core.allergies | The allergy list for a case | to confirm in A4 | to confirm in A4 | EMR server tables |
-| core.medications | Medication history, orders and administrations | to confirm in A4 (the plan page ties medications to envelope 0.3.0) | to confirm in A4 | EMR tables, envelope 0.3.0 |
-| core.investigations | Orders, specimens, results and acknowledgement | to confirm in A4 (the plan page ties investigations to envelope 0.2.0) | to confirm in A4 | EMR tables, envelope 0.2.0 |
-| core.care-episode | Admission, discharge, follow-up, referral and procedure | to confirm in A4 | to confirm in A4 | EMR tables and the `ipd_*` sets |
+### htn.core
 
-## Points for the next rows
+Source: set `htn_ctx` (longitudinal shape only). Context: hypertension.
 
-1. A4 reads the EMR and the CCIS envelope schema by line range, then fills the two "to confirm" columns.
-2. `core.care-episode` is partly stored in `ipd_*` sets today. A4 should say which parts are tables and which are sets, since a set could instead become an element.
-3. A5 decides how a pathway names a section in `entryForm` and whether a missing section is an error or a warning.
-4. Lab results in `core.investigations` are the likely place where analytics will want concept keys. Flag this at A3d, not here.
+| Key | EMR id | Type | Unit | Card | States | Src | Concept |
+|-----|--------|------|------|------|--------|-----|---------|
+| htnType | htn_type | code | | 0..1 | E-A | SC-C | no |
+| sbp | sbp | reference to `core.vitals.bpSys` | mm[Hg] | 0..* | E-M | SC-M | systolic-pressure (ref) |
+| dbp | dbp | reference to `core.vitals.bpDia` | mm[Hg] | 0..* | E-M | SC-M | diastolic-pressure (ref) |
 
----
+Value set for `htnType` (local): Essential, Secondary, Other. The keys `sbp` and `dbp` differ from `bpSys` and `bpDia`. Matching is by concept key, never by field key or label.
 
-# Part 3: condition elements (diabetes and hypertension)
+### ckd.core
 
-Status: draft. Unreviewed by a clinician (ED-2 has no named owner). All wording is synthetic demo content.
+Source: set `ckd_ctx` (the single-value part). Context: CKD. Single.
 
-## Source and limits
+| Key | EMR id | Type | Unit | Card | States | Src | Concept |
+|-----|--------|------|------|------|--------|-----|---------|
+| ckdStage | ckd_stage | code | | 0..1 | E-A | SC-C | no |
+| ckdCause | ckd_cause | string | | 0..1 | E-A | SC-C | no |
 
-Ids, captions and source sets come from the plan page. The EMR sets (`dm_ctx`, `hba1c_mon`, `glucose_ss`, `foot_ulcer`, `dka_ctx`) and `longitudinal-demo-content.js` were not read. Fields, choice lists and units are proposals for A4 to reconcile. Legend and state sets (S-FULL, S-NEG, S-MEAS) are defined in part 1. These definitions contain no numbers, bands, targets or thresholds (standing rule 3): a choice list is a classification, never a cut-off. Where a unit is not known, the cell says `confirm in A4`. One unit per concept is a later validator rule (B2).
+Value set for `ckdStage` (local, from the EMR options): 1, 2, 3a, 3b, 4, 5. A clinician must review this list (ED-2). Nothing derives a stage from a measurement.
 
-## dm.core
+### ckd.kidney-function
 
-Source: set `dm_ctx`. Conversion: convert. Context: diabetes.
+Source: set `ckd_ctx` (the repeating part, longitudinal shape). Context: CKD. Owns creatinine, eGFR and albumin-creatinine ratio.
 
-| Field | Type | Unit | Repeat | Time | States | Concept |
-|-------|------|------|--------|------|--------|---------|
-| diabetes-type | choice: type-1, type-2, other | | single | effective | S-FULL | no |
-| diagnosis-date | date (partial allowed) | | single | effective | S-FULL | no |
-| regimen | text | | repeating | effective | S-NEG | no |
-| complication | text | | repeating | effective | S-NEG | no |
-| hypoglycaemia-recent | choice: yes, no | | single | effective | S-FULL | no |
-| hypoglycaemia-last-date | date | | single | effective | S-FULL | no |
+| Key | EMR id | Type | Unit | Card | States | Src | Concept |
+|-----|--------|------|------|------|--------|-----|---------|
+| egfr | egfr | quantity | mL/min/1.73m2 (check) | 0..* | E-M | SC-M | egfr |
+| creat | creat | quantity | mg/dL | 0..* | E-M | SC-M | creatinine |
+| uacr | uacr | quantity | mg/g | 0..* | E-M | SC-M | albumin-creatinine-ratio |
 
-Notes: `diagnosis-date` replaces a stored duration, because duration is derived and changes with time. What counts as "recent" is not defined here and no window is stored. The `regimen` field is free text and records what is taken. It never suggests a regimen.
+The EMR does not say whether `egfr` is derived from `creat`. No formula is stored. If a clinician owner confirms it is derived, a later row adds the relationship.
 
-## dm.glycaemic-monitoring
+## Optional elements (unlocked only if you say so, C10)
 
-Source: sets `hba1c_mon`, `glucose_ss`. Conversion: convert. Repeating. Context: diabetes. This element is expected to own the concepts HbA1c and glucose (decided in A3d).
+### dm.foot
 
-| Field | Type | Unit | Repeat | Time | States | Concept |
-|-------|------|------|--------|------|--------|---------|
-| hba1c | number | confirm in A4 | repeating | effective (sample) | S-MEAS | yes |
-| glucose | number | confirm in A4 | repeating | effective (sample) | S-MEAS | yes |
-| glucose-timing | choice: fasting, random, after-meal, other | | repeating | effective | S-FULL | no |
+Source: set `foot_ulcer`. Context: diabetes. All single. `ulcer_abx` is left out (ED-13).
 
-Notes: no target range is stored. Reading a value against a range is a parameter in an analytic or rule, disabled by default. A missing or unknown reading is never zero.
+| Key | EMR id | Type | Unit | Card | States | Src | Concept |
+|-----|--------|------|------|------|--------|-----|---------|
+| ulcerSite | ulcer_site | string | | 0..1 | E-N | SC-C | no |
+| ulcerSize | ulcer_size | string | | 0..1 | E-N | SC-C | no |
+| ulcerGrade | ulcer_grade | code | | 0..1 | E-A | SC-C | no |
+| ulcerInf | ulcer_inf | boolean | | 0..1 | E-A | SC-C | no |
+| ulcerProbe | ulcer_probe | boolean | | 0..1 | E-A | SC-C | no |
 
-## htn.core
+Value set for `ulcerGrade` (local, from the EMR options): 0, 1, 2, 3, 4, 5. A clinician must review it. `ulcerSize` is text with the unit in the label, as in the EMR.
 
-Source: demo content in `longitudinal-demo-content.js`. Conversion: convert. Context: hypertension.
+### dm.dka
 
-| Field | Type | Unit | Repeat | Time | States | Concept |
-|-------|------|------|--------|------|--------|---------|
-| hypertension-type | choice: primary, secondary, unknown-cause | | single | effective | S-FULL | no |
-| systolic-pressure | reference to `core.vitals` | mmHg | repeating | effective (measurement) | S-MEAS | yes (reference) |
-| diastolic-pressure | reference to `core.vitals` | mmHg | repeating | effective (measurement) | S-MEAS | yes (reference) |
+Source: set `dka_ctx`. Context: diabetes. All single. `dka_ins` is left out (ED-13).
 
-Notes: the plan page lists systolic and diastolic readings in `htn.core`, but `core.vitals` already holds them. By ED-12 `htn.core` must not own those concepts. It references the owner so a reading lands in one series. A3d records `core.vitals` as owner. A5 defines how a reference is written.
+| Key | EMR id | Type | Unit | Card | States | Src | Concept |
+|-----|--------|------|------|------|--------|-----|---------|
+| dkaArr | dka_arr | datetime (event-time) | | 0..1 | E-A | SC-C, imported | no |
+| dkaGlu | dka_glu | reference to `dm.glycaemic-monitoring.glu` | mg/dL | 0..1 | E-M | SC-M | glucose (ref) |
+| dkaPh | dka_ph | quantity | [pH] | 0..1 | E-M | SC-M | venous-ph |
+| dkaHco3 | dka_hco3 | quantity | mmol/L | 0..1 | E-M | SC-M | bicarbonate |
+| dkaK | dka_k | quantity | mmol/L | 0..1 | E-M | SC-M | potassium |
 
-## dm.foot (optional)
+The label of `dkaK` says "before insulin". With `dka_ins` left out the element cannot check that, and the label is the only record of it. The element records facts and times. It does not say what to do.
 
-Source: set `foot_ulcer`. Conversion: convert. Context: diabetes. Unlocked only if you ask (C10).
+## Left out of v0
 
-| Field | Type | Unit | Repeat | Time | States | Concept |
-|-------|------|------|--------|------|--------|---------|
-| ulcer-site | text | | repeating | effective | S-NEG | no |
-| ulcer-assessment | text | | repeating | effective | S-NEG | no |
-| ulcer-noted-date | date | | repeating | effective | S-FULL | no |
+Each stays in the EMR set and is not an element field.
 
-Note: free text only. No grading scale is defined, because a grade would be clinical content.
+- **ED-13:** `glucose_ss.ss_dose`, `glucose_ss.ss_notes`, `hba1c_mon.target`, `foot_ulcer.ulcer_abx`, `dka_ctx.dka_ins`, `ckd_ctx.renal_diet`.
+- **Observation time, not field:** `hba1c_mon.hba1c_date` (the observation carries the time; A5 confirms).
+- **Notes from longitudinal-only sets:** `hba1c_mon.hba1c_notes`, `htn_ctx.htn_notes`.
+- **`opd_visit` fields with no basic_emr equivalent:** `opd_visit_type`, `opd_onset`, `opd_fsh`, `opd_ros`, `opd_meds`, `opd_allergy`, `opd_allergy_detail`, `opd_exam_gen`, `opd_exam_sys`, `opd_results`, `opd_impression`, `opd_ddx`, `opd_ix`, `opd_advice`, `opd_warn`, `opd_referral`, `opd_dispo`, `opd_fu`. A later row can add an element for the outpatient visit if you want one.
+- **Meaning shared with `basic_emr` but a different EMR id:** `opd_cc`, `opd_hpi`, `opd_pmh`, `opd_plan`. They carry the meaning of `cc`, `hpi`, `pmh`, `plan`, but `x-emrFieldId` holds one id per field. A5 decides how one element maps to two EMR sets.
 
-## dm.dka (optional)
+## Concept key table
 
-Source: set `dka_ctx`. Conversion: convert. Context: diabetes. Unlocked only if you ask (C10). The plan page calls these fields time-critical.
+A concept key is a binding in the `local` code system: `codeSystem` `{id: "local", noVersionPublished: true}` with the key as `code`. One owner element per concept (ED-12). One unit per concept (ED-15). "Ref" lists elements that reference the owner.
 
-| Field | Type | Unit | Repeat | Time | States | Concept |
-|-------|------|------|--------|------|--------|---------|
-| dka-suspected-time | date-time | | single | effective | S-FULL | no |
-| dka-suspected-certainty | choice: exact, approximate, unknown | | single | effective | S-FULL | no |
-| ketone | number | confirm in A4 | repeating | effective (sample) | S-MEAS | yes |
-| glucose | reference to `dm.glycaemic-monitoring` | confirm in A4 | repeating | effective (sample) | S-MEAS | yes (reference) |
+| Concept key | Meaning | Unit | Owner (element.key) | Ref | Shared |
+|-------------|---------|------|---------------------|-----|--------|
+| systolic-pressure | Systolic blood pressure reading | mm[Hg] | core.vitals.bpSys | htn.core.sbp | yes |
+| diastolic-pressure | Diastolic blood pressure reading | mm[Hg] | core.vitals.bpDia | htn.core.dbp | yes |
+| glucose | Blood glucose reading | mg/dL | dm.glycaemic-monitoring.glu | dm.dka.dkaGlu | yes |
+| hba1c | HbA1c measurement | % | dm.glycaemic-monitoring.hba1c | none | no |
+| creatinine | Creatinine measurement | mg/dL | ckd.kidney-function.creat | none | no |
+| egfr | eGFR as recorded | mL/min/1.73m2 (check) | ckd.kidney-function.egfr | none | no |
+| albumin-creatinine-ratio | Urine albumin-creatinine ratio | mg/g | ckd.kidney-function.uacr | none | no |
+| pulse-rate | Pulse rate | /min | core.vitals.hr | none | no |
+| respiratory-rate | Respiratory rate | /min | core.vitals.rr | none | no |
+| temperature | Body temperature | Cel | core.vitals.temp | none | no |
+| oxygen-saturation | Oxygen saturation | % | core.vitals.spo2 | none | no |
+| fluid-intake-24h | Total fluid intake over 24 hours | mL | core.fluid-balance.intake | none | no |
+| urine-output-24h | Total urine output over 24 hours | mL | core.fluid-balance.output | none | no |
+| venous-ph | Venous pH | [pH] | dm.dka.dkaPh | none | no |
+| bicarbonate | Bicarbonate | mmol/L | dm.dka.dkaHco3 | none | no |
+| potassium | Potassium | mmol/L | dm.dka.dkaK | none | no |
 
-Notes: times use the same certainty pattern as `core.event-times`. An unknown time is never replaced by a default. `ketone` is a new concept with no other known user; A3d decides its owner. The element records what happened and when. It does not say what to do.
+16 concepts, 3 shared today, no concept with two owners. The older drafts listed `weight`, `ketone`, `fluid-volume` and `event-time`. They are gone because the EMR has no source for them.
 
-## Open points for A4 and A3d
+## Open points for A5 and A7
 
-1. A4: confirm every field, choice list and unit against the EMR sets and the demo content file; record each difference.
-2. A3d: name one owner per concept: systolic and diastolic pressure (proposed `core.vitals`), HbA1c and glucose (proposed `dm.glycaemic-monitoring`), ketone.
-3. A5: define a field reference between elements and the conflict report when a referenced owner is missing.
-4. `dm.dka` repeats the event-time pattern. Decide in A5 whether it should instead reference `core.event-times`.
-
----
-
-# Part 4: CKD elements and concept keys
-
-Status: draft. Unreviewed by a clinician (ED-2 has no named owner). All wording is synthetic demo content.
-
-## Source and limits
-
-The plan page says set `ckd_ctx` holds stage and cause, plus repeating eGFR, creatinine and urine albumin-creatinine ratio, and that it is split in two. The set itself was not read. Fields, choice lists and units are proposals for A4. No numbers, bands or thresholds appear (standing rule 3). In particular no stage list is written here: stages are defined by eGFR bands, so the choice list must come from the EMR and be checked by a clinician.
-
-## ckd.core
-
-Source: set `ckd_ctx` (non-repeating part). Conversion: convert, split. Context: CKD.
-
-| Field | Type | Unit | Repeat | Time | States | Concept |
-|-------|------|------|--------|------|--------|---------|
-| ckd-stage | choice (list from the EMR; confirm in A4) | | single | effective | S-FULL | no |
-| ckd-cause | text | | single | effective | S-FULL | no |
-
-Note: `ckd-stage` records the stage a clinician documented. Nothing here derives a stage from a measurement.
-
-## ckd.kidney-function
-
-Source: set `ckd_ctx` (repeating part). Conversion: convert, split. Repeating. Context: CKD. Owns the concepts creatinine, eGFR and albumin-creatinine ratio.
-
-| Field | Type | Unit | Repeat | Time | States | Concept |
-|-------|------|------|--------|------|--------|---------|
-| creatinine | number | confirm in A4 | repeating | effective (sample) | S-MEAS | yes |
-| egfr | number | confirm in A4 | repeating | effective (sample) | S-MEAS | yes |
-| albumin-creatinine-ratio | number | confirm in A4 | repeating | effective (sample) | S-MEAS | yes |
-
-Note: A4 must say whether the EMR marks `egfr` as derived from creatinine. If it is derived, the element stores the value as entered or stored, and no formula is written into the element.
-
-## Concept key rules (from ED-9 and ED-12)
-
-- A concept key is a binding in the `local` code system. The key is lowercase with hyphens. The binding slot for other systems is kept but unused (ED-7).
-- Each concept has exactly one owner element: the element that defines it. Every other element that uses the concept references the owner and does not redefine it.
-- A concept has one unit. A second unit for the same concept is an error, not a variant.
-- The same meaning under two different keys is a defect and is reported (B2a).
-- Matching is by key, never by label (standing rule 5).
-
-## Concept key table (proposed)
-
-Owners below are proposals for review in A7. "References" lists elements that use the concept without owning it.
-
-| Concept key | Meaning | Unit | Owner (element.field) | References | Shared |
-|-------------|---------|------|-----------------------|------------|--------|
-| systolic-pressure | Systolic blood pressure reading | mmHg | core.vitals.systolic-pressure | htn.core | yes |
-| diastolic-pressure | Diastolic blood pressure reading | mmHg | core.vitals.diastolic-pressure | htn.core | yes |
-| glucose | Blood glucose reading | confirm in A4 | dm.glycaemic-monitoring.glucose | dm.dka | yes |
-| hba1c | HbA1c measurement | confirm in A4 | dm.glycaemic-monitoring.hba1c | none yet | no |
-| ketone | Ketone measurement | confirm in A4 | dm.dka.ketone | none yet | no |
-| creatinine | Serum creatinine measurement | confirm in A4 | ckd.kidney-function.creatinine | none yet | no |
-| egfr | Estimated glomerular filtration rate as recorded | confirm in A4 | ckd.kidney-function.egfr | none yet | no |
-| albumin-creatinine-ratio | Urine albumin-creatinine ratio | confirm in A4 | ckd.kidney-function.albumin-creatinine-ratio | none yet | no |
-| weight | Body weight | kg | core.vitals.weight | none yet | no |
-| pulse-rate | Pulse rate | beats/min | core.vitals.pulse-rate | none yet | no |
-| respiratory-rate | Respiratory rate | breaths/min | core.vitals.respiratory-rate | none yet | no |
-| temperature | Body temperature | degC | core.vitals.temperature | none yet | no |
-| oxygen-saturation | Oxygen saturation | % | core.vitals.oxygen-saturation | none yet | no |
-| fluid-volume | Volume of fluid intake or output | mL | core.fluid-balance.volume | none yet | no |
-| event-time | Time of a labelled event | | core.event-times.event-time | none yet | no |
-
-15 concepts, 3 shared today. Weight and the rows with "none yet" are listed because they are expected to gain users when a pathway is composed. They are not shared now. Two owners per concept: none.
-
-## Open points for A4, A5 and A7
-
-1. Plan page says DM+CKD shares creatinine, eGFR, blood pressure and HbA1c. In this list only blood pressure and glucose have more than one user. If the EMR `ckd_ctx` or the DM sets hold more of these, A4 will show it and those fields become references to the owners above, never new owners.
-2. `fluid-volume` would mix intake and output in one series, because `direction` is a separate field. A4 or A5 must decide between two concepts (intake, output) or one concept with a direction qualifier. Not decided here.
-3. `event-time` has the same issue with its label field (onset, arrival, other). Same decision.
-4. Units marked "confirm in A4" must be fixed before any concept can pass the one-unit check.
-5. A clinician must review the stage list, the owner choices and every choice list before any use (ED-2).
+1. **Blood pressure type.** `vitals.bp_sys` is an integer and `htn_ctx.sbp` is a number. The referencing field takes the owner's type (integer). A decimal reading from the htn set would then be refused. Confirm in A5.
+2. **One element, two EMR sets.** `core.presentation` and `core.assessment-plan` match fields in `basic_emr` and `opd_visit` (see "Left out of v0").
+3. **Local value sets.** Every `code` field needs a published local value set (`dmType`, `htnType`, `ckdStage`, `ulcerGrade`, `onsetTimeCertainty`). A5 defines where it lives. A clinician must review the stage and grade lists.
+4. **Section columns** are not filled (see Section items).
+5. **Epistemic and source-class declarations** are author choices and need review. The EMR stores neither.
+6. **`core.event-times`** is new and not yet in any EMR set. Check the certainty value set against the snake element.
+7. **Clinician review** of every list, owner and choice is required before any use (ED-2).
