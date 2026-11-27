@@ -2,7 +2,7 @@
 
 Prototype. Synthetic data only. Not for clinical use.
 
-Status: ED-1 to ED-12 ANSWERED on 2026-11-27 with "accept all": each recommendation stands as written. ED-13 to ED-15 were added by A4 and answered "accept" on 2026-11-27. Exception in effect: ED-2 names no clinician, so all content stays demo and every threshold or interval stays a disabled parameter.
+Status: ED-1 to ED-12 ANSWERED on 2026-11-27 with "accept all": each recommendation stands as written. ED-13 to ED-15 were added by A4 and answered "accept" on 2026-11-27. ED-16 and ED-17 were added by A5 and are OPEN (answer by A7). Exception in effect: ED-2 names no clinician, so all content stays demo and every threshold or interval stays a disabled parameter.
 
 | ID | Status | Question | Recommendation | Blocks |
 |----|--------|----------|----------------|--------|
@@ -21,6 +21,8 @@ Status: ED-1 to ED-12 ANSWERED on 2026-11-27 with "accept all": each recommendat
 | ED-13 | ANSWERED 2026-11-27: accept | Fields that hold a dose, target, band, treatment text or restriction: `glucose_ss.ss_dose`, `glucose_ss.ss_notes`, `hba1c_mon.target`, `foot_ulcer.ulcer_abx`, `dka_ctx.dka_ins`, `ckd_ctx.renal_diet`. Convert them or leave them out? | Leave them out of elements. They stay EMR-only until a named clinician owner decides (ED-2). Elements hold measurements and facts. | A4a, A5, C5 to C9 |
 | ED-14 | ANSWERED 2026-11-27: accept | `dm_ctx.dm_duration` stores a number of years that goes stale. Keep it as entered or replace it with a diagnosis date? | Keep it as entered in v0 (`quantity`, unit `a`) so conversion loses nothing. Consider a diagnosis date later. | A4a, C7 |
 | ED-15 | ANSWERED 2026-11-27: accept | The EMR uses mg/dL for glucose and creatinine. Keep EMR units as the one unit per concept, or choose others? | Keep the EMR units in v0, written as UCUM. Nothing converts between units. | A4a, B2, C4 |
+| ED-16 | OPEN | A field that uses a concept it does not own must declare the owner's type and unit. A mismatch is an error. | Accept. So `htn.core.sbp` is an integer, as `core.vitals.bpSys`. | B1a, B2a, D5 |
+| ED-17 | OPEN | A package is imported as new EMR sets (slug from the element id, kind `custom`). The built-in sets are never changed. | Accept. | D5, D7, D18 |
 
 ## Notes
 - A1 writes all twelve rows at once, as the tracker says. The "at most 3 new rows per task" limit in `plan-chunks/01-core.md` applies to later rows.

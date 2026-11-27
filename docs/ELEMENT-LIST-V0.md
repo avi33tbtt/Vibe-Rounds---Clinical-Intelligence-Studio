@@ -98,13 +98,13 @@ A `section` item is a placeholder in a pathway `entryForm`. It marks where an ex
 
 | Item | Area | Envelope section | EMR tab |
 |------|------|------------------|---------|
-| core.problems | Problem list | to confirm (A5) | to confirm (A5) |
-| core.allergies | Allergy list | to confirm (A5) | to confirm (A5) |
-| core.medications | History, orders, administrations | to confirm (A5); plan page ties it to envelope 0.3.0 | to confirm (A5) |
-| core.investigations | Orders, specimens, results, acknowledgement | to confirm (A5); plan page ties it to envelope 0.2.0 | to confirm (A5) |
-| core.care-episode | Admission, discharge, follow-up, referral, procedure | to confirm (A5) | to confirm (A5) |
+| core.problems | Problem list | `problems` | Problems |
+| core.allergies | Allergy list | `allergies` | Allergies |
+| core.medications | History, orders, administrations | `orders` (medication orders) and `administrations` | Medications; Orders |
+| core.investigations | Orders, specimens, results, acknowledgement | `orders` (investigation orders) and `results` | Orders (results not checked) |
+| core.care-episode | Admission, discharge, follow-up, referral, procedure | none | none found |
 
-A4 did not fill the two "to confirm" columns, and A4a did not read further. A5 reads the CCIS envelope schema and the EMR tabs. The `opd_visit` text fields for medicines, allergies, results, referral, disposition and follow-up stay in that EMR set and are not converted (see "Left out of v0").
+Columns filled in A5 from `envelope.js` and the EMR nav tabs; details and caveats are in `docs/PACKAGE-DESIGN.md` section 9. The `opd_visit` text fields for medicines, allergies, results, referral, disposition and follow-up stay in that EMR set and are not converted (see "Left out of v0").
 
 ## Condition elements
 
@@ -236,9 +236,9 @@ A concept key is a binding in the `local` code system: `codeSystem` `{id: "local
 ## Open points for A5 and A7
 
 1. **Blood pressure type.** `vitals.bp_sys` is an integer and `htn_ctx.sbp` is a number. The referencing field takes the owner's type (integer). A decimal reading from the htn set would then be refused. Confirm in A5.
-2. **One element, two EMR sets.** `core.presentation` and `core.assessment-plan` match fields in `basic_emr` and `opd_visit` (see "Left out of v0").
+2. **One element, two EMR sets.** Settled in A5: a package becomes new EMR sets, so no element maps to two sets (`PACKAGE-DESIGN.md` section 7).
 3. **Local value sets.** Every `code` field needs a published local value set (`dmType`, `htnType`, `ckdStage`, `ulcerGrade`, `onsetTimeCertainty`). A5 defines where it lives. A clinician must review the stage and grade lists.
-4. **Section columns** are not filled (see Section items).
+4. **Section columns** were filled in A5.
 5. **Epistemic and source-class declarations** are author choices and need review. The EMR stores neither.
 6. **`core.event-times`** is new and not yet in any EMR set. Check the certainty value set against the snake element.
 7. **Clinician review** of every list, owner and choice is required before any use (ED-2).
