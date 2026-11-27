@@ -2,7 +2,7 @@
 
 Prototype. Synthetic data only. Not for clinical use.
 
-Status: parts 1 and 2 of 4 (tier 1 elements, then `section` items). Draft. Unreviewed by a clinician (ED-2 has no named owner).
+Status: parts 1 to 3 of 4 (tier 1 elements, `section` items, then condition elements except CKD). Draft. Unreviewed by a clinician (ED-2 has no named owner).
 
 ## Source and limits
 
@@ -144,3 +144,84 @@ Sources are the plan page (`docs/ECOSYSTEM-PLAN.html`) and the EMR summary in it
 2. `core.care-episode` is partly stored in `ipd_*` sets today. A4 should say which parts are tables and which are sets, since a set could instead become an element.
 3. A5 decides how a pathway names a section in `entryForm` and whether a missing section is an error or a warning.
 4. Lab results in `core.investigations` are the likely place where analytics will want concept keys. Flag this at A3d, not here.
+
+---
+
+# Part 3: condition elements (diabetes and hypertension)
+
+Status: draft. Unreviewed by a clinician (ED-2 has no named owner). All wording is synthetic demo content.
+
+## Source and limits
+
+Ids, captions and source sets come from the plan page. The EMR sets (`dm_ctx`, `hba1c_mon`, `glucose_ss`, `foot_ulcer`, `dka_ctx`) and `longitudinal-demo-content.js` were not read. Fields, choice lists and units are proposals for A4 to reconcile. Legend and state sets (S-FULL, S-NEG, S-MEAS) are defined in part 1. These definitions contain no numbers, bands, targets or thresholds (standing rule 3): a choice list is a classification, never a cut-off. Where a unit is not known, the cell says `confirm in A4`. One unit per concept is a later validator rule (B2).
+
+## dm.core
+
+Source: set `dm_ctx`. Conversion: convert. Context: diabetes.
+
+| Field | Type | Unit | Repeat | Time | States | Concept |
+|-------|------|------|--------|------|--------|---------|
+| diabetes-type | choice: type-1, type-2, other | | single | effective | S-FULL | no |
+| diagnosis-date | date (partial allowed) | | single | effective | S-FULL | no |
+| regimen | text | | repeating | effective | S-NEG | no |
+| complication | text | | repeating | effective | S-NEG | no |
+| hypoglycaemia-recent | choice: yes, no | | single | effective | S-FULL | no |
+| hypoglycaemia-last-date | date | | single | effective | S-FULL | no |
+
+Notes: `diagnosis-date` replaces a stored duration, because duration is derived and changes with time. What counts as "recent" is not defined here and no window is stored. The `regimen` field is free text and records what is taken. It never suggests a regimen.
+
+## dm.glycaemic-monitoring
+
+Source: sets `hba1c_mon`, `glucose_ss`. Conversion: convert. Repeating. Context: diabetes. This element is expected to own the concepts HbA1c and glucose (decided in A3d).
+
+| Field | Type | Unit | Repeat | Time | States | Concept |
+|-------|------|------|--------|------|--------|---------|
+| hba1c | number | confirm in A4 | repeating | effective (sample) | S-MEAS | yes |
+| glucose | number | confirm in A4 | repeating | effective (sample) | S-MEAS | yes |
+| glucose-timing | choice: fasting, random, after-meal, other | | repeating | effective | S-FULL | no |
+
+Notes: no target range is stored. Reading a value against a range is a parameter in an analytic or rule, disabled by default. A missing or unknown reading is never zero.
+
+## htn.core
+
+Source: demo content in `longitudinal-demo-content.js`. Conversion: convert. Context: hypertension.
+
+| Field | Type | Unit | Repeat | Time | States | Concept |
+|-------|------|------|--------|------|--------|---------|
+| hypertension-type | choice: primary, secondary, unknown-cause | | single | effective | S-FULL | no |
+| systolic-pressure | reference to `core.vitals` | mmHg | repeating | effective (measurement) | S-MEAS | yes (reference) |
+| diastolic-pressure | reference to `core.vitals` | mmHg | repeating | effective (measurement) | S-MEAS | yes (reference) |
+
+Notes: the plan page lists systolic and diastolic readings in `htn.core`, but `core.vitals` already holds them. By ED-12 `htn.core` must not own those concepts. It references the owner so a reading lands in one series. A3d records `core.vitals` as owner. A5 defines how a reference is written.
+
+## dm.foot (optional)
+
+Source: set `foot_ulcer`. Conversion: convert. Context: diabetes. Unlocked only if you ask (C10).
+
+| Field | Type | Unit | Repeat | Time | States | Concept |
+|-------|------|------|--------|------|--------|---------|
+| ulcer-site | text | | repeating | effective | S-NEG | no |
+| ulcer-assessment | text | | repeating | effective | S-NEG | no |
+| ulcer-noted-date | date | | repeating | effective | S-FULL | no |
+
+Note: free text only. No grading scale is defined, because a grade would be clinical content.
+
+## dm.dka (optional)
+
+Source: set `dka_ctx`. Conversion: convert. Context: diabetes. Unlocked only if you ask (C10). The plan page calls these fields time-critical.
+
+| Field | Type | Unit | Repeat | Time | States | Concept |
+|-------|------|------|--------|------|--------|---------|
+| dka-suspected-time | date-time | | single | effective | S-FULL | no |
+| dka-suspected-certainty | choice: exact, approximate, unknown | | single | effective | S-FULL | no |
+| ketone | number | confirm in A4 | repeating | effective (sample) | S-MEAS | yes |
+| glucose | reference to `dm.glycaemic-monitoring` | confirm in A4 | repeating | effective (sample) | S-MEAS | yes (reference) |
+
+Notes: times use the same certainty pattern as `core.event-times`. An unknown time is never replaced by a default. `ketone` is a new concept with no other known user; A3d decides its owner. The element records what happened and when. It does not say what to do.
+
+## Open points for A4 and A3d
+
+1. A4: confirm every field, choice list and unit against the EMR sets and the demo content file; record each difference.
+2. A3d: name one owner per concept: systolic and diastolic pressure (proposed `core.vitals`), HbA1c and glucose (proposed `dm.glycaemic-monitoring`), ketone.
+3. A5: define a field reference between elements and the conflict report when a referenced owner is missing.
+4. `dm.dka` repeats the event-time pattern. Decide in A5 whether it should instead reference `core.event-times`.
