@@ -2,7 +2,7 @@
 
 Prototype. Synthetic data only. Not for clinical use.
 
-Status: parts 1 to 3 of 4 (tier 1 elements, `section` items, then condition elements except CKD). Draft. Unreviewed by a clinician (ED-2 has no named owner).
+Status: parts 1 to 4 of 4 (tier 1 elements, `section` items, diabetes and hypertension elements, then CKD elements and concept keys). Complete as a draft for review in A7. Draft. Unreviewed by a clinician (ED-2 has no named owner).
 
 ## Source and limits
 
@@ -225,3 +225,76 @@ Notes: times use the same certainty pattern as `core.event-times`. An unknown ti
 2. A3d: name one owner per concept: systolic and diastolic pressure (proposed `core.vitals`), HbA1c and glucose (proposed `dm.glycaemic-monitoring`), ketone.
 3. A5: define a field reference between elements and the conflict report when a referenced owner is missing.
 4. `dm.dka` repeats the event-time pattern. Decide in A5 whether it should instead reference `core.event-times`.
+
+---
+
+# Part 4: CKD elements and concept keys
+
+Status: draft. Unreviewed by a clinician (ED-2 has no named owner). All wording is synthetic demo content.
+
+## Source and limits
+
+The plan page says set `ckd_ctx` holds stage and cause, plus repeating eGFR, creatinine and urine albumin-creatinine ratio, and that it is split in two. The set itself was not read. Fields, choice lists and units are proposals for A4. No numbers, bands or thresholds appear (standing rule 3). In particular no stage list is written here: stages are defined by eGFR bands, so the choice list must come from the EMR and be checked by a clinician.
+
+## ckd.core
+
+Source: set `ckd_ctx` (non-repeating part). Conversion: convert, split. Context: CKD.
+
+| Field | Type | Unit | Repeat | Time | States | Concept |
+|-------|------|------|--------|------|--------|---------|
+| ckd-stage | choice (list from the EMR; confirm in A4) | | single | effective | S-FULL | no |
+| ckd-cause | text | | single | effective | S-FULL | no |
+
+Note: `ckd-stage` records the stage a clinician documented. Nothing here derives a stage from a measurement.
+
+## ckd.kidney-function
+
+Source: set `ckd_ctx` (repeating part). Conversion: convert, split. Repeating. Context: CKD. Owns the concepts creatinine, eGFR and albumin-creatinine ratio.
+
+| Field | Type | Unit | Repeat | Time | States | Concept |
+|-------|------|------|--------|------|--------|---------|
+| creatinine | number | confirm in A4 | repeating | effective (sample) | S-MEAS | yes |
+| egfr | number | confirm in A4 | repeating | effective (sample) | S-MEAS | yes |
+| albumin-creatinine-ratio | number | confirm in A4 | repeating | effective (sample) | S-MEAS | yes |
+
+Note: A4 must say whether the EMR marks `egfr` as derived from creatinine. If it is derived, the element stores the value as entered or stored, and no formula is written into the element.
+
+## Concept key rules (from ED-9 and ED-12)
+
+- A concept key is a binding in the `local` code system. The key is lowercase with hyphens. The binding slot for other systems is kept but unused (ED-7).
+- Each concept has exactly one owner element: the element that defines it. Every other element that uses the concept references the owner and does not redefine it.
+- A concept has one unit. A second unit for the same concept is an error, not a variant.
+- The same meaning under two different keys is a defect and is reported (B2a).
+- Matching is by key, never by label (standing rule 5).
+
+## Concept key table (proposed)
+
+Owners below are proposals for review in A7. "References" lists elements that use the concept without owning it.
+
+| Concept key | Meaning | Unit | Owner (element.field) | References | Shared |
+|-------------|---------|------|-----------------------|------------|--------|
+| systolic-pressure | Systolic blood pressure reading | mmHg | core.vitals.systolic-pressure | htn.core | yes |
+| diastolic-pressure | Diastolic blood pressure reading | mmHg | core.vitals.diastolic-pressure | htn.core | yes |
+| glucose | Blood glucose reading | confirm in A4 | dm.glycaemic-monitoring.glucose | dm.dka | yes |
+| hba1c | HbA1c measurement | confirm in A4 | dm.glycaemic-monitoring.hba1c | none yet | no |
+| ketone | Ketone measurement | confirm in A4 | dm.dka.ketone | none yet | no |
+| creatinine | Serum creatinine measurement | confirm in A4 | ckd.kidney-function.creatinine | none yet | no |
+| egfr | Estimated glomerular filtration rate as recorded | confirm in A4 | ckd.kidney-function.egfr | none yet | no |
+| albumin-creatinine-ratio | Urine albumin-creatinine ratio | confirm in A4 | ckd.kidney-function.albumin-creatinine-ratio | none yet | no |
+| weight | Body weight | kg | core.vitals.weight | none yet | no |
+| pulse-rate | Pulse rate | beats/min | core.vitals.pulse-rate | none yet | no |
+| respiratory-rate | Respiratory rate | breaths/min | core.vitals.respiratory-rate | none yet | no |
+| temperature | Body temperature | degC | core.vitals.temperature | none yet | no |
+| oxygen-saturation | Oxygen saturation | % | core.vitals.oxygen-saturation | none yet | no |
+| fluid-volume | Volume of fluid intake or output | mL | core.fluid-balance.volume | none yet | no |
+| event-time | Time of a labelled event | | core.event-times.event-time | none yet | no |
+
+15 concepts, 3 shared today. Weight and the rows with "none yet" are listed because they are expected to gain users when a pathway is composed. They are not shared now. Two owners per concept: none.
+
+## Open points for A4, A5 and A7
+
+1. Plan page says DM+CKD shares creatinine, eGFR, blood pressure and HbA1c. In this list only blood pressure and glucose have more than one user. If the EMR `ckd_ctx` or the DM sets hold more of these, A4 will show it and those fields become references to the owners above, never new owners.
+2. `fluid-volume` would mix intake and output in one series, because `direction` is a separate field. A4 or A5 must decide between two concepts (intake, output) or one concept with a direction qualifier. Not decided here.
+3. `event-time` has the same issue with its label field (onset, arrival, other). Same decision.
+4. Units marked "confirm in A4" must be fixed before any concept can pass the one-unit check.
+5. A clinician must review the stage list, the owner choices and every choice list before any use (ED-2).
