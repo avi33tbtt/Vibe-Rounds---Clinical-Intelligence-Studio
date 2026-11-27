@@ -18,7 +18,7 @@ One pathway, four apps. The Clinical Intelligence Studio authors element definit
 2. No licensed terminology. Local vocabulary only (ED-7). Keep the binding slot.
 3. No numbers, bands or thresholds in element definitions. Thresholds are parameters, disabled by default, enabled locally by a clinician.
 4. A pathway describes information needed. It never authorises or automates treatment. A rule produces a visible prompt with its id, version and the records it read. It never orders, never changes data silently.
-5. Composition is by reference, never by copy. Shared fields are matched by concept key, never by similar label.
+5. Composition is by reference, never by copy. Shared fields are matched by concept key, never by similar label. Each concept has exactly one owner element; any other element that uses it references the owner.
 6. Unknown stays unknown. Missing, unknown and entered-in-error are never zero or false.
 7. Published versions are immutable. A change is a new version. Checksums use canonical JSON (`ccis-canonical-json/1`).
 8. An author is never the reviewer of the same artefact.

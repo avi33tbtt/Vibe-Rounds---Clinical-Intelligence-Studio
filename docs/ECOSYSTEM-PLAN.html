@@ -180,7 +180,7 @@ ol.dec{padding-left:1.2rem;max-width:70ch} ol.dec li{margin:.7rem 0}
     <tr><td><code>snake.envenomation-timing</code></td><td>Bite, arrival, clotting test and antivenom timing</td><td>CCIS example, published in local market</td><td><span class="pill p-ok">exists</span></td></tr>
     <tr><td><b>3 Field facets</b><br>declared per field</td><td colspan="2">Concept key, value type, unit, cardinality, repeat, time meaning (effective vs recorded), allowed epistemic states (absent, unknown, not collected, not applicable, explicitly negative, entered in error), source classes, binding.</td><td>CCIS element schema; EMR keeps effective and recorded time apart</td><td><span class="pill p-bad">add concept key</span></td></tr>
   </table></div>
-  <p>The new field facet is the <b>concept key</b>. It is what lets eGFR typed in a CKD form and eGFR typed in a DM+CKD form land in one trajectory, and it is how CCIS recognises "the same data" across pathways.</p>
+  <p>The new field facet is the <b>concept key</b>. It is what lets eGFR typed in a CKD form and eGFR typed in a DM+CKD form land in one trajectory, and it is how CCIS recognises "the same data" across pathways. Each concept has exactly one <b>owner element</b>; any other element that uses it references the owner, and the Studio and Marketplace refuse a second owner.</p>
 </section>
 
 <section id="package">
@@ -238,7 +238,7 @@ ol.dec{padding-left:1.2rem;max-width:70ch} ol.dec li{margin:.7rem 0}
     <ul><li>Answer the decisions below.</li><li>Freeze the vocabulary (element, pathway, trajectory, package, rule pack) in CCIS <code>SPEC.md</code>.</li><li>Write the element list v0 as a CCIS document. Output: one reviewed list, no code.</li></ul></div></div>
   <div class="phase"><div class="tag">Phase B<br>CCIS repo</div><div>
     <h3>The contract (standard 0.2.0)</h3>
-    <ul><li>Concept key, context tags on element fields.</li><li>Element-group schema and validator layers for REQ-023 and REQ-024.</li><li><code>entryForm</code> and <code>contexts</code> members on the pathway.</li><li>Rule-pack schema, validator rules, fixtures with hand-calculated expected results.</li><li>Market index additions. Changelog amendments with your approval, as the existing process requires.</li></ul></div></div>
+    <ul><li>Concept key and context tags on element fields; a one-owner-per-concept check.</li><li>Element-group schema and validator layers for REQ-023 and REQ-024.</li><li><code>entryForm</code> and <code>contexts</code> members on the pathway.</li><li>Rule-pack schema, validator rules, fixtures with hand-calculated expected results.</li><li>Market index additions. Changelog amendments with your approval, as the existing process requires.</li></ul></div></div>
   <div class="phase"><div class="tag">Phase C<br>new repo</div><div>
     <h3>Marketplace and first content</h3>
     <ul><li>Create the repo, move the folder format, add CI.</li><li>Author the first packages in code with the SDK: basic EMR, DM, CKD, DM+CKD, seeded from the EMR's existing sets and R9d-1 demo content.</li></ul></div></div>
@@ -268,6 +268,7 @@ ol.dec{padding-left:1.2rem;max-width:70ch} ol.dec li{margin:.7rem 0}
     <li><b>Rule scope for the first release.</b> Data-quality rules only, or also clinical prompts under a named owner.</li>
     <li><b>Terminology.</b> Stay on local codes for the standard element list, as decided on 25 Nov 2026.</li>
     <li><b>Naming.</b> "CCIS" is a working name per its plan, to settle before any public release.</li>
+    <li><b>Concept ownership.</b> Confirm one owner element per concept, with other elements referencing it.</li>
   </ol>
 </section>
 

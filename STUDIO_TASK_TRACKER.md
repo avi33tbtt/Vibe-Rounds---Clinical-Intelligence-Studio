@@ -55,6 +55,7 @@ Known gaps this plan closes: two meanings of "pathway", two element models, no c
 | ED-9 | Concept keys | Implemented as terminology bindings in a `local` code system, not a new artefact type | A3d, B1, C4 |
 | ED-10 | Where first content is authored | In the CCIS repo under `ccis/examples/ecosystem/` with the SDK and `market-build`, then synced to the Marketplace; the Studio takes over later | C4 to C16 |
 | ED-11 | How apps share code | Copy with a pinned commit and a staleness test (as the EMR does for `contracts/`), no submodules | D1, D2, F2 |
+| ED-12 | Concept ownership | Each concept has exactly one owner element; any other element that uses it references the owner, and a second owner is refused at publish | A3d, B2a, B15, D5, F11a |
 
 ---
 
@@ -63,15 +64,15 @@ Known gaps this plan closes: two meanings of "pathway", two element models, no c
 | ID | Repo | Needs | Task | Status | Date | Size | Notes |
 |----|------|-------|------|--------|------|------|-------|
 | A0 | Studio (YOU) | | Upload this tracker, `plan-chunks/01-core.md` and the plan page as `docs/ECOSYSTEM-PLAN.html` to the Studio repo and commit. Then say "done A0". | TODO | | none | |
-| A1 | Studio | A0 | Write `DECISIONS.md` with ED-1 to ED-11 as OPEN rows (question, recommendation, what it blocks). Stop and ask you to answer. | TODO | | docs | |
-| A1a | Studio (YOU) | A1 | Answer ED-1 to ED-11 in chat ("accept all" is allowed). Claude records them at the start of the next row. | TODO | | none | |
+| A1 | Studio | A0 | Write `DECISIONS.md` with ED-1 to ED-12 as OPEN rows (question, recommendation, what it blocks). Stop and ask you to answer. | TODO | | docs | |
+| A1a | Studio (YOU) | A1 | Answer ED-1 to ED-12 in chat ("accept all" is allowed). Claude records them at the start of the next row. | TODO | | none | |
 | A2 | Studio | A1a | `docs/VOCABULARY.md`: element, element group, pathway, pathway package, trajectory, concept key, context, rule pack, analytics package, marketplace; plus a table mapping EMR terms (element set, pathway version, case_applied_sets) to CCIS terms. | TODO | | docs | |
 | A3a | Studio | A2 | `docs/ELEMENT-LIST-V0.md` part 1: tier 1 elements `core.presentation`, `core.vitals`, `core.examination`, `core.assessment-plan`, `core.event-times`, `core.fluid-balance`: fields, types, units, repeat, time meaning, allowed epistemic states, source EMR set. Synthetic, unreviewed. | TODO | | docs | |
 | A3b | Studio | A3a | Part 2: `section` items (problems, allergies, medications, investigations, care episode): what each stores, the matching envelope section and EMR tab. They are placeholders in a form, not elements. | TODO | | docs | |
 | A3c | Studio | A3a | Part 3: `dm.core`, `dm.glycaemic-monitoring`, `htn.core`, optional `dm.foot` and `dm.dka`, from the EMR sets and `longitudinal-demo-content.js`. No numbers or bands in definitions. | TODO | | docs | |
-| A3d | Studio | A3c | Part 4: `ckd.core`, `ckd.kidney-function` (split from set `ckd_ctx`) and the concept key table for the `local` vocabulary: creatinine, eGFR, albumin-creatinine ratio, systolic and diastolic pressure, HbA1c, glucose, weight and every other concept shared by two or more elements. | TODO | | docs | |
+| A3d | Studio | A3c | Part 4: `ckd.core`, `ckd.kidney-function` (split from set `ckd_ctx`) and the concept key table for the `local` vocabulary: creatinine, eGFR, albumin-creatinine ratio, systolic and diastolic pressure, HbA1c, glucose, weight and every other concept shared by two or more elements. Name ONE owner element per concept (the element that defines it); other elements reference it. | TODO | | docs | |
 | A4 | Studio | A3d | `docs/FIELD-MAP.md`: EMR field model (id, label, type, unit, options, repeat, derived, flag, bindings) to CCIS field model: conversion per property, what is lost, what must be added (cardinality, time meaning, epistemic states). Read EMR `sets.js` and CCIS `element.schema.json` by line range. | TODO | | docs | |
-| A5 | Studio | A4 | `docs/PACKAGE-DESIGN.md`: package members, `entryForm` item kinds (`element`, `section`), `contexts`, composition rules (by reference, match by concept, one owner per shared field, conflict report format), materialisation into EMR sets and pathway versions, import and review path. | TODO | | docs | |
+| A5 | Studio | A4 | `docs/PACKAGE-DESIGN.md`: package members, `entryForm` item kinds (`element`, `section`), `contexts`, composition rules (by reference, match by concept, one owner element per concept and per shared field, conflict report format), materialisation into EMR sets and pathway versions, import and review path. | TODO | | docs | |
 | A6 | Studio | A5 | `docs/RULE-PACK-DESIGN.md`: rule classes, inputs, parameters disabled by default, allowed operators, plain-text message format, provenance, review and independence, logging in the EMR, what is prohibited. | TODO | | docs | |
 | A7 | Studio (YOU) | A6 | Review A2 to A6 and say "approve phase A". Changes go in as new rows. | TODO | | none | |
 
@@ -82,6 +83,7 @@ Known gaps this plan closes: two meanings of "pathway", two element models, no c
 | B0 | CCIS (YOU) | A7 | Confirm `git tag v0.1.0` is pushed, run the full `npm test` once, and tell Claude the base commit. | LOCKED | | none | |
 | B1 | CCIS | B0 | Element field: optional `concept` (a binding in the `local` system) and `contexts` tags; schema, regenerated validators, test. | LOCKED | | 1 schema edit, 1 test | |
 | B2 | CCIS | B1 | Validator rules for `concept` and `contexts` (concept required on repeating numeric fields, unit consistent per concept, known context tags); test. | LOCKED | | 1 module edit, 1 test | |
+| B2a | CCIS | B2 | Concept ownership check: pure `conceptOwners(artefacts)` lists each concept with its owner element and its users; a concept with no owner or a second owner is an error at publish and a warning in `validate`; the same concept under different keys across elements is reported. | LOCKED | | 1 module, 1 test | |
 | B3 | CCIS | B1 | Element-group schema (CCIS-REQ-023): members, mandatory or optional, owner per shared concept, version constraints; validators; test. | LOCKED | | 1 schema, 1 test | |
 | B4 | CCIS | B3 | Validator rules for element groups (REQ-024): match by concept never by label, unresolved shared concept is an error, no duplicate keys; test. | LOCKED | | 1 module edit, 1 test | |
 | B5 | CCIS | B3 | Pathway schema: optional `entryForm` (sections, ordered items of kind `element` or `section`, repeat grouping, default visibility) and `contexts`; validators; test. | LOCKED | | 1 schema edit, 1 test | |
@@ -94,10 +96,10 @@ Known gaps this plan closes: two meanings of "pathway", two element models, no c
 | B12 | CCIS | B11 | Validator rules for rule packs, layers 3 to 5: references, operator types, parameters default disabled, messages plain text. | LOCKED | | 1 module edit, 1 test | |
 | B13 | CCIS | B12 | Validator rules for rule packs, layers 6 to 8: executable safety, test verification, governance (clinical-prompt class needs a named owner and cannot claim validated without a record). | LOCKED | | 1 module edit, 1 test | |
 | B14 | CCIS | B13 | `ccis-rules.js`: pure evaluator of a rule pack over a canonical context; returns fired prompts with rule id, version and record refs, never values; test. | LOCKED | | 1 module, 1 test | |
-| B15 | CCIS | B6, B13 | Market: index types `element-group` and `rule-pack`, `requires` and `provides` lookups, `market-build` update; test. | LOCKED | | 1 module edit, 1 script edit, 1 test | |
+| B15 | CCIS | B6, B13, B2a | Market: index types `element-group` and `rule-pack`, `requires` and `provides` lookups, `market-build` update; `publishArtefact` refuses a second owner of a concept (B2a); test. | LOCKED | | 1 module edit, 1 script edit, 1 test | |
 | B16 | CCIS | B8 | SDK builders for element group and `entryForm`; equivalence with JSON files through `compareRoutes`. | LOCKED | | 1 module edit, 1 test | |
 | B17 | CCIS | B14 | SDK builder for rule pack; equivalence test. | LOCKED | | 1 module edit, 1 test | |
-| B18 | CCIS | B16, B17 | Contract fixtures: two elements sharing a concept, a group, a pathway with `entryForm`, a data-quality rule pack; hand-calculated compose and rule outputs; test. | LOCKED | | fixtures, 1 test | |
+| B18 | CCIS | B16, B17 | Contract fixtures: two elements sharing a concept, a group, a pathway with `entryForm`, a data-quality rule pack, a second-owner refusal case; hand-calculated compose and rule outputs; test. | LOCKED | | fixtures, 1 test | |
 | B19 | CCIS | B18 | Standard version 0.2.0 accepted by validator, compatibility and importer; all 0.1.0 artefacts and fixtures still validate; test. | LOCKED | | small edits, 1 test | |
 | B20 | CCIS | B19 | Docs: SPEC amendments with new CCIS-REQ ids, CHANGELOG amendments, TRACEABILITY, README section. Needs your approval of each amendment. | LOCKED | | docs | |
 | B21 | CCIS (YOU) | B20 | Run the full `npm test` and `npm run accept`, then `git tag v0.2.0` and push. Say "done B21". | LOCKED | | none | |
@@ -110,7 +112,7 @@ Known gaps this plan closes: two meanings of "pathway", two element models, no c
 | C1 | Marketplace | C0 | Scaffold: README with banners, `.gitattributes` (`* -text`), `index.json` copied from CCIS `market/`, LICENSE, CONTRIBUTING stub. | LOCKED | | docs + small files | |
 | C2 | Marketplace | C1 | CI: check out CCIS at a pinned commit; validate every artefact (eight layers), recompute checksums, refuse any change to a released file. | LOCKED | | 1 workflow, 1 script | |
 | C3 | Marketplace | C2 | `docs/PUBLISHING.md`: how a Studio bundle becomes a pull request, naming and immutability rules. | LOCKED | | docs | |
-| C4 | CCIS | B21, A3d | Content: `local` concept bindings for the shared concepts (SDK, validator passes) under `ccis/examples/ecosystem/`. | LOCKED | | 1 script, 1 test | |
+| C4 | CCIS | B21, A3d | Content: `local` concept bindings with one owner element per concept (SDK, ownership check passes) under `ccis/examples/ecosystem/`. | LOCKED | | 1 script, 1 test | |
 | C5 | CCIS | C4 | Content: `core.presentation`, `core.examination`, `core.assessment-plan`. | LOCKED | | 3 JSON, 1 test | |
 | C6 | CCIS | C4 | Content: `core.vitals`, `core.fluid-balance`, `core.event-times`. | LOCKED | | 3 JSON, 1 test | |
 | C7 | CCIS | C4 | Content: `dm.core`, `dm.glycaemic-monitoring`. Needs ED-2 wording review before any use. | LOCKED | | 2 JSON, 1 test | |
@@ -134,7 +136,7 @@ Migrations use the next free number. Every new route updates the permission matr
 | D2 | EMR | D1 | Vendor the CCIS validator, canonical JSON, SHA-256 and compose modules under `vendor/ccis/` with a pinned commit file and a staleness test. | LOCKED | | files, 1 test | |
 | D3 | EMR | D2 | Migration: `concept_key` on element fields and on observations (nullable, set at write from the element). Run the migration safety test. | LOCKED | | 1 migration, 1 test | |
 | D4 | EMR | D3 | Migration: source artefact id, version and checksum on element set versions and pathway versions; `entry_form` and `contexts` on pathway versions, immutable once published. | LOCKED | | 1 migration, 1 test | |
-| D5 | EMR | D2, C16 | Pure `package-import.js` (like `bundle-import.js`): package to draft set definitions, pathway proposal, concept map and blocker report; hostile-text checks. | LOCKED | | 1 module, 1 test | |
+| D5 | EMR | D2, C16 | Pure `package-import.js` (like `bundle-import.js`): package to draft set definitions, pathway proposal, concept map and blocker report (a concept already owned by another imported element is a blocker); hostile-text checks. | LOCKED | | 1 module, 1 test | |
 | D6 | EMR | D5, D4 | Staging server: migration for package imports (append-only), stage, list and read routes, audit, matrix tests. | LOCKED | | 1 migration, 1 routes file, tests | |
 | D7 | EMR | D6 | Accept a staged package: create set drafts through the EXISTING set rules, submit for review, keep concept and source columns. | LOCKED | | 1 routes edit, 1 test | |
 | D8 | EMR | D7 | Accept the pathway: after sets are published, create the pathway draft with `entry_form` and `contexts` through the existing pathway rules. | LOCKED | | 1 routes edit, 1 test | |
@@ -193,8 +195,9 @@ Screens follow the CCIS pattern: pure model, then view (jsdom test, not wired), 
 | F9 | Studio | F8 | Element editor view; jsdom test, not wired. | LOCKED | | 1 module, 1 test | |
 | F10 | Studio | F9 | Wire the element editor; rebuild. | LOCKED | | small edits, 1 test | |
 | F11 | Studio | F10, C4 | Concept picker from the `local` bindings (model and view together); jsdom test. | LOCKED | | 1 module, 1 test | |
+| F11a | Studio | F11, B2a | Concept ownership report: per concept its owner element and users; duplicate owners and the same concept under different keys flagged; creating an element warns before a second owner is made; jsdom test. | LOCKED | | 1 module, 1 test | |
 | F12 | Studio | F10 | Validate panel model: eight layers, compile, checksum; diagnostics by rule id. | LOCKED | | 1 module, 1 test | |
-| F13 | Studio | F12 | Validate panel view and wiring; rebuild. | LOCKED | | 1 module, small edits, 1 test | |
+| F13 | Studio | F12, F11a | Validate panel view and wiring, plus the concept ownership report (F11a); rebuild. | LOCKED | | 1 module, small edits, 1 test | |
 | F14 | Studio | F13 | Pathway composer model: pick elements and `section` items, order, set contexts, build the pathway through the SDK. | LOCKED | | 1 module, 1 test | |
 | F15 | Studio | F14 | Pathway composer view; jsdom test, not wired. | LOCKED | | 1 module, 1 test | |
 | F16 | Studio | F15 | Wire the composer; rebuild. | LOCKED | | small edits, 1 test | |
@@ -238,7 +241,7 @@ Screens follow the CCIS pattern: pure model, then view (jsdom test, not wired), 
 ## ITEMS ONLY YOU CAN DO
 
 - **A0:** upload the tracker, conventions file and plan page.
-- **A1a:** answer ED-1 to ED-11. ED-2 (clinician owner) and ED-3 (Marketplace host) matter most.
+- **A1a:** answer ED-1 to ED-12. ED-2 (clinician owner) and ED-3 (Marketplace host) matter most.
 - **B0 and B21:** tag and test CCIS yourself (the full suite is too long for a free session).
 - **C0:** create the Marketplace repo and enable Pages.
 - **Dependencies:** approve `esbuild` (F3) and `puppeteer-core` (F32) pins; run `npm ci` after pulling.
