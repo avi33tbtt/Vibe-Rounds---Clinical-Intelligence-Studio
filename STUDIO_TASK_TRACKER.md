@@ -71,14 +71,12 @@ Rows A0 to A10 are DONE (2026-11-27 and 2026-11-28) and moved to `docs/TRACKER-A
 
 ## PHASE B: The contract (CCIS repo, standard 0.2.0)
 
-Phase B unlocked 2026-11-27. Rows B0, B1, B1a to B1f, B2, B2a, B2c, B3, B3a, B4, B5, B6, B6a, B7, B8, B8a, B9, B10, B11, B12, B12a, B12b, B13, B13a, B13b, B13c, B13p, B14, B14a and B15 are DONE and moved to `docs/TRACKER-ARCHIVE.md` (do not read it); they count as DONE for every Needs column.
+Phase B unlocked 2026-11-27. Rows B0, B1, B1a to B1f, B2, B2a, B2c, B3, B3a, B4, B5, B6, B6a, B7, B8, B8a, B9, B10, B11, B12, B12a, B12b, B13, B13a, B13b, B13c, B13p, B14, B14a, B15, B15a and B15b are DONE and moved to `docs/TRACKER-ARCHIVE.md` (do not read it); they count as DONE for every Needs column.
 
 | ID | Repo | Needs | Task | Status | Date | Size | Notes |
 |----|------|-------|------|--------|------|------|-------|
 | B9a | CCIS | B9 | Optional: operators `first last` once a series input exists (several observations per input). Unlock only if you say so. | LOCKED | | split when reached | Split from B9: single-valued inputs (CCIS D-048). |
 | B14b | CCIS | B14a | Decide and build how a `stale` rule reads `asOf` (time since the last record): reserved input or other route; touches rule-pack schema, validator layers and `ccis-rules.js`. Unlock only if you say so. Chunk file first. | LOCKED | | split when reached | Gap found in B14a: `asOf` is not an input. |
-| B15a | CCIS | B15 | Market index: optional `provides` and `requires` (concept keys) on entries; lookups `providersOf` and `requirersOf`; `loadMarket` checks them (M-010). | DONE | 2026-11-28 | 1 module edit, 1 test, generated index | `conceptsOf`, both lookups, 14-member entries (12 still loads). 8 tests; 97 pass in market, app suites; 3 breakage checks seen; market folders and index.html rebuilt. ED-52 used. Next: B16. |
-| B15b | CCIS | B15 | Market: make `element-group` publishable. The patient-data screen (L-002, `members` named like a cohort) refuses every group; decide a narrow exception (the `members` key of an `element-group` only) with a test that a real cohort key is still refused. Chunk file first. | IN PROGRESS | 2026-11-28 | 1 module edit, 1 test | Chunk file written (plan-chunks/chunk-B15b-market-element-group.md), awaiting your approval: it loosens a safety screen. ED-53 added. |
 | B16 | CCIS | B8 | SDK builders for element group and `entryForm`; equivalence with JSON files through `compareRoutes`. | TODO | | 1 module edit, 1 test | |
 | B17 | CCIS | B14 | SDK builder for rule pack; equivalence test. | TODO | | 1 module edit, 1 test | |
 | B18 | CCIS | B16, B17 | Contract fixtures: two elements sharing a concept, a group, a pathway with `entryForm`, a data-quality rule pack, a second-owner refusal case; hand-calculated compose and rule outputs; test. | TODO | | fixtures, 1 test | |

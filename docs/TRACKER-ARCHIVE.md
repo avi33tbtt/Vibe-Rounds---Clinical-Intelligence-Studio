@@ -79,3 +79,10 @@ Moved from `STUDIO_TASK_TRACKER.md` on 2026-11-28 (rule 13, file passed 40 KB).
 | ID | Repo | Needs | Task | Status | Date | Size | Notes |
 |----|------|-------|------|--------|------|------|-------|
 | B15 | CCIS | B6, B13c, B2a | Market: publishable type `rule-pack`; `publishArtefact` refuses a second owner of a concept (M-014). Narrowed: `element-group` is B15b, `requires`/`provides` is B15a, the `market-build` update is C15. | DONE | 2026-11-28 | 1 module edit, 1 test | `rule-pack` publishable; M-014 refuses a second owner (ids, codes only). 8 new tests; 89 pass in market, app suites; 2 breakage checks seen; index.html rebuilt; 3 pins edited. ED-51 used. Next: B15a. |
+
+## PHASE B rows B15a and B15b (moved 2026-11-28, rule 13)
+
+| ID | Repo | Needs | Task | Status | Date | Size | Notes |
+|----|------|-------|------|--------|------|------|-------|
+| B15a | CCIS | B15 | Market index: optional `provides` and `requires` (concept keys) on entries; lookups `providersOf` and `requirersOf`; `loadMarket` checks them (M-010). | DONE | 2026-11-28 | 1 module edit, 1 test, generated index | `conceptsOf`, both lookups, 14-member entries (12 still loads). 8 tests; 97 pass in market, app suites; 3 breakage checks seen; market folders and index.html rebuilt. ED-52 used. Next: B16. |
+| B15b | CCIS | B15 | Market: make `element-group` publishable with a narrow exception to the cohort-name screen (L-002): root `members` of a group whose items are exactly `{element, required}`. | DONE | 2026-11-28 | 1 module edit, 1 test | `element-group` publishable; exception root-only, contents still screened. 8 tests; 105 pass; 3 breakage checks seen; index.html rebuilt; 3 pin edits (incl. diabetes-ckd test 5). ED-53 used. Next: B16. |
