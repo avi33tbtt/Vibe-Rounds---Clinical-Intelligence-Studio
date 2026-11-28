@@ -92,7 +92,7 @@ Phase C unlocked 2026-11-28. C10 stays `LOCKED` (optional). C0 is yours; C4 to C
 | C3 | Marketplace | C2 | `docs/PUBLISHING.md`: how a Studio bundle becomes a pull request, naming and immutability rules. | DONE | 2026-11-28 | docs | docs/PUBLISHING.md written inline; README and CONTRIBUTING links updated. Docs only, nothing run. |
 | C4 | CCIS | B21, A3d, B1c, B1d, B2c | Content: `local` concept bindings with one owner element per concept (SDK, ownership check passes) under `ccis/examples/ecosystem/`. | DONE | 2026-11-28 | 1 script, 1 test | Package + owner map + build script + test (7 cases) pass; 3 breakage checks seen. ED-62 used. |
 | C5 | CCIS | C4 | Content: `core.presentation`, `core.examination`, `core.assessment-plan`. | DONE | 2026-11-28 | 3 JSON, 1 test | 3 elements via SDK, test (7 cases) pass; 3 breakage checks seen; validator clean. ED-63 used. |
-| C6 | CCIS | C4 | Content: `core.vitals`, `core.fluid-balance`, `core.event-times`. | IN PROGRESS | 2026-11-28 | 3 JSON, 1 test | Chunk file written (plan-chunks/chunk-C6-core-measure-elements.md), awaiting your approval. ED-66 proposed. |
+| C6 | CCIS | C4 | Content: `core.vitals`, `core.fluid-balance`, `core.event-times`. | DONE | 2026-11-28 | 3 JSON, 1 test | 3 elements via SDK, test (8 cases) pass; 3 breakage checks seen. 3 V4-011 unit warnings (not checked offline). ED-66 used. |
 | C7 | CCIS | C4 | Content: `dm.core`, `dm.glycaemic-monitoring`. Needs ED-2 wording review before any use. | TODO | | 2 JSON, 1 test | |
 | C8 | CCIS | C4 | Content: `ckd.core`, `ckd.kidney-function`. | TODO | | 2 JSON, 1 test | |
 | C9 | CCIS | C4 | Content: `htn.core`. | TODO | | 1 JSON, 1 test | |
