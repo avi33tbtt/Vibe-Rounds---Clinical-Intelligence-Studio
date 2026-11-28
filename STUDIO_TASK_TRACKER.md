@@ -82,25 +82,27 @@ Phase B unlocked 2026-11-27. Rows B0, B1, B1a to B1f, B2, B2a, B2c, B3, B3a, B4,
 
 ## PHASE C: Content and Marketplace
 
+Phase C unlocked 2026-11-28. C10 stays `LOCKED` (optional). C0 is yours; C4 to C9 do not need it.
+
 | ID | Repo | Needs | Task | Status | Date | Size | Notes |
 |----|------|-------|------|--------|------|------|-------|
-| C0 | Marketplace (YOU) | B21 | Create the repo (public), enable Pages, confirm ED-3. Say "done C0". | LOCKED | | none | Repo already exists (LICENSE only). Still yours: make it public, enable Pages, say "done C0". |
-| C1 | Marketplace | C0 | Scaffold: README with banners, `.gitattributes` (`* -text`), `index.json` copied from CCIS `market/`, LICENSE, CONTRIBUTING stub. | LOCKED | | docs + small files | LICENSE already in the repo; do not recreate it. |
-| C2 | Marketplace | C1 | CI: check out CCIS at a pinned commit; validate every artefact (eight layers), recompute checksums, refuse any change to a released file. | LOCKED | | 1 workflow, 1 script | |
-| C3 | Marketplace | C2 | `docs/PUBLISHING.md`: how a Studio bundle becomes a pull request, naming and immutability rules. | LOCKED | | docs | |
-| C4 | CCIS | B21, A3d, B1c, B1d, B2c | Content: `local` concept bindings with one owner element per concept (SDK, ownership check passes) under `ccis/examples/ecosystem/`. | LOCKED | | 1 script, 1 test | |
-| C5 | CCIS | C4 | Content: `core.presentation`, `core.examination`, `core.assessment-plan`. | LOCKED | | 3 JSON, 1 test | |
-| C6 | CCIS | C4 | Content: `core.vitals`, `core.fluid-balance`, `core.event-times`. | LOCKED | | 3 JSON, 1 test | |
-| C7 | CCIS | C4 | Content: `dm.core`, `dm.glycaemic-monitoring`. Needs ED-2 wording review before any use. | LOCKED | | 2 JSON, 1 test | |
-| C8 | CCIS | C4 | Content: `ckd.core`, `ckd.kidney-function`. | LOCKED | | 2 JSON, 1 test | |
-| C9 | CCIS | C4 | Content: `htn.core`. | LOCKED | | 1 JSON, 1 test | |
+| C0 | Marketplace (YOU) | B21 | Create the repo (public), enable Pages, confirm ED-3. Say "done C0". | TODO | | none | Repo already exists (LICENSE only). Still yours: make it public, enable Pages, say "done C0". |
+| C1 | Marketplace | C0 | Scaffold: README with banners, `.gitattributes` (`* -text`), `index.json` copied from CCIS `market/`, LICENSE, CONTRIBUTING stub. | TODO | | docs + small files | LICENSE already in the repo; do not recreate it. |
+| C2 | Marketplace | C1 | CI: check out CCIS at a pinned commit; validate every artefact (eight layers), recompute checksums, refuse any change to a released file. | TODO | | 1 workflow, 1 script | |
+| C3 | Marketplace | C2 | `docs/PUBLISHING.md`: how a Studio bundle becomes a pull request, naming and immutability rules. | TODO | | docs | |
+| C4 | CCIS | B21, A3d, B1c, B1d, B2c | Content: `local` concept bindings with one owner element per concept (SDK, ownership check passes) under `ccis/examples/ecosystem/`. | TODO | | 1 script, 1 test | |
+| C5 | CCIS | C4 | Content: `core.presentation`, `core.examination`, `core.assessment-plan`. | TODO | | 3 JSON, 1 test | |
+| C6 | CCIS | C4 | Content: `core.vitals`, `core.fluid-balance`, `core.event-times`. | TODO | | 3 JSON, 1 test | |
+| C7 | CCIS | C4 | Content: `dm.core`, `dm.glycaemic-monitoring`. Needs ED-2 wording review before any use. | TODO | | 2 JSON, 1 test | |
+| C8 | CCIS | C4 | Content: `ckd.core`, `ckd.kidney-function`. | TODO | | 2 JSON, 1 test | |
+| C9 | CCIS | C4 | Content: `htn.core`. | TODO | | 1 JSON, 1 test | |
 | C10 | CCIS | C7 | Optional content: `dm.foot`, `dm.dka`. Unlock only if you say so. | LOCKED | | 2 JSON, 1 test | |
-| C11 | CCIS | C5, C6 | Pathway package `basic-emr`: core elements, `section` items, `entryForm`. | LOCKED | | 1 JSON, 1 test | |
-| C12 | CCIS | C7, C11 | Pathway package `dm`. | LOCKED | | 1 JSON, 1 test | |
-| C13 | CCIS | C8, C11 | Pathway package `ckd`. | LOCKED | | 1 JSON, 1 test | |
-| C14 | CCIS | C12, C13, B8, B8a | Composed pathway `dm-ckd` built with `ccis-compose.js`; conflict report fixture with hand-calculated expected result. | LOCKED | | 1 JSON, 1 fixture, 1 test | |
-| C15 | CCIS | C14, B15, B15a, B15b | `market-build` includes the ecosystem content; `--check` passes; `market/` regenerated. | LOCKED | | 1 script edit, generated folder | |
-| C16 | Marketplace | C15, C2 | Import the built `market/` folder; CI green. | LOCKED | | generated folder | |
+| C11 | CCIS | C5, C6 | Pathway package `basic-emr`: core elements, `section` items, `entryForm`. | TODO | | 1 JSON, 1 test | |
+| C12 | CCIS | C7, C11 | Pathway package `dm`. | TODO | | 1 JSON, 1 test | |
+| C13 | CCIS | C8, C11 | Pathway package `ckd`. | TODO | | 1 JSON, 1 test | |
+| C14 | CCIS | C12, C13, B8, B8a | Composed pathway `dm-ckd` built with `ccis-compose.js`; conflict report fixture with hand-calculated expected result. | TODO | | 1 JSON, 1 fixture, 1 test | |
+| C15 | CCIS | C14, B15, B15a, B15b | `market-build` includes the ecosystem content; `--check` passes; `market/` regenerated. | TODO | | 1 script edit, generated folder | |
+| C16 | Marketplace | C15, C2 | Import the built `market/` folder; CI green. | TODO | | generated folder | |
 
 ## PHASE D: EMR Enhancer
 
