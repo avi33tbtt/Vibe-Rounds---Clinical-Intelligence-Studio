@@ -77,9 +77,10 @@ Phase B unlocked 2026-11-27. Rows B0, B1, B1a to B1f, B2, B2a, B2c, B3, B3a, B4,
 |----|------|-------|------|--------|------|------|-------|
 | B9a | CCIS | B9 | Optional: operators `first last` once a series input exists (several observations per input). Unlock only if you say so. | LOCKED | | split when reached | Split from B9: single-valued inputs (CCIS D-048). |
 | B14b | CCIS | B14a | Decide and build how a `stale` rule reads `asOf` (time since the last record): reserved input or other route; touches rule-pack schema, validator layers and `ccis-rules.js`. Unlock only if you say so. Chunk file first. | LOCKED | | split when reached | Gap found in B14a: `asOf` is not an input. |
-| B16 | CCIS | B8 | SDK builders for element group and `entryForm`; equivalence with JSON files through `compareRoutes`. | TODO | | 1 module edit, 1 test | |
+| B16 | CCIS | B8 | SDK builder for an element group (`ccis-sdk-group.js`); equivalence with the JSON file through `compareRoutes`. Narrowed: `entryForm` and `contexts` are B16a. | IN PROGRESS | 2026-11-28 | 1 module, 1 test | Chunk file written (plan-chunks/chunk-B16-sdk-element-group.md), awaiting your approval. ED-54 added. |
+| B16a | CCIS | B16 | SDK pathway builder: `entryForm` (sections, element and section items) and `contexts`; equivalence with a JSON pathway through `compareRoutes`. Chunk file first. | TODO | | 1 module edit, 1 test | Split from B16. |
 | B17 | CCIS | B14 | SDK builder for rule pack; equivalence test. | TODO | | 1 module edit, 1 test | |
-| B18 | CCIS | B16, B17 | Contract fixtures: two elements sharing a concept, a group, a pathway with `entryForm`, a data-quality rule pack, a second-owner refusal case; hand-calculated compose and rule outputs; test. | TODO | | fixtures, 1 test | |
+| B18 | CCIS | B16, B16a, B17 | Contract fixtures: two elements sharing a concept, a group, a pathway with `entryForm`, a data-quality rule pack, a second-owner refusal case; hand-calculated compose and rule outputs; test. | TODO | | fixtures, 1 test | |
 | B19 | CCIS | B18, B1b | Standard version 0.2.0 accepted by validator, compatibility and importer; all 0.1.0 artefacts and fixtures still validate; test. | TODO | | small edits, 1 test | |
 | B20 | CCIS | B19 | Docs: SPEC amendments with new CCIS-REQ ids, CHANGELOG amendments, TRACEABILITY, README section. Needs your approval of each amendment. | TODO | | docs | |
 | B21 | CCIS (YOU) | B20 | Run the full `npm test` and `npm run accept`, then `git tag v0.2.0` and push. Say "done B21". | TODO | | none | |
