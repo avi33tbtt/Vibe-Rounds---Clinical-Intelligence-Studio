@@ -95,7 +95,7 @@ Phase C unlocked 2026-11-28. C10 stays `LOCKED` (optional). C0 is yours; C4 to C
 | C6 | CCIS | C4 | Content: `core.vitals`, `core.fluid-balance`, `core.event-times`. | DONE | 2026-11-28 | 3 JSON, 1 test | 3 elements via SDK, test (8 cases) pass; 3 breakage checks seen. 3 V4-011 unit warnings (not checked offline). ED-66 used. |
 | C7 | CCIS | C4 | Content: `dm.core`, `dm.glycaemic-monitoring`. Needs ED-2 wording review before any use. | DONE | 2026-11-28 | 2 JSON, 1 test | 2 elements via SDK, test (8 cases) pass; 3 breakage checks seen; validator clean. Wording still needs ED-2 review. ED-67 used. |
 | C8 | CCIS | C4 | Content: `ckd.core`, `ckd.kidney-function`. | DONE | 2026-11-28 | 2 JSON, 1 test | 2 elements via SDK, test (8 cases) pass; 3 breakage checks seen; one V4-011 warning (eGFR unit). Stage list and units need ED-2 review. ED-68 used. |
-| C9 | CCIS | C4 | Content: `htn.core`. | TODO | | 1 JSON, 1 test | Chunk file written 2026-11-28; awaiting your approval. |
+| C9 | CCIS | C4 | Content: `htn.core`. | DONE | 2026-11-28 | 1 JSON, 1 test | htn.core via SDK; sbp, dbp name core.vitals as owner; test (8 cases) pass; 3 breakage checks seen. Two V4-011 unit warnings. Units need ED-2 review. |
 | C10 | CCIS | C7 | Optional content: `dm.foot`, `dm.dka`. Unlock only if you say so. | LOCKED | | 2 JSON, 1 test | |
 | C11 | CCIS | C5, C6 | Pathway package `basic-emr`: core elements, `section` items, `entryForm`. | TODO | | 1 JSON, 1 test | |
 | C12 | CCIS | C7, C11 | Pathway package `dm`. | TODO | | 1 JSON, 1 test | |
