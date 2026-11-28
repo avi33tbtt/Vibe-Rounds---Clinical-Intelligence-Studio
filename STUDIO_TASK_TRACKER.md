@@ -90,7 +90,7 @@ Phase C unlocked 2026-11-28. C10 stays `LOCKED` (optional). C0 is yours; C4 to C
 | C1 | Marketplace | C0 | Scaffold: README with banners, `.gitattributes` (`* -text`), `index.json` copied from CCIS `market/`, LICENSE, CONTRIBUTING stub. | TODO | | docs + small files | LICENSE already in the repo; do not recreate it. |
 | C2 | Marketplace | C1 | CI: check out CCIS at a pinned commit; validate every artefact (eight layers), recompute checksums, refuse any change to a released file. | TODO | | 1 workflow, 1 script | |
 | C3 | Marketplace | C2 | `docs/PUBLISHING.md`: how a Studio bundle becomes a pull request, naming and immutability rules. | TODO | | docs | |
-| C4 | CCIS | B21, A3d, B1c, B1d, B2c | Content: `local` concept bindings with one owner element per concept (SDK, ownership check passes) under `ccis/examples/ecosystem/`. | TODO | | 1 script, 1 test | |
+| C4 | CCIS | B21, A3d, B1c, B1d, B2c | Content: `local` concept bindings with one owner element per concept (SDK, ownership check passes) under `ccis/examples/ecosystem/`. | IN PROGRESS | 2026-11-28 | 1 script, 1 test | Chunk file written (plan-chunks/chunk-C4-local-terms.md), awaiting your approval. ED-62 added. |
 | C5 | CCIS | C4 | Content: `core.presentation`, `core.examination`, `core.assessment-plan`. | TODO | | 3 JSON, 1 test | |
 | C6 | CCIS | C4 | Content: `core.vitals`, `core.fluid-balance`, `core.event-times`. | TODO | | 3 JSON, 1 test | |
 | C7 | CCIS | C4 | Content: `dm.core`, `dm.glycaemic-monitoring`. Needs ED-2 wording review before any use. | TODO | | 2 JSON, 1 test | |
