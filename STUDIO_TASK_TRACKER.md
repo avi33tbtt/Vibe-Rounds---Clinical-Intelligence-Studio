@@ -97,7 +97,7 @@ Phase C unlocked 2026-11-28. C10 stays `LOCKED` (optional). C0 is yours; C4 to C
 | C8 | CCIS | C4 | Content: `ckd.core`, `ckd.kidney-function`. | DONE | 2026-11-28 | 2 JSON, 1 test | 2 elements via SDK, test (8 cases) pass; 3 breakage checks seen; one V4-011 warning (eGFR unit). Stage list and units need ED-2 review. ED-68 used. |
 | C9 | CCIS | C4 | Content: `htn.core`. | DONE | 2026-11-28 | 1 JSON, 1 test | htn.core via SDK; sbp, dbp name core.vitals as owner; test (8 cases) pass; 3 breakage checks seen. Two V4-011 unit warnings. Units need ED-2 review. |
 | C10 | CCIS | C7 | Optional content: `dm.foot`, `dm.dka`. Unlock only if you say so. | LOCKED | | 2 JSON, 1 test | |
-| C11 | CCIS | C5, C6 | Pathway package `basic-emr`: core elements, `section` items, `entryForm`. | TODO | | 1 JSON, 1 test | |
+| C11 | CCIS | C5, C6 | Pathway package `basic-emr`: core elements, `section` items, `entryForm`. | TODO | | 1 JSON, 1 test | Chunk file written 2026-11-28; awaiting your approval. ED-69. |
 | C12 | CCIS | C7, C11 | Pathway package `dm`. | TODO | | 1 JSON, 1 test | |
 | C13 | CCIS | C8, C11 | Pathway package `ckd`. | TODO | | 1 JSON, 1 test | |
 | C14 | CCIS | C12, C13, B8, B8a | Composed pathway `dm-ckd` built with `ccis-compose.js`; conflict report fixture with hand-calculated expected result. | TODO | | 1 JSON, 1 fixture, 1 test | |
