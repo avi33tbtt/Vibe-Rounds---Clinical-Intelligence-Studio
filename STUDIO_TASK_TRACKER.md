@@ -89,7 +89,7 @@ Phase C unlocked 2026-11-28. C10 stays `LOCKED` (optional). C0 is yours; C4 to C
 | C0 | Marketplace (YOU) | B21 | Create the repo (public), enable Pages, confirm ED-3. Say "done C0". | DONE | 2026-11-28 | none | You confirmed: repo public, Pages on, root directory. ED-3 confirmed. |
 | C1 | Marketplace | C0 | Scaffold: README with banners, `.gitattributes` (`* -text`), `index.json` copied from CCIS `market/`, LICENSE, CONTRIBUTING stub. | DONE | 2026-11-28 | docs + small files | Scaffold built; diff against CCIS market/ clean. ED-64 used. |
 | C2 | Marketplace | C1 | CI: check out CCIS at a pinned commit; validate every artefact (eight layers), recompute checksums, refuse any change to a released file. | DONE | 2026-11-28 | 1 workflow, 1 script | check-market.js, ci.yml, 8-case test pass with CCIS_DIR; 3 breakage checks seen; git-base check seen. CI itself untested until pushed. ED-65 used. |
-| C3 | Marketplace | C2 | `docs/PUBLISHING.md`: how a Studio bundle becomes a pull request, naming and immutability rules. | TODO | | docs | |
+| C3 | Marketplace | C2 | `docs/PUBLISHING.md`: how a Studio bundle becomes a pull request, naming and immutability rules. | DONE | 2026-11-28 | docs | docs/PUBLISHING.md written inline; README and CONTRIBUTING links updated. Docs only, nothing run. |
 | C4 | CCIS | B21, A3d, B1c, B1d, B2c | Content: `local` concept bindings with one owner element per concept (SDK, ownership check passes) under `ccis/examples/ecosystem/`. | DONE | 2026-11-28 | 1 script, 1 test | Package + owner map + build script + test (7 cases) pass; 3 breakage checks seen. ED-62 used. |
 | C5 | CCIS | C4 | Content: `core.presentation`, `core.examination`, `core.assessment-plan`. | IN PROGRESS | 2026-11-28 | 3 JSON, 1 test | Chunk file written (plan-chunks/chunk-C5-core-text-elements.md), awaiting your approval. ED-63 proposed (labels). |
 | C6 | CCIS | C4 | Content: `core.vitals`, `core.fluid-balance`, `core.event-times`. | TODO | | 3 JSON, 1 test | |
@@ -101,7 +101,7 @@ Phase C unlocked 2026-11-28. C10 stays `LOCKED` (optional). C0 is yours; C4 to C
 | C12 | CCIS | C7, C11 | Pathway package `dm`. | TODO | | 1 JSON, 1 test | |
 | C13 | CCIS | C8, C11 | Pathway package `ckd`. | TODO | | 1 JSON, 1 test | |
 | C14 | CCIS | C12, C13, B8, B8a | Composed pathway `dm-ckd` built with `ccis-compose.js`; conflict report fixture with hand-calculated expected result. | TODO | | 1 JSON, 1 fixture, 1 test | |
-| C15 | CCIS | C14, B15, B15a, B15b | `market-build` includes the ecosystem content; `--check` passes; `market/` regenerated. | TODO | | 1 script edit, generated folder | |
+| C15 | CCIS | C14, B15, B15a, B15b | `market-build` includes the ecosystem content; `--check` passes; `market/` regenerated. | TODO | | 1 script edit, generated folder | Gap: terminology-package is not publishable (CCIS M-002); decide how C4 package is published before this row. |
 | C16 | Marketplace | C15, C2 | Import the built `market/` folder; CI green. | TODO | | generated folder | |
 
 ## PHASE D: EMR Enhancer
