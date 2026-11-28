@@ -74,3 +74,4 @@ Status: ED-1 to ED-12 ANSWERED on 2026-11-27 with "accept all": each recommendat
 - ED-3: the Marketplace repo is https://github.com/avi33tbtt/Vibe-Rounds---Marketplace. It replaces the proposed name `clinical-intelligence-marketplace` and follows the naming of the other repos. Pages and merge rights are still to be confirmed in C0.
 - A1 writes all twelve rows at once, as the tracker says. The "at most 3 new rows per task" limit in `plan-chunks/01-core.md` applies to later rows.
 - ED-2 and ED-3 matter most: they gate content (phase C) and the Marketplace repo (C0).
+| ED-63 | OPEN: working choice proposed in the C5 chunk (2026-11-28) | Core text elements use plain English labels (Chief complaint, History of present illness, Past medical history, Examination, Assessment, Plan) because EMR labels are not in the Studio docs. Import matches by `x-emrFieldId`, never by label. | C5, D5 |
